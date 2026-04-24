@@ -3,762 +3,1010 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1020" />
-  <title>RemindMe – Mobile App Mockup</title>
+  <meta name="theme-color" content="#f7f8ff" />
+  <title>RemindMe – Mobile App</title>
   <style>
-    :root {
-      --bg: #07111f;
-      --bg-2: #0d1628;
-      --panel: rgba(255,255,255,0.08);
-      --panel-2: rgba(255,255,255,0.05);
-      --border: rgba(255,255,255,0.12);
-      --text: #f2f7ff;
-      --muted: #aeb9cc;
-      --accent: #8b5cf6;
-      --accent-2: #22d3ee;
-      --success: #22c55e;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --shadow: 0 20px 50px rgba(0,0,0,0.35);
-      --radius: 26px;
-      --radius-sm: 18px;
+    :root{
+      --bg:#f6f8ff;
+      --bg-soft:#ffffff;
+      --surface:#ffffffcc;
+      --surface-strong:#ffffff;
+      --text:#1d2742;
+      --muted:#70809f;
+      --border:#dfe6f5;
+      --shadow:0 12px 30px rgba(62, 86, 138, 0.10);
+
+      --accent:#6d5efc;
+      --accent-2:#3fc9ff;
+      --accent-soft:#eef0ff;
+
+      --success:#2bb673;
+      --warning:#ffb74d;
+      --danger:#ff6b6b;
+
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --radius-sm:12px;
+
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; }
-    body {
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 10% 10%, rgba(34,211,238,0.18), transparent 25%),
-        radial-gradient(circle at 90% 20%, rgba(139,92,246,0.22), transparent 25%),
-        linear-gradient(180deg, #07111f, #0c1220 45%, #101a2a 100%);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
+        radial-gradient(circle at top left, rgba(109,94,252,.15), transparent 28%),
+        radial-gradient(circle at top right, rgba(63,201,255,.14), transparent 30%),
+        linear-gradient(180deg, #f7f8ff 0%, #f3f7ff 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
     }
 
-    .app-shell {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      position: relative;
-      padding-bottom: calc(92px + var(--safe-bottom));
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    body.dark{
+      --bg:#0e1528;
+      --bg-soft:#111a31;
+      --surface:rgba(255,255,255,.07);
+      --surface-strong:#16213b;
+      --text:#eef4ff;
+      --muted:#9aabca;
+      --border:rgba(255,255,255,.10);
+      --shadow:0 18px 40px rgba(0,0,0,.24);
+      background:
+        radial-gradient(circle at top left, rgba(109,94,252,.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(63,201,255,.16), transparent 30%),
+        linear-gradient(180deg, #0b1120 0%, #11182c 100%);
+    }
+
+    .app{
+      width:100%;
+      max-width:430px;
+      min-height:100vh;
+      position:relative;
+      padding-bottom:calc(88px + var(--safe-bottom));
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
       backdrop-filter: blur(10px);
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(14px);
-      background: rgba(7,17,31,0.72);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 18px 16px;
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      padding:12px 18px 14px;
+      background:rgba(255,255,255,.62);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--border);
     }
 
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 10px;
+    body.dark .topbar{
+      background:rgba(14,21,40,.72);
     }
 
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+    .statusbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    .brand-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
     }
 
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow: 0 12px 30px rgba(34,211,238,0.25);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
-    .brand h1 {
-      margin: 0;
-      font-size: 20px;
-      line-height: 1.1;
+    .brand-logo{
+      width:48px;
+      height:48px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      color:white;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow:0 14px 30px rgba(109,94,252,.22);
     }
 
-    .brand p {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 12px;
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      line-height:1.1;
     }
 
-    .icon-button {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      width: 42px;
-      height: 42px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      font-size: 18px;
+    .brand p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .content {
-      padding: 18px;
-      display: grid;
-      gap: 16px;
+    .icon-btn{
+      width:42px;
+      height:42px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:var(--surface);
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      font-size:18px;
+      cursor:pointer;
     }
 
-    .hero {
-      border: 1px solid var(--border);
-      background: linear-gradient(145deg, rgba(139,92,246,0.22), rgba(34,211,238,0.08) 55%, rgba(255,255,255,0.04));
-      border-radius: 30px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+    .content{
+      padding:18px;
+      display:grid;
+      gap:16px;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -20px -40px auto;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(34,211,238,0.25), transparent 60%);
-      pointer-events: none;
-    }
+    .page{display:none}
+    .page.active{display:grid;gap:16px}
 
-    .eyebrow {
-      color: #cfe8ff;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-size: 11px;
-      opacity: 0.9;
-    }
-
-    .hero h2 {
-      margin: 8px 0 8px;
-      font-size: 26px;
-      line-height: 1.15;
-    }
-
-    .hero p {
-      margin: 0;
-      color: #d6e0ee;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 16px;
-    }
-
-    .stat {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 18px;
-      padding: 12px;
-    }
-
-    .stat .label {
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .stat .value {
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .card {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .title-icon {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid var(--border);
-    }
-
-    .chip {
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(139,92,246,0.18);
-      color: #ede9fe;
-      white-space: nowrap;
-    }
-
-    .input-row {
-      display: grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 8px;
-    }
-
-    input[type="text"], .search-input {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text);
-      min-height: 48px;
-      padding: 0 14px;
-      outline: none;
-      font-size: 14px;
-    }
-
-    input::placeholder { color: #97a5bc; }
-
-    button {
-      font: inherit;
-    }
-
-    .btn {
-      border: 1px solid transparent;
-      border-radius: 18px;
-      min-height: 48px;
-      padding: 0 14px;
-      cursor: pointer;
-      color: white;
-      background: linear-gradient(135deg, var(--accent), #7c3aed);
-      box-shadow: 0 10px 24px rgba(124,58,237,0.28);
-    }
-
-    .btn.secondary {
-      background: rgba(255,255,255,0.08);
-      border-color: var(--border);
-      box-shadow: none;
-      color: var(--text);
-    }
-
-    .suggestions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .suggestion {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-
-    .list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .list-item {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 14px;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .check {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.3);
-      margin-top: 2px;
-      flex: 0 0 auto;
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-size: 12px;
-    }
-
-    .check.done {
-      background: rgba(34,197,94,0.24);
-      border-color: rgba(34,197,94,0.7);
-    }
-
-    .item-main {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .item-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-
-    .item-title.done {
-      color: #7f8aa0;
-      text-decoration: line-through;
-    }
-
-    .item-meta {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .tiny-tag {
-      font-size: 11px;
-      color: #d8e2f1;
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .grid-2 {
-      display: grid;
-      gap: 16px;
-    }
-
-    .habit {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 14px;
-    }
-
-    .habit-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .habit-name {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0 0 4px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .progress {
-      height: 8px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .progress > span {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    }
-
-    .map-card {
-      overflow: hidden;
-      padding: 0;
-    }
-
-    .map-header {
-      padding: 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .map-body {
-      padding: 16px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .map {
-      position: relative;
-      min-height: 260px;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border);
+    .hero{
+      border-radius:30px;
+      padding:18px;
       background:
-        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
-        radial-gradient(circle at 50% 40%, rgba(34,211,238,0.15), transparent 22%),
-        linear-gradient(180deg, rgba(8,14,24,0.7), rgba(6,10,18,0.95));
-      background-size: 26px 26px, 26px 26px, auto, auto;
+        linear-gradient(145deg, rgba(109,94,252,.18), rgba(63,201,255,.12) 48%, rgba(255,255,255,.45));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
     }
 
-    .fence-ring {
-      position: absolute;
-      left: 50%;
-      top: 45%;
-      width: 130px;
-      height: 130px;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1px solid rgba(34,211,238,0.55);
-      background: rgba(34,211,238,0.10);
-      box-shadow: 0 0 0 18px rgba(34,211,238,0.05);
+    body.dark .hero{
+      background:
+        linear-gradient(145deg, rgba(109,94,252,.24), rgba(63,201,255,.12) 48%, rgba(255,255,255,.05));
     }
 
-    .user-dot {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      top: 45%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: var(--success);
-      box-shadow: 0 0 0 8px rgba(34,197,94,0.14);
-      transition: all .35s ease;
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      right:-20px;
+      bottom:-30px;
+      background:radial-gradient(circle, rgba(63,201,255,.20), transparent 70%);
+      pointer-events:none;
     }
 
-    .user-dot.outside {
-      top: 45%;
-      left: 84%;
-      background: var(--warning);
-      box-shadow: 0 0 0 8px rgba(245,158,11,0.14);
+    .eyebrow{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin-bottom:8px;
     }
 
-    .map-label {
-      position: absolute;
-      left: 12px;
-      bottom: 12px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(0,0,0,0.34);
-      color: #dbe8fa;
-      font-size: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      max-width: calc(100% - 24px);
+    .hero h2{
+      margin:0 0 8px;
+      font-size:27px;
+      line-height:1.15;
     }
 
-    .button-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    .hero p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
     }
 
-    .feed {
-      display: grid;
-      gap: 10px;
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:16px;
     }
 
-    .feed-item {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 12px;
-      color: #dbe5f4;
-      font-size: 13px;
-      line-height: 1.45;
+    .stat{
+      padding:12px;
+      border-radius:18px;
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(255,255,255,.45);
     }
 
-    .search-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 0 14px;
+    body.dark .stat{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(255,255,255,.08);
     }
 
-    .search-wrap input {
-      border: 0;
-      background: transparent;
-      min-height: 48px;
-      color: var(--text);
-      width: 100%;
-      outline: none;
+    .stat-label{
+      font-size:11px;
+      color:var(--muted);
+      margin-bottom:6px;
     }
 
-    .notes-grid {
-      display: grid;
-      gap: 12px;
+    .stat-value{
+      font-size:20px;
+      font-weight:700;
     }
 
-    .note {
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-      border-radius: 22px;
-      padding: 14px;
+    .card{
+      border-radius:var(--radius-xl);
+      background:var(--surface);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      padding:16px;
     }
 
-    .note-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 8px;
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:14px;
     }
 
-    .note h4 {
-      margin: 0;
-      font-size: 15px;
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:15px;
+      font-weight:700;
     }
 
-    .note p {
-      margin: 0;
-      color: #d5dfef;
-      font-size: 14px;
-      line-height: 1.55;
+    .card-icon{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      display:grid;
+      place-items:center;
+      background:var(--accent-soft);
+      border:1px solid var(--border);
+      font-size:16px;
     }
 
-    .delete-btn {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      color: #f8d7d7;
-      border-radius: 14px;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      flex: 0 0 auto;
+    body.dark .card-icon{
+      background:rgba(255,255,255,.06);
     }
 
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+    .subtext{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
     }
 
-    .weekday, .day {
-      text-align: center;
+    .chip-row{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
     }
 
-    .weekday {
-      color: var(--muted);
-      font-size: 12px;
-      margin-bottom: 2px;
+    .chip{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      color:var(--text);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:12px;
+      cursor:pointer;
     }
 
-    .day {
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      color: #dde7f5;
-      font-size: 13px;
+    body.dark .chip{
+      background:rgba(255,255,255,.06);
     }
 
-    .day.active {
-      background: rgba(34,211,238,0.16);
-      border-color: rgba(34,211,238,0.4);
-      color: #dcfbff;
-      font-weight: 700;
+    .chip.active{
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:white;
+      border-color:transparent;
     }
 
-    .device, .zone, .setting-row, .idea {
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 14px;
+    .quick-add{
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      gap:8px;
     }
 
-    .device-top, .zone-top, .setting-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
+    .input{
+      width:100%;
+      min-height:48px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(255,255,255,.65);
+      color:var(--text);
+      outline:none;
+      padding:0 14px;
+      font-size:14px;
     }
 
-    .device-left, .zone-left {
-      display: flex;
-      gap: 12px;
-      align-items: center;
+    body.dark .input{
+      background:rgba(255,255,255,.06);
     }
 
-    .device-icon, .zone-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
-      font-size: 18px;
+    .input::placeholder{color:var(--muted)}
+
+    .btn{
+      min-height:48px;
+      border:1px solid transparent;
+      border-radius:18px;
+      padding:0 14px;
+      cursor:pointer;
+      font:inherit;
     }
 
-    .device h4, .zone h4, .setting-row h4 {
-      margin: 0 0 4px;
-      font-size: 14px;
+    .btn.primary{
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:white;
+      box-shadow:0 12px 22px rgba(109,94,252,.20);
     }
 
-    .progress-bar {
-      margin-top: 10px;
-      height: 8px;
-      background: rgba(255,255,255,0.08);
-      border-radius: 999px;
-      overflow: hidden;
+    .btn.secondary{
+      background:rgba(255,255,255,.65);
+      color:var(--text);
+      border-color:var(--border);
     }
 
-    .progress-bar span {
-      display: block;
-      height: 100%;
-      background: linear-gradient(90deg, #06b6d4, #22c55e);
-      width: 50%;
+    body.dark .btn.secondary{
+      background:rgba(255,255,255,.06);
     }
 
-    .toggle {
-      position: relative;
-      width: 52px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
-      cursor: pointer;
-      flex: 0 0 auto;
-      transition: background .2s ease;
+    .focus-list,
+    .list,
+    .notes-grid{
+      display:grid;
+      gap:10px;
     }
 
-    .toggle::after {
-      content: "";
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: white;
-      transition: left .22s ease;
+    .focus-item{
+      padding:14px;
+      border-radius:20px;
+      background:linear-gradient(135deg, rgba(109,94,252,.10), rgba(63,201,255,.10));
+      border:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
     }
 
-    .toggle.active {
-      background: rgba(34,197,94,0.26);
+    .focus-item strong{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
     }
 
-    .toggle.active::after {
-      left: 23px;
+    .mini-badge{
+      padding:6px 10px;
+      font-size:11px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      white-space:nowrap;
+      background:rgba(255,255,255,.6);
     }
 
-    .tab-view { display: none; }
-    .tab-view.active { display: grid; gap: 16px; }
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 0;
-      width: 100%;
-      max-width: 430px;
-      padding: 10px 16px calc(10px + var(--safe-bottom));
-      background: rgba(7,17,31,0.88);
-      backdrop-filter: blur(18px);
-      border-top: 1px solid var(--border);
-      z-index: 40;
+    body.dark .mini-badge{
+      background:rgba(255,255,255,.06);
     }
 
-    .nav-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
+    .list-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.45);
     }
 
-    .nav-btn {
-      min-height: 62px;
-      border: 1px solid transparent;
-      border-radius: 20px;
-      background: transparent;
-      color: var(--muted);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      cursor: pointer;
+    body.dark .list-item{
+      background:rgba(255,255,255,.04);
     }
 
-    .nav-btn .icon {
-      font-size: 18px;
-      line-height: 1;
+    .check{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      border:2px solid #c7d3ec;
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      cursor:pointer;
+      margin-top:2px;
+      font-size:12px;
+      color:white;
+      background:transparent;
     }
 
-    .nav-btn.active {
-      color: #081221;
-      background: white;
-      font-weight: 700;
+    .check.done{
+      background:var(--success);
+      border-color:var(--success);
     }
 
-    .subtle {
-      color: var(--muted);
+    .item-main{
+      flex:1;
+      min-width:0;
     }
 
-    .section-spacer { height: 2px; }
-
-    .small-btn {
-      min-height: 36px;
-      padding: 0 12px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
-      color: var(--text);
-      cursor: pointer;
+    .item-title{
+      margin:0 0 4px;
+      font-size:14px;
+      font-weight:700;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
     }
 
-    @media (max-width: 380px) {
-      .input-row { grid-template-columns: 1fr; }
-      .button-row { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr 1fr; }
-      .stats .stat:last-child { grid-column: span 2; }
+    .item-title.done{
+      text-decoration:line-through;
+      color:var(--muted);
+    }
+
+    .item-meta{
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .priority{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      display:inline-block;
+    }
+
+    .priority.high{background:var(--danger)}
+    .priority.medium{background:var(--warning)}
+    .priority.low{background:var(--success)}
+
+    .small-action{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      cursor:pointer;
+      font-size:18px;
+      padding:0;
+    }
+
+    .habit{
+      padding:14px;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.45);
+    }
+
+    body.dark .habit{
+      background:rgba(255,255,255,.04);
+    }
+
+    .habit-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .habit-name{
+      font-size:14px;
+      font-weight:700;
+      margin-bottom:4px;
+    }
+
+    .small-btn{
+      min-height:36px;
+      padding:0 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      color:var(--text);
+      cursor:pointer;
+      font:inherit;
+    }
+
+    body.dark .small-btn{
+      background:rgba(255,255,255,.06);
+    }
+
+    .progress{
+      height:8px;
+      border-radius:999px;
+      background:#e7ecf8;
+      overflow:hidden;
+    }
+
+    body.dark .progress{
+      background:rgba(255,255,255,.08);
+    }
+
+    .progress > span{
+      display:block;
+      height:100%;
+      background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius:inherit;
+    }
+
+    .checklist-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.45);
+    }
+
+    body.dark .checklist-item{
+      background:rgba(255,255,255,.04);
+    }
+
+    .toggle-inline{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      border:2px solid #c8d4ee;
+      background:transparent;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      color:white;
+    }
+
+    .toggle-inline.active{
+      background:var(--success);
+      border-color:var(--success);
+    }
+
+    .map-card{
+      padding:0;
+      overflow:hidden;
+    }
+
+    .map-header{
+      padding:16px;
+      border-bottom:1px solid var(--border);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .map-body{
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .map-zone-pills{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:2px;
+    }
+
+    .map-zone-pill{
+      white-space:nowrap;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      cursor:pointer;
+      font-size:12px;
+    }
+
+    .map-zone-pill.active{
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:white;
+      border-color:transparent;
+    }
+
+    body.dark .map-zone-pill{
+      background:rgba(255,255,255,.06);
+    }
+
+    .map{
+      min-height:250px;
+      position:relative;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background:
+        linear-gradient(rgba(130,154,197,.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(130,154,197,.15) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(109,94,252,.10), rgba(63,201,255,.06)),
+        linear-gradient(180deg, #f5f7ff, #eaf1ff);
+      background-size:28px 28px, 28px 28px, auto, auto;
+    }
+
+    body.dark .map{
+      background:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(109,94,252,.12), rgba(63,201,255,.08)),
+        linear-gradient(180deg, #11182d, #0e1629);
+      background-size:28px 28px, 28px 28px, auto, auto;
+    }
+
+    .ring{
+      position:absolute;
+      width:140px;
+      height:140px;
+      left:50%;
+      top:45%;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:2px solid rgba(63,201,255,.65);
+      background:rgba(63,201,255,.12);
+      box-shadow:0 0 0 18px rgba(63,201,255,.07);
+    }
+
+    .user-dot{
+      position:absolute;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background:var(--success);
+      left:50%;
+      top:45%;
+      transform:translate(-50%,-50%);
+      box-shadow:0 0 0 8px rgba(43,182,115,.15);
+      transition:all .35s ease;
+    }
+
+    .user-dot.outside{
+      left:82%;
+      background:var(--warning);
+      box-shadow:0 0 0 8px rgba(255,183,77,.16);
+    }
+
+    .map-label{
+      position:absolute;
+      left:12px;
+      bottom:12px;
+      right:12px;
+      padding:10px 12px;
+      border-radius:16px;
+      background:rgba(255,255,255,.8);
+      border:1px solid var(--border);
+      font-size:12px;
+      color:var(--text);
+    }
+
+    body.dark .map-label{
+      background:rgba(0,0,0,.28);
+      color:#eef4ff;
+    }
+
+    .button-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .feed-item,
+    .device,
+    .zone,
+    .note,
+    .idea,
+    .setting-row{
+      padding:14px;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.45);
+    }
+
+    body.dark .feed-item,
+    body.dark .device,
+    body.dark .zone,
+    body.dark .note,
+    body.dark .idea,
+    body.dark .setting-row{
+      background:rgba(255,255,255,.04);
+    }
+
+    .feed-item{
+      font-size:13px;
+      color:var(--text);
+      line-height:1.45;
+    }
+
+    .calendar-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:8px;
+    }
+
+    .weekday{
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .day{
+      height:42px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.45);
+      font-size:13px;
+    }
+
+    body.dark .day{
+      background:rgba(255,255,255,.04);
+    }
+
+    .day.active{
+      background:linear-gradient(135deg, rgba(109,94,252,.16), rgba(63,201,255,.16));
+      border-color:rgba(109,94,252,.25);
+      font-weight:700;
+    }
+
+    .search{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:0 14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:rgba(255,255,255,.65);
+    }
+
+    body.dark .search{
+      background:rgba(255,255,255,.06);
+    }
+
+    .search input{
+      min-height:48px;
+      width:100%;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font:inherit;
+    }
+
+    .note-top,
+    .device-top,
+    .zone-top,
+    .setting-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .note h4,
+    .device h4,
+    .zone h4,
+    .setting-row h4{
+      margin:0 0 4px;
+      font-size:14px;
+    }
+
+    .note p{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+
+    .pin{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.65);
+      color:var(--text);
+      width:36px;
+      height:36px;
+      border-radius:14px;
+      cursor:pointer;
+    }
+
+    body.dark .pin{
+      background:rgba(255,255,255,.06);
+    }
+
+    .device-head,
+    .zone-head{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex:1;
+    }
+
+    .avatar{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:grid;
+      place-items:center;
+      background:var(--accent-soft);
+      border:1px solid var(--border);
+      font-size:18px;
+      flex:0 0 auto;
+    }
+
+    body.dark .avatar{
+      background:rgba(255,255,255,.06);
+    }
+
+    .progress-bar{
+      margin-top:10px;
+      height:8px;
+      border-radius:999px;
+      overflow:hidden;
+      background:#e7ecf8;
+    }
+
+    body.dark .progress-bar{
+      background:rgba(255,255,255,.08);
+    }
+
+    .progress-bar > span{
+      display:block;
+      height:100%;
+      background:linear-gradient(90deg, var(--accent-2), var(--success));
+      border-radius:inherit;
+    }
+
+    .toggle{
+      position:relative;
+      width:52px;
+      height:32px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#e9eef9;
+      cursor:pointer;
+      flex:0 0 auto;
+    }
+
+    body.dark .toggle{
+      background:rgba(255,255,255,.08);
+    }
+
+    .toggle::after{
+      content:"";
+      position:absolute;
+      width:24px;
+      height:24px;
+      top:3px;
+      left:3px;
+      border-radius:50%;
+      background:white;
+      transition:left .22s ease;
+      box-shadow:0 2px 5px rgba(0,0,0,.12);
+    }
+
+    .toggle.active{
+      background:rgba(43,182,115,.26);
+    }
+
+    .toggle.active::after{
+      left:23px;
+    }
+
+    .theme-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+
+    .theme-swatch{
+      padding:12px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      cursor:pointer;
+      background:rgba(255,255,255,.55);
+      text-align:center;
+    }
+
+    body.dark .theme-swatch{
+      background:rgba(255,255,255,.04);
+    }
+
+    .theme-preview{
+      height:34px;
+      border-radius:12px;
+      margin-bottom:8px;
+    }
+
+    .theme-swatch.active{
+      outline:2px solid var(--accent);
+    }
+
+    .bottom-nav{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:100%;
+      max-width:430px;
+      padding:10px 16px calc(10px + var(--safe-bottom));
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(18px);
+      border-top:1px solid var(--border);
+      z-index:40;
+    }
+
+    body.dark .bottom-nav{
+      background:rgba(14,21,40,.82);
+    }
+
+    .nav-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:8px;
+    }
+
+    .nav-btn{
+      min-height:62px;
+      border:none;
+      background:transparent;
+      border-radius:20px;
+      color:var(--muted);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      gap:5px;
+      font-size:11px;
+      cursor:pointer;
+    }
+
+    .nav-btn .icon{font-size:18px}
+
+    .nav-btn.active{
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:white;
+      font-weight:700;
+    }
+
+    .empty{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.40);
+      border:1px dashed var(--border);
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:110px;
+      width:calc(100% - 40px);
+      max-width:390px;
+      padding:14px 16px;
+      border-radius:18px;
+      color:white;
+      background:rgba(32,40,66,.92);
+      box-shadow:0 12px 28px rgba(0,0,0,.25);
+      z-index:50;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease, transform .2s ease;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-4px);
+    }
+
+    @media (max-width:380px){
+      .quick-add{grid-template-columns:1fr}
+      .button-row{grid-template-columns:1fr}
+      .stats{grid-template-columns:1fr 1fr}
+      .stats .stat:last-child{grid-column:span 2}
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app">
     <header class="topbar">
-      <div class="status-row">
+      <div class="statusbar">
         <span id="timeNow">09:41</span>
         <span>🔋 84% · 📶 Online</span>
       </div>
@@ -767,170 +1015,251 @@
           <div class="brand-logo">🧠</div>
           <div>
             <h1>RemindMe</h1>
-            <p>Mobile HTML Demo für vergessliche Menschen</p>
+            <p>Einfach. Farbfreundlich. Gegen das Vergessen.</p>
           </div>
         </div>
-        <button class="icon-button" id="themeToggle" aria-label="Design umschalten">🌙</button>
+        <button class="icon-btn" id="themeToggle" aria-label="Theme wechseln">🌙</button>
       </div>
     </header>
 
     <main class="content">
-      <section id="home" class="tab-view active">
-        <div class="hero">
-          <div class="eyebrow">Interaktive App</div>
-          <h2>Dein Gedächtnis. Kreativer. Ruhiger. Smarter.</h2>
-          <p>Kalender, Erinnerungen, Notizen, Geräte und ortsbasierte Alarme in einer mobilen Oberfläche für GitHub Pages.</p>
+      <!-- HOME -->
+      <section id="home" class="page active">
+        <section class="hero">
+          <div class="eyebrow">Heute im Blick</div>
+          <h2>Alles Wichtige auf einen Blick.</h2>
+          <p>Erinnerungen, Notizen, Routinen und Ortsalarme – übersichtlich in einer mobilen Oberfläche.</p>
+
           <div class="stats">
             <div class="stat">
-              <div class="label">Heute erledigt</div>
-              <div class="value" id="donePercent">25%</div>
+              <div class="stat-label">Erledigt</div>
+              <div class="stat-value" id="statDone">0%</div>
             </div>
             <div class="stat">
-              <div class="label">Aktive Zonen</div>
-              <div class="value" id="activeZonesCount">2</div>
+              <div class="stat-label">Offen</div>
+              <div class="stat-value" id="statOpen">0</div>
             </div>
             <div class="stat">
-              <div class="label">Geräte</div>
-              <div class="value" id="deviceCount">3</div>
+              <div class="stat-label">Zonen</div>
+              <div class="stat-value" id="statZones">0</div>
             </div>
-          </div>
-        </div>
-
-        <section class="card">
-          <div class="card-header">
-            <div class="card-title"><span class="title-icon">✨</span> Schnell hinzufügen</div>
-            <div class="chip">KI-Vorschläge</div>
-          </div>
-          <div class="input-row">
-            <input id="quickInput" type="text" placeholder="z. B. Regenschirm mitnehmen" />
-            <button class="btn" id="addReminderBtn">Reminder</button>
-            <button class="btn secondary" id="addNoteBtn">Notiz</button>
-          </div>
-          <div class="suggestions">
-            <button class="suggestion">Ladegerät einpacken</button>
-            <button class="suggestion">Pflanzen gießen</button>
-            <button class="suggestion">Mama anrufen</button>
-            <button class="suggestion">Pass mitnehmen</button>
           </div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">🔔</span> Nächste Erinnerungen</div>
-            <div class="tiny-tag">Heute</div>
+            <div>
+              <div class="card-title"><span class="card-icon">✨</span> Schnell hinzufügen</div>
+              <div class="subtext">Neue Erinnerung oder Notiz in Sekunden erfassen.</div>
+            </div>
           </div>
+
+          <div class="quick-add">
+            <input id="quickInput" class="input" type="text" placeholder="z. B. Regenschirm mitnehmen" />
+            <button id="addReminderBtn" class="btn primary">Reminder</button>
+            <button id="addNoteBtn" class="btn secondary">Notiz</button>
+          </div>
+
+          <div class="chip-row" style="margin-top:12px">
+            <button class="chip quick-suggestion">Schlüssel einpacken</button>
+            <button class="chip quick-suggestion">Ladegerät mitnehmen</button>
+            <button class="chip quick-suggestion">Mama anrufen</button>
+            <button class="chip quick-suggestion">Wasser trinken</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="card-icon">🎯</span> Heute im Fokus</div>
+              <div class="subtext">Deine wichtigsten offenen Aufgaben.</div>
+            </div>
+          </div>
+          <div class="focus-list" id="focusList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="card-icon">🔔</span> Erinnerungen</div>
+              <div class="subtext">Filtere deine Aufgaben nach Status.</div>
+            </div>
+          </div>
+          <div class="chip-row" id="reminderFilters" style="margin-bottom:12px"></div>
           <div class="list" id="reminderList"></div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">👣</span> Routinen & Gewohnheiten</div>
+            <div>
+              <div class="card-title"><span class="card-icon">👣</span> Routinen</div>
+              <div class="subtext">Kleine Gewohnheiten, weniger Vergessen.</div>
+            </div>
           </div>
           <div class="list" id="habitList"></div>
         </section>
 
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="card-icon">👜</span> Bevor du gehst</div>
+              <div class="subtext">Eine einfache Checkliste für Schlüssel, Handy & Co.</div>
+            </div>
+          </div>
+          <div class="list" id="checkList"></div>
+        </section>
+
         <section class="card map-card">
           <div class="map-header">
-            <div class="card-title"><span class="title-icon">📍</span> Standort-Alarm</div>
-            <div class="chip">Live Demo</div>
+            <div>
+              <div class="card-title"><span class="card-icon">📍</span> Standort-Alarm</div>
+              <div class="subtext">Wenn du eine Zone verlässt oder betrittst, erinnert dich RemindMe automatisch.</div>
+            </div>
           </div>
           <div class="map-body">
-            <div class="map" id="mapVisual">
-              <div class="fence-ring"></div>
+            <div class="map-zone-pills" id="zonePills"></div>
+
+            <div class="map">
+              <div class="ring"></div>
               <div class="user-dot" id="userDot"></div>
-              <div class="map-label" id="mapLabel">Alarmaktion: Schlüssel, Geldbeutel, Handy prüfen</div>
+              <div class="map-label" id="mapLabel">Alarmaktion:</div>
             </div>
+
             <div class="button-row">
-              <button class="btn" id="insideBtn">Im Bereich simulieren</button>
-              <button class="btn secondary" id="outsideBtn">Bereich verlassen</button>
+              <button id="insideBtn" class="btn primary">Im Bereich</button>
+              <button id="outsideBtn" class="btn secondary">Bereich verlassen</button>
             </div>
-            <div class="feed" id="alarmFeed"></div>
+
+            <div class="list" id="alarmFeed"></div>
           </div>
         </section>
       </section>
 
-      <section id="calendar" class="tab-view">
-        <div class="card">
+      <!-- CALENDAR -->
+      <section id="calendar" class="page">
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">📆</span> Kalender</div>
+            <div>
+              <div class="card-title"><span class="card-icon">📆</span> Kalender</div>
+              <div class="subtext">Vereinfachte Monatsübersicht.</div>
+            </div>
             <div class="chip">Monat</div>
           </div>
-          <div class="calendar-grid" id="weekdayRow"></div>
-          <div class="section-spacer"></div>
-          <div class="calendar-grid" id="calendarGrid"></div>
-        </div>
 
-        <div class="card">
+          <div class="calendar-grid" id="weekdayRow"></div>
+          <div style="height:8px"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">🗓️</span> Termine heute</div>
+            <div>
+              <div class="card-title"><span class="card-icon">🗓️</span> Tagesagenda</div>
+              <div class="subtext">Alle Erinnerungen im Überblick.</div>
+            </div>
           </div>
-          <div class="list" id="calendarEventList"></div>
-        </div>
+          <div class="list" id="agendaList"></div>
+        </section>
       </section>
 
-      <section id="notes" class="tab-view">
-        <div class="card">
-          <div class="search-wrap">
+      <!-- NOTES -->
+      <section id="notes" class="page">
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="card-icon">📝</span> Notizen</div>
+              <div class="subtext">Durchsuche, pinne und verwalte Gedanken & Listen.</div>
+            </div>
+          </div>
+
+          <div class="search">
             <span>🔎</span>
             <input id="noteSearch" type="text" placeholder="Notizen durchsuchen" />
           </div>
-        </div>
+        </section>
+
         <div class="notes-grid" id="notesList"></div>
       </section>
 
-      <section id="devices" class="tab-view">
-        <div class="card">
+      <!-- DEVICES -->
+      <section id="devices" class="page">
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">📱</span> Verbundene Geräte</div>
+            <div>
+              <div class="card-title"><span class="card-icon">📱</span> Geräte</div>
+              <div class="subtext">Verbundene Geräte und Tracker.</div>
+            </div>
           </div>
           <div class="list" id="deviceList"></div>
-        </div>
+        </section>
 
-        <div class="card">
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">🗺️</span> Geofencing-Zonen</div>
-            <div class="chip" id="zonesChip">2 aktiv</div>
+            <div>
+              <div class="card-title"><span class="card-icon">🗺️</span> Zonen</div>
+              <div class="subtext">Lege Bereiche für standortbasierte Erinnerungen fest.</div>
+            </div>
           </div>
           <div class="list" id="zoneList"></div>
-        </div>
+        </section>
       </section>
 
-      <section id="settings" class="tab-view">
-        <div class="card">
+      <!-- SETTINGS -->
+      <section id="settings" class="page">
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">⚙️</span> Einstellungen</div>
+            <div>
+              <div class="card-title"><span class="card-icon">⚙️</span> Einstellungen</div>
+              <div class="subtext">Einfach gehalten, aber praktisch.</div>
+            </div>
           </div>
+
           <div class="list">
             <div class="setting-row">
               <div>
-                <h4>KI-Vorschläge aktiv</h4>
-                <div class="muted">Erkennt Muster und erstellt Erinnerungen automatisch.</div>
+                <h4>KI-Vorschläge</h4>
+                <div class="subtext">Hilft dir mit spontanen Erinnerungs-Ideen.</div>
               </div>
-              <button class="toggle active" id="aiToggle" aria-label="KI-Vorschläge"></button>
+              <button class="toggle" id="aiToggle"></button>
             </div>
+
             <div class="setting-row">
               <div>
                 <h4>Alarmton</h4>
-                <div class="muted">Sprachausgabe und Sound für wichtige Hinweise.</div>
+                <div class="subtext">Aktiviert Sound-Hinweise für wichtige Alarme.</div>
               </div>
-              <button class="toggle active" id="soundToggle" aria-label="Alarmton"></button>
+              <button class="toggle" id="soundToggle"></button>
             </div>
+
             <div class="setting-row">
               <div>
                 <h4>Dunkelmodus</h4>
-                <div class="muted">Optimiert für mobile Nutzung und OLED-Displays.</div>
+                <div class="subtext">Wechselt zwischen heller und dunkler Oberfläche.</div>
               </div>
-              <button class="toggle active" id="darkToggle" aria-label="Dunkelmodus"></button>
+              <button class="toggle" id="darkToggle"></button>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="card">
+        <section class="card">
           <div class="card-header">
-            <div class="card-title"><span class="title-icon">💡</span> Kreative Ideen</div>
+            <div>
+              <div class="card-title"><span class="card-icon">🎨</span> Farbstil</div>
+              <div class="subtext">Wähle eine einfache Akzentfarbe.</div>
+            </div>
+          </div>
+          <div class="theme-grid" id="themeGrid"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title"><span class="card-icon">💡</span> Ideen</div>
+              <div class="subtext">Praktische Erweiterungen für vergessliche Menschen.</div>
+            </div>
           </div>
           <div class="list" id="ideaList"></div>
-        </div>
+        </section>
       </section>
     </main>
 
@@ -945,113 +1274,276 @@
     </nav>
   </div>
 
+  <div id="toast" class="toast">Gespeichert</div>
+
   <script>
-    const state = {
-      darkMode: true,
+    const STORAGE_KEY = "remindme_mobile_v3";
+
+    const defaultState = {
+      currentTab: "home",
+      reminderFilter: "open",
+      darkMode: false,
       ai: true,
       sound: true,
       userInside: true,
+      theme: "violet",
       selectedZoneId: 1,
+
       reminders: [
-        { id: 1, time: '08:30', title: 'Medikamente nehmen', type: 'Gesundheit', done: true },
-        { id: 2, time: '10:00', title: 'Schlüssel einpacken', type: 'Routine', done: false },
-        { id: 3, time: '14:00', title: 'Meeting mit Anna', type: 'Kalender', done: false },
-        { id: 4, time: '18:30', title: 'Einkauf nicht vergessen', type: 'Einkauf', done: false }
+        { id: 1, time: "08:30", title: "Medikamente nehmen", type: "Gesundheit", done: true, priority: "high" },
+        { id: 2, time: "10:00", title: "Schlüssel einpacken", type: "Routine", done: false, priority: "high" },
+        { id: 3, time: "14:00", title: "Meeting mit Anna", type: "Kalender", done: false, priority: "medium" },
+        { id: 4, time: "18:30", title: "Einkauf nicht vergessen", type: "Einkauf", done: false, priority: "low" }
       ],
+
       notes: [
-        { id: 1, title: 'Packliste Büro', text: 'Laptop, Ladegerät, Kopfhörer, Zugangskarte' },
-        { id: 2, title: 'Idee', text: 'Sprachmemo in To-do umwandeln' },
-        { id: 3, title: 'Wichtig', text: 'Müll Mittwochabend rausstellen' }
+        { id: 1, title: "Packliste Büro", text: "Laptop, Ladegerät, Kopfhörer, Zugangskarte", pinned: true },
+        { id: 2, title: "Idee", text: "Sprachmemo in To-do umwandeln", pinned: false },
+        { id: 3, title: "Wichtig", text: "Müll Mittwochabend rausstellen", pinned: false }
       ],
+
       devices: [
-        { id: 1, icon: '⌚', name: 'Smartwatch', status: 'Verbunden', battery: 74 },
-        { id: 2, icon: '📱', name: 'Smartphone', status: 'Aktiv', battery: 58 },
-        { id: 3, icon: '📡', name: 'Bluetooth Tracker', status: 'In Reichweite', battery: 91 }
+        { id: 1, icon: "⌚", name: "Smartwatch", status: "Verbunden", battery: 74 },
+        { id: 2, icon: "📱", name: "Smartphone", status: "Aktiv", battery: 58 },
+        { id: 3, icon: "📡", name: "Bluetooth Tracker", status: "In Reichweite", battery: 91 }
       ],
+
       zones: [
-        { id: 1, icon: '🏠', name: 'Zuhause', radius: 200, active: true, trigger: 'Beim Verlassen', action: 'Schlüssel, Geldbeutel, Handy prüfen' },
-        { id: 2, icon: '🛒', name: 'Supermarkt', radius: 120, active: true, trigger: 'Beim Ankommen', action: 'Einkaufsliste öffnen' }
+        { id: 1, icon: "🏠", name: "Zuhause", radius: 200, active: true, trigger: "Beim Verlassen", action: "Schlüssel, Geldbeutel, Handy prüfen" },
+        { id: 2, icon: "🛒", name: "Supermarkt", radius: 120, active: true, trigger: "Beim Ankommen", action: "Einkaufsliste öffnen" },
+        { id: 3, icon: "💼", name: "Büro", radius: 180, active: false, trigger: "Beim Ankommen", action: "Meeting-Notizen öffnen" }
       ],
+
       habits: [
-        { id: 1, name: 'Wasser trinken', streak: 4, progress: 60 },
-        { id: 2, name: 'Tasche kontrollieren', streak: 9, progress: 100 },
-        { id: 3, name: 'Abendplanung', streak: 2, progress: 35 }
+        { id: 1, name: "Wasser trinken", streak: 4, progress: 60 },
+        { id: 2, name: "Tasche kontrollieren", streak: 9, progress: 100 },
+        { id: 3, name: "Abendplanung", streak: 2, progress: 35 }
       ],
+
+      checklist: [
+        { id: 1, label: "Handy", checked: true },
+        { id: 2, label: "Schlüssel", checked: false },
+        { id: 3, label: "Geldbeutel", checked: false },
+        { id: 4, label: "Ladegerät", checked: false }
+      ],
+
       ideas: [
-        'Sprachmemos automatisch in Erinnerungen umwandeln',
-        'Vergesslichkeits-Score mit Tagesanalyse',
-        'Notfallmodus: wichtige Dinge beim Verlassen abfragen',
-        'Familienfreigabe für gemeinsame Erinnerungen',
-        'Tracker für Schlüssel, Tasche und Medikamente'
+        "Sprachmemos automatisch in Erinnerungen umwandeln",
+        "Vergesslichkeits-Score mit Tagesanalyse",
+        "Notfallmodus für wichtige Abfahrts-Checks",
+        "Familienfreigabe für gemeinsame Erinnerungen",
+        "Tracker für Schlüssel, Tasche und Medikamente"
       ],
+
       alarmFeed: [
-        '08:14 • Zuhause verlassen erkannt',
-        '08:14 • Alarm: Schlüssel, Geldbeutel, Handy prüfen'
+        "08:14 • Zuhause verlassen erkannt",
+        "08:14 • Alarm: Schlüssel, Geldbeutel, Handy prüfen"
       ]
     };
 
-    const el = {
-      reminderList: document.getElementById('reminderList'),
-      calendarEventList: document.getElementById('calendarEventList'),
-      notesList: document.getElementById('notesList'),
-      deviceList: document.getElementById('deviceList'),
-      zoneList: document.getElementById('zoneList'),
-      habitList: document.getElementById('habitList'),
-      ideaList: document.getElementById('ideaList'),
-      alarmFeed: document.getElementById('alarmFeed'),
-      quickInput: document.getElementById('quickInput'),
-      noteSearch: document.getElementById('noteSearch'),
-      addReminderBtn: document.getElementById('addReminderBtn'),
-      addNoteBtn: document.getElementById('addNoteBtn'),
-      insideBtn: document.getElementById('insideBtn'),
-      outsideBtn: document.getElementById('outsideBtn'),
-      userDot: document.getElementById('userDot'),
-      mapLabel: document.getElementById('mapLabel'),
-      donePercent: document.getElementById('donePercent'),
-      activeZonesCount: document.getElementById('activeZonesCount'),
-      deviceCount: document.getElementById('deviceCount'),
-      zonesChip: document.getElementById('zonesChip'),
-      calendarGrid: document.getElementById('calendarGrid'),
-      weekdayRow: document.getElementById('weekdayRow'),
-      timeNow: document.getElementById('timeNow'),
-      themeToggle: document.getElementById('themeToggle'),
-      aiToggle: document.getElementById('aiToggle'),
-      soundToggle: document.getElementById('soundToggle'),
-      darkToggle: document.getElementById('darkToggle')
+    const themes = {
+      violet: { accent: "#6d5efc", accent2: "#3fc9ff", soft: "#eef0ff", label: "Violett" },
+      coral:  { accent: "#ff6b81", accent2: "#ffb86b", soft: "#fff0f3", label: "Coral" },
+      mint:   { accent: "#22c58b", accent2: "#4fd1ff", soft: "#ebfff7", label: "Mint" }
     };
 
-    function formatNow() {
-      const d = new Date();
-      return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        if (!saved) return structuredClone(defaultState);
+        return {
+          ...structuredClone(defaultState),
+          ...saved
+        };
+      } catch {
+        return structuredClone(defaultState);
+      }
     }
 
-    function getSelectedZone() {
-      return state.zones.find(z => z.id === state.selectedZoneId) || state.zones[0];
+    let state = loadState();
+
+    const el = {
+      timeNow: document.getElementById("timeNow"),
+      themeToggle: document.getElementById("themeToggle"),
+      quickInput: document.getElementById("quickInput"),
+      addReminderBtn: document.getElementById("addReminderBtn"),
+      addNoteBtn: document.getElementById("addNoteBtn"),
+      reminderFilters: document.getElementById("reminderFilters"),
+      reminderList: document.getElementById("reminderList"),
+      focusList: document.getElementById("focusList"),
+      habitList: document.getElementById("habitList"),
+      checkList: document.getElementById("checkList"),
+      statDone: document.getElementById("statDone"),
+      statOpen: document.getElementById("statOpen"),
+      statZones: document.getElementById("statZones"),
+      zonePills: document.getElementById("zonePills"),
+      userDot: document.getElementById("userDot"),
+      mapLabel: document.getElementById("mapLabel"),
+      insideBtn: document.getElementById("insideBtn"),
+      outsideBtn: document.getElementById("outsideBtn"),
+      alarmFeed: document.getElementById("alarmFeed"),
+      weekdayRow: document.getElementById("weekdayRow"),
+      calendarGrid: document.getElementById("calendarGrid"),
+      agendaList: document.getElementById("agendaList"),
+      noteSearch: document.getElementById("noteSearch"),
+      notesList: document.getElementById("notesList"),
+      deviceList: document.getElementById("deviceList"),
+      zoneList: document.getElementById("zoneList"),
+      aiToggle: document.getElementById("aiToggle"),
+      soundToggle: document.getElementById("soundToggle"),
+      darkToggle: document.getElementById("darkToggle"),
+      themeGrid: document.getElementById("themeGrid"),
+      ideaList: document.getElementById("ideaList"),
+      toast: document.getElementById("toast")
+    };
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function toast(message) {
+      el.toast.textContent = message;
+      el.toast.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        el.toast.classList.remove("show");
+      }, 1600);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatNow() {
+      return new Date().toLocaleTimeString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function priorityLabel(priority) {
+      if (priority === "high") return "Hoch";
+      if (priority === "medium") return "Mittel";
+      return "Niedrig";
+    }
+
+    function priorityOrder(priority) {
+      if (priority === "high") return 0;
+      if (priority === "medium") return 1;
+      return 2;
+    }
+
+    function applyTheme() {
+      const t = themes[state.theme] || themes.violet;
+      const root = document.documentElement;
+      root.style.setProperty("--accent", t.accent);
+      root.style.setProperty("--accent-2", t.accent2);
+      root.style.setProperty("--accent-soft", t.soft);
+
+      document.body.classList.toggle("dark", state.darkMode);
+      el.themeToggle.textContent = state.darkMode ? "☀️" : "🌙";
+
+      document.querySelectorAll(".theme-swatch").forEach(node => {
+        node.classList.toggle("active", node.dataset.theme === state.theme);
+      });
+
+      el.aiToggle.classList.toggle("active", state.ai);
+      el.soundToggle.classList.toggle("active", state.sound);
+      el.darkToggle.classList.toggle("active", state.darkMode);
+    }
+
+    function switchTab(tabId) {
+      state.currentTab = tabId;
+      document.querySelectorAll(".page").forEach(page => {
+        page.classList.toggle("active", page.id === tabId);
+      });
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      });
+      saveState();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function renderStats() {
-      const done = state.reminders.filter(r => r.done).length;
-      const percent = Math.round((done / Math.max(state.reminders.length, 1)) * 100);
+      const openCount = state.reminders.filter(r => !r.done).length;
+      const doneCount = state.reminders.filter(r => r.done).length;
+      const donePercent = Math.round((doneCount / Math.max(state.reminders.length, 1)) * 100);
       const activeZones = state.zones.filter(z => z.active).length;
-      el.donePercent.textContent = percent + '%';
-      el.activeZonesCount.textContent = String(activeZones);
-      el.deviceCount.textContent = String(state.devices.length);
-      el.zonesChip.textContent = activeZones + ' aktiv';
+
+      el.statDone.textContent = donePercent + "%";
+      el.statOpen.textContent = String(openCount);
+      el.statZones.textContent = String(activeZones);
+    }
+
+    function renderReminderFilters() {
+      const filters = [
+        { key: "all", label: "Alle" },
+        { key: "open", label: "Offen" },
+        { key: "done", label: "Erledigt" }
+      ];
+
+      el.reminderFilters.innerHTML = filters.map(f => `
+        <button class="chip ${state.reminderFilter === f.key ? "active" : ""}" onclick="setReminderFilter('${f.key}')">
+          ${f.label}
+        </button>
+      `).join("");
+    }
+
+    function getFilteredReminders() {
+      if (state.reminderFilter === "done") return state.reminders.filter(r => r.done);
+      if (state.reminderFilter === "open") return state.reminders.filter(r => !r.done);
+      return state.reminders;
     }
 
     function renderReminders() {
-      const html = state.reminders.map(item => `
+      const items = getFilteredReminders();
+      if (!items.length) {
+        el.reminderList.innerHTML = `<div class="empty">Keine Erinnerungen in diesem Filter.</div>`;
+        return;
+      }
+
+      el.reminderList.innerHTML = items.map(item => `
         <div class="list-item">
-          <button class="check ${item.done ? 'done' : ''}" onclick="toggleReminder(${item.id})">${item.done ? '✓' : ''}</button>
+          <button class="check ${item.done ? "done" : ""}" onclick="toggleReminder(${item.id})">${item.done ? "✓" : ""}</button>
           <div class="item-main">
-            <div class="item-title ${item.done ? 'done' : ''}">${escapeHtml(item.title)}</div>
-            <div class="item-meta">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+            <div class="item-title ${item.done ? "done" : ""}">
+              <span class="priority ${item.priority}"></span>
+              ${escapeHtml(item.title)}
+            </div>
+            <div class="item-meta">
+              ${escapeHtml(item.time)} • ${escapeHtml(item.type)} • Priorität: ${priorityLabel(item.priority)}
+            </div>
           </div>
-          <div class="tiny-tag">Heute</div>
+          <button class="small-action" onclick="removeReminder(${item.id})">✕</button>
         </div>
-      `).join('');
-      el.reminderList.innerHTML = html;
-      el.calendarEventList.innerHTML = html;
+      `).join("");
+    }
+
+    function renderFocus() {
+      const topItems = state.reminders
+        .filter(r => !r.done)
+        .sort((a, b) => priorityOrder(a.priority) - priorityOrder(b.priority))
+        .slice(0, 3);
+
+      if (!topItems.length) {
+        el.focusList.innerHTML = `<div class="empty">Sehr gut – aktuell ist nichts Dringendes offen.</div>`;
+        return;
+      }
+
+      el.focusList.innerHTML = topItems.map(item => `
+        <div class="focus-item">
+          <div>
+            <strong>${escapeHtml(item.title)}</strong>
+            <div class="subtext">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+          </div>
+          <div class="mini-badge">${priorityLabel(item.priority)}</div>
+        </div>
+      `).join("");
     }
 
     function renderHabits() {
@@ -1060,136 +1552,232 @@
           <div class="habit-top">
             <div>
               <div class="habit-name">${escapeHtml(h.name)}</div>
-              <div class="muted">Serie: ${h.streak} Tage</div>
+              <div class="subtext">Serie: ${h.streak} Tage</div>
             </div>
-            <button class="small-btn" onclick="boostHabit(${h.id})">Fortschritt</button>
+            <button class="small-btn" onclick="boostHabit(${h.id})">+ Fortschritt</button>
           </div>
           <div class="progress"><span style="width:${h.progress}%"></span></div>
         </div>
-      `).join('');
+      `).join("");
     }
 
-    function renderNotes() {
-      const q = el.noteSearch.value.trim().toLowerCase();
-      const filtered = !q ? state.notes : state.notes.filter(n => (`${n.title} ${n.text}`).toLowerCase().includes(q));
-      el.notesList.innerHTML = filtered.map(note => `
-        <div class="note">
-          <div class="note-top">
-            <div>
-              <h4>${escapeHtml(note.title)}</h4>
-            </div>
-            <button class="delete-btn" onclick="deleteNote(${note.id})">🗑️</button>
-          </div>
-          <p>${escapeHtml(note.text)}</p>
+    function renderChecklist() {
+      el.checkList.innerHTML = state.checklist.map(item => `
+        <div class="checklist-item">
+          <div>${escapeHtml(item.label)}</div>
+          <button class="toggle-inline ${item.checked ? "active" : ""}" onclick="toggleChecklistItem(${item.id})">
+            ${item.checked ? "✓" : ""}
+          </button>
         </div>
-      `).join('') || `<div class="card"><div class="subtle">Keine Notizen gefunden.</div></div>`;
+      `).join("");
     }
 
-    function renderDevices() {
-      el.deviceList.innerHTML = state.devices.map(d => `
-        <div class="device">
-          <div class="device-top">
-            <div class="device-left">
-              <div class="device-icon">${d.icon}</div>
-              <div>
-                <h4>${escapeHtml(d.name)}</h4>
-                <div class="muted">${escapeHtml(d.status)}</div>
-              </div>
-            </div>
-            <div class="tiny-tag">${d.battery}%</div>
-          </div>
-          <div class="progress-bar"><span style="width:${d.battery}%"></span></div>
-        </div>
-      `).join('');
+    function getSelectedZone() {
+      return state.zones.find(z => z.id === state.selectedZoneId) || state.zones[0];
     }
 
-    function renderZones() {
-      el.zoneList.innerHTML = state.zones.map(z => `
-        <div class="zone" style="${z.id === state.selectedZoneId ? 'border-color: rgba(34,211,238,0.45); background: rgba(34,211,238,0.10);' : ''}">
-          <div class="zone-top">
-            <div class="zone-left" onclick="selectZone(${z.id})" style="cursor:pointer; flex:1;">
-              <div class="zone-icon">${z.icon}</div>
-              <div>
-                <h4>${escapeHtml(z.name)}</h4>
-                <div class="muted">${escapeHtml(z.trigger)} • ${z.radius} m</div>
-                <div class="muted" style="margin-top:4px; color:#d7e4f4;">${escapeHtml(z.action)}</div>
-              </div>
-            </div>
-            <button class="toggle ${z.active ? 'active' : ''}" onclick="toggleZone(${z.id})"></button>
-          </div>
-        </div>
-      `).join('');
-      updateMapLabel();
-      renderStats();
+    function renderZonePills() {
+      el.zonePills.innerHTML = state.zones.map(zone => `
+        <button class="map-zone-pill ${zone.id === state.selectedZoneId ? "active" : ""}" onclick="selectZone(${zone.id})">
+          ${zone.icon} ${escapeHtml(zone.name)}
+        </button>
+      `).join("");
     }
 
-    function renderIdeas() {
-      el.ideaList.innerHTML = state.ideas.map(idea => `
-        <div class="idea">${escapeHtml(idea)}</div>
-      `).join('');
+    function renderMap() {
+      const zone = getSelectedZone();
+      el.mapLabel.textContent = `${zone.name} • ${zone.trigger} • ${zone.action}`;
+      el.userDot.classList.toggle("outside", !state.userInside);
     }
 
     function renderAlarmFeed() {
       el.alarmFeed.innerHTML = state.alarmFeed.map(line => `
         <div class="feed-item">${escapeHtml(line)}</div>
-      `).join('');
+      `).join("");
     }
 
     function renderCalendar() {
-      const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-      el.weekdayRow.innerHTML = weekdays.map(day => `<div class="weekday">${day}</div>`).join('');
-      const highlightDays = new Set([4, 8, 12, 17, 23, 29]);
+      const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+      el.weekdayRow.innerHTML = weekdays.map(d => `<div class="weekday">${d}</div>`).join("");
+
+      const marked = new Set([4, 8, 12, 17, 23, 29]);
       const days = [];
       for (let i = 1; i <= 35; i++) {
-        days.push(`<div class="day ${highlightDays.has(i) ? 'active' : ''}">${i <= 30 ? i : ''}</div>`);
+        days.push(`<div class="day ${marked.has(i) ? "active" : ""}">${i <= 30 ? i : ""}</div>`);
       }
-      el.calendarGrid.innerHTML = days.join('');
+      el.calendarGrid.innerHTML = days.join("");
+
+      if (!state.reminders.length) {
+        el.agendaList.innerHTML = `<div class="empty">Keine Termine vorhanden.</div>`;
+        return;
+      }
+
+      el.agendaList.innerHTML = state.reminders.map(item => `
+        <div class="list-item">
+          <button class="check ${item.done ? "done" : ""}" onclick="toggleReminder(${item.id})">${item.done ? "✓" : ""}</button>
+          <div class="item-main">
+            <div class="item-title ${item.done ? "done" : ""}">
+              <span class="priority ${item.priority}"></span>
+              ${escapeHtml(item.title)}
+            </div>
+            <div class="item-meta">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+          </div>
+        </div>
+      `).join("");
     }
 
-    function updateMapLabel() {
-      const zone = getSelectedZone();
-      el.mapLabel.textContent = `Alarmaktion: ${zone.action}`;
+    function renderNotes() {
+      const q = el.noteSearch.value.trim().toLowerCase();
+      const filtered = state.notes
+        .filter(note => (`${note.title} ${note.text}`).toLowerCase().includes(q))
+        .sort((a, b) => Number(b.pinned) - Number(a.pinned));
+
+      if (!filtered.length) {
+        el.notesList.innerHTML = `<div class="empty">Keine passenden Notizen gefunden.</div>`;
+        return;
+      }
+
+      el.notesList.innerHTML = filtered.map(note => `
+        <div class="note">
+          <div class="note-top">
+            <div>
+              <h4>${note.pinned ? "📌 " : ""}${escapeHtml(note.title)}</h4>
+              <div class="subtext">${note.pinned ? "Angepinnt" : "Notiz"}</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="pin" onclick="togglePinNote(${note.id})">${note.pinned ? "📌" : "📍"}</button>
+              <button class="pin" onclick="deleteNote(${note.id})">🗑️</button>
+            </div>
+          </div>
+          <p>${escapeHtml(note.text)}</p>
+        </div>
+      `).join("");
     }
 
-    function updateMapState() {
-      el.userDot.classList.toggle('outside', !state.userInside);
+    function renderDevices() {
+      el.deviceList.innerHTML = state.devices.map(device => `
+        <div class="device">
+          <div class="device-top">
+            <div class="device-head">
+              <div class="avatar">${device.icon}</div>
+              <div>
+                <h4>${escapeHtml(device.name)}</h4>
+                <div class="subtext">${escapeHtml(device.status)}</div>
+              </div>
+            </div>
+            <div class="mini-badge">${device.battery}%</div>
+          </div>
+          <div class="progress-bar"><span style="width:${device.battery}%"></span></div>
+        </div>
+      `).join("");
+    }
+
+    function renderZones() {
+      el.zoneList.innerHTML = state.zones.map(zone => `
+        <div class="zone">
+          <div class="zone-top">
+            <div class="zone-head" onclick="selectZone(${zone.id})" style="cursor:pointer;">
+              <div class="avatar">${zone.icon}</div>
+              <div>
+                <h4>${escapeHtml(zone.name)}</h4>
+                <div class="subtext">${zone.trigger} • ${zone.radius} m</div>
+                <div class="subtext" style="margin-top:4px;">${escapeHtml(zone.action)}</div>
+              </div>
+            </div>
+            <button class="toggle ${zone.active ? "active" : ""}" onclick="toggleZone(${zone.id})"></button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderIdeas() {
+      el.ideaList.innerHTML = state.ideas.map(idea => `
+        <div class="idea">${escapeHtml(idea)}</div>
+      `).join("");
+    }
+
+    function renderThemes() {
+      el.themeGrid.innerHTML = Object.entries(themes).map(([key, val]) => `
+        <div class="theme-swatch ${state.theme === key ? "active" : ""}" data-theme="${key}" onclick="setAccentTheme('${key}')">
+          <div class="theme-preview" style="background:linear-gradient(135deg, ${val.accent}, ${val.accent2})"></div>
+          <div style="font-size:12px;">${val.label}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderAll() {
+      renderStats();
+      renderReminderFilters();
+      renderReminders();
+      renderFocus();
+      renderHabits();
+      renderChecklist();
+      renderZonePills();
+      renderMap();
+      renderAlarmFeed();
+      renderCalendar();
+      renderNotes();
+      renderDevices();
+      renderZones();
+      renderIdeas();
+      renderThemes();
+      applyTheme();
+      switchTab(state.currentTab);
+      saveState();
     }
 
     function addReminder() {
       const value = el.quickInput.value.trim();
       if (!value) return;
+
       state.reminders.unshift({
         id: Date.now(),
-        time: 'Heute',
+        time: "Heute",
         title: value,
-        type: 'Schnell hinzugefügt',
-        done: false
+        type: "Schnell hinzugefügt",
+        done: false,
+        priority: "medium"
       });
-      el.quickInput.value = '';
-      renderReminders();
-      renderStats();
+
+      el.quickInput.value = "";
+      renderAll();
+      toast("Erinnerung hinzugefügt");
     }
 
     function addNote() {
       const value = el.quickInput.value.trim();
       if (!value) return;
-      state.notes.unshift({ id: Date.now(), title: 'Neue Notiz', text: value });
-      el.quickInput.value = '';
-      renderNotes();
-      switchTab('notes');
+
+      state.notes.unshift({
+        id: Date.now(),
+        title: "Neue Notiz",
+        text: value,
+        pinned: false
+      });
+
+      el.quickInput.value = "";
+      renderAll();
+      switchTab("notes");
+      toast("Notiz hinzugefügt");
     }
 
     function toggleReminder(id) {
       const item = state.reminders.find(r => r.id === id);
       if (!item) return;
       item.done = !item.done;
-      renderReminders();
-      renderStats();
+      renderAll();
+      toast(item.done ? "Erledigt ✅" : "Wieder offen");
     }
 
-    function deleteNote(id) {
-      state.notes = state.notes.filter(n => n.id !== id);
-      renderNotes();
+    function removeReminder(id) {
+      state.reminders = state.reminders.filter(r => r.id !== id);
+      renderAll();
+      toast("Erinnerung gelöscht");
+    }
+
+    function setReminderFilter(filter) {
+      state.reminderFilter = filter;
+      renderAll();
     }
 
     function boostHabit(id) {
@@ -1197,144 +1785,121 @@
       if (!item) return;
       item.progress = Math.min(100, item.progress + 20);
       if (item.progress === 100) item.streak += 1;
-      renderHabits();
+      renderAll();
+      toast("Routine aktualisiert");
+    }
+
+    function toggleChecklistItem(id) {
+      const item = state.checklist.find(c => c.id === id);
+      if (!item) return;
+      item.checked = !item.checked;
+      renderAll();
     }
 
     function selectZone(id) {
       state.selectedZoneId = id;
-      renderZones();
+      renderAll();
     }
 
     function toggleZone(id) {
       const zone = state.zones.find(z => z.id === id);
       if (!zone) return;
       zone.active = !zone.active;
-      renderZones();
+      renderAll();
+      toast(zone.active ? "Zone aktiviert" : "Zone deaktiviert");
     }
 
     function simulateGeo(inside) {
       state.userInside = inside;
       const zone = getSelectedZone();
       const t = formatNow();
-      const line1 = `${t} • ${zone.name} ${inside ? 'betreten' : 'verlassen'}`;
-      const line2 = `${t} • ${inside ? 'Hinweis' : 'Alarm'}: ${zone.action}`;
+      const line1 = `${t} • ${zone.name} ${inside ? "betreten" : "verlassen"}`;
+      const line2 = `${t} • ${inside ? "Hinweis" : "Alarm"}: ${zone.action}`;
       state.alarmFeed.unshift(line2, line1);
       state.alarmFeed = state.alarmFeed.slice(0, 6);
-      updateMapState();
-      renderAlarmFeed();
+      renderAll();
+      toast(inside ? "Zone betreten" : "Standort-Alarm ausgelöst");
     }
 
-    function switchTab(id) {
-      document.querySelectorAll('.tab-view').forEach(tab => tab.classList.toggle('active', tab.id === id));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === id));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function deleteNote(id) {
+      state.notes = state.notes.filter(n => n.id !== id);
+      renderAll();
+      toast("Notiz gelöscht");
     }
 
-    function setDarkMode(active) {
-      state.darkMode = active;
-      document.body.style.background = active
-        ? 'radial-gradient(circle at 10% 10%, rgba(34,211,238,0.18), transparent 25%), radial-gradient(circle at 90% 20%, rgba(139,92,246,0.22), transparent 25%), linear-gradient(180deg, #07111f, #0c1220 45%, #101a2a 100%)'
-        : 'radial-gradient(circle at 10% 10%, rgba(34,211,238,0.10), transparent 25%), radial-gradient(circle at 90% 20%, rgba(139,92,246,0.12), transparent 25%), linear-gradient(180deg, #eef4fb, #e6edf8 45%, #dce7f5 100%)';
-
-      const root = document.documentElement;
-      if (active) {
-        root.style.setProperty('--text', '#f2f7ff');
-        root.style.setProperty('--muted', '#aeb9cc');
-        root.style.setProperty('--panel', 'rgba(255,255,255,0.08)');
-        root.style.setProperty('--panel-2', 'rgba(255,255,255,0.05)');
-        root.style.setProperty('--border', 'rgba(255,255,255,0.12)');
-        document.querySelector('.topbar').style.background = 'rgba(7,17,31,0.72)';
-        el.themeToggle.textContent = '🌙';
-      } else {
-        root.style.setProperty('--text', '#112036');
-        root.style.setProperty('--muted', '#4c5f79');
-        root.style.setProperty('--panel', 'rgba(255,255,255,0.72)');
-        root.style.setProperty('--panel-2', 'rgba(255,255,255,0.54)');
-        root.style.setProperty('--border', 'rgba(17,32,54,0.10)');
-        document.querySelector('.topbar').style.background = 'rgba(240,246,255,0.78)';
-        el.themeToggle.textContent = '☀️';
-      }
+    function togglePinNote(id) {
+      const note = state.notes.find(n => n.id === id);
+      if (!note) return;
+      note.pinned = !note.pinned;
+      renderAll();
+      toast(note.pinned ? "Notiz angepinnt" : "Pin entfernt");
     }
 
-    function syncToggles() {
-      el.aiToggle.classList.toggle('active', state.ai);
-      el.soundToggle.classList.toggle('active', state.sound);
-      el.darkToggle.classList.toggle('active', state.darkMode);
+    function setAccentTheme(themeKey) {
+      state.theme = themeKey;
+      renderAll();
+      toast("Farbstil geändert");
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    function toggleDarkMode() {
+      state.darkMode = !state.darkMode;
+      renderAll();
     }
-
-    document.querySelectorAll('.suggestion').forEach(btn => {
-      btn.addEventListener('click', () => {
-        el.quickInput.value = btn.textContent.trim();
-      });
-    });
-
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-    });
-
-    el.addReminderBtn.addEventListener('click', addReminder);
-    el.addNoteBtn.addEventListener('click', addNote);
-    el.insideBtn.addEventListener('click', () => simulateGeo(true));
-    el.outsideBtn.addEventListener('click', () => simulateGeo(false));
-    el.noteSearch.addEventListener('input', renderNotes);
-    el.quickInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') addReminder();
-    });
-
-    el.themeToggle.addEventListener('click', () => {
-      setDarkMode(!state.darkMode);
-      syncToggles();
-    });
-
-    el.aiToggle.addEventListener('click', () => {
-      state.ai = !state.ai;
-      syncToggles();
-    });
-
-    el.soundToggle.addEventListener('click', () => {
-      state.sound = !state.sound;
-      syncToggles();
-    });
-
-    el.darkToggle.addEventListener('click', () => {
-      setDarkMode(!state.darkMode);
-      syncToggles();
-    });
 
     function tickClock() {
       el.timeNow.textContent = formatNow();
     }
 
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
+
+    document.querySelectorAll(".quick-suggestion").forEach(btn => {
+      btn.addEventListener("click", () => {
+        el.quickInput.value = btn.textContent.trim();
+      });
+    });
+
+    el.addReminderBtn.addEventListener("click", addReminder);
+    el.addNoteBtn.addEventListener("click", addNote);
+    el.insideBtn.addEventListener("click", () => simulateGeo(true));
+    el.outsideBtn.addEventListener("click", () => simulateGeo(false));
+    el.noteSearch.addEventListener("input", renderNotes);
+
+    el.quickInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addReminder();
+    });
+
+    el.themeToggle.addEventListener("click", toggleDarkMode);
+
+    el.aiToggle.addEventListener("click", () => {
+      state.ai = !state.ai;
+      renderAll();
+    });
+
+    el.soundToggle.addEventListener("click", () => {
+      state.sound = !state.sound;
+      renderAll();
+    });
+
+    el.darkToggle.addEventListener("click", toggleDarkMode);
+
+    // expose for inline handlers
     window.toggleReminder = toggleReminder;
-    window.deleteNote = deleteNote;
+    window.removeReminder = removeReminder;
+    window.setReminderFilter = setReminderFilter;
     window.boostHabit = boostHabit;
-    window.toggleZone = toggleZone;
+    window.toggleChecklistItem = toggleChecklistItem;
     window.selectZone = selectZone;
+    window.toggleZone = toggleZone;
+    window.deleteNote = deleteNote;
+    window.togglePinNote = togglePinNote;
+    window.setAccentTheme = setAccentTheme;
 
     function init() {
       tickClock();
       setInterval(tickClock, 30000);
-      renderStats();
-      renderReminders();
-      renderHabits();
-      renderNotes();
-      renderDevices();
-      renderZones();
-      renderIdeas();
-      renderAlarmFeed();
-      renderCalendar();
-      updateMapState();
-      syncToggles();
-      setDarkMode(true);
+      renderAll();
     }
 
     init();
