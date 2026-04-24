@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>RemindMe – Mobile App Mockup</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-2: #0d1628;
+      --panel: rgba(255,255,255,0.08);
+      --panel-2: rgba(255,255,255,0.05);
+      --border: rgba(255,255,255,0.12);
+      --text: #f2f7ff;
+      --muted: #aeb9cc;
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow: 0 20px 50px rgba(0,0,0,0.35);
+      --radius: 26px;
+      --radius-sm: 18px;
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(34,211,238,0.18), transparent 25%),
+        radial-gradient(circle at 90% 20%, rgba(139,92,246,0.22), transparent 25%),
+        linear-gradient(180deg, #07111f, #0c1220 45%, #101a2a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: calc(92px + var(--safe-bottom));
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      background: rgba(7,17,31,0.72);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 18px 16px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px rgba(34,211,238,0.25);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .icon-button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .content {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, rgba(139,92,246,0.22), rgba(34,211,238,0.08) 55%, rgba(255,255,255,0.04));
+      border-radius: 30px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -20px -40px auto;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,211,238,0.25), transparent 60%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      color: #cfe8ff;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .hero h2 {
+      margin: 8px 0 8px;
+      font-size: 26px;
+      line-height: 1.15;
+    }
+
+    .hero p {
+      margin: 0;
+      color: #d6e0ee;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 12px;
+    }
+
+    .stat .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat .value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .title-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+    }
+
+    .chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(139,92,246,0.18);
+      color: #ede9fe;
+      white-space: nowrap;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
+    }
+
+    input[type="text"], .search-input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      min-height: 48px;
+      padding: 0 14px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    input::placeholder { color: #97a5bc; }
+
+    button {
+      font: inherit;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 18px;
+      min-height: 48px;
+      padding: 0 14px;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      box-shadow: 0 10px 24px rgba(124,58,237,0.28);
+    }
+
+    .btn.secondary {
+      background: rgba(255,255,255,0.08);
+      border-color: var(--border);
+      box-shadow: none;
+      color: var(--text);
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .suggestion {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .list-item {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3);
+      margin-top: 2px;
+      flex: 0 0 auto;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 12px;
+    }
+
+    .check.done {
+      background: rgba(34,197,94,0.24);
+      border-color: rgba(34,197,94,0.7);
+    }
+
+    .item-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+
+    .item-title.done {
+      color: #7f8aa0;
+      text-decoration: line-through;
+    }
+
+    .item-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .tiny-tag {
+      font-size: 11px;
+      color: #d8e2f1;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 16px;
+    }
+
+    .habit {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    .habit-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .habit-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 4px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    .map-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .map-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .map-body {
+      padding: 16px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .map {
+      position: relative;
+      min-height: 260px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% 40%, rgba(34,211,238,0.15), transparent 22%),
+        linear-gradient(180deg, rgba(8,14,24,0.7), rgba(6,10,18,0.95));
+      background-size: 26px 26px, 26px 26px, auto, auto;
+    }
+
+    .fence-ring {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 130px;
+      height: 130px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(34,211,238,0.55);
+      background: rgba(34,211,238,0.10);
+      box-shadow: 0 0 0 18px rgba(34,211,238,0.05);
+    }
+
+    .user-dot {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--success);
+      box-shadow: 0 0 0 8px rgba(34,197,94,0.14);
+      transition: all .35s ease;
+    }
+
+    .user-dot.outside {
+      top: 45%;
+      left: 84%;
+      background: var(--warning);
+      box-shadow: 0 0 0 8px rgba(245,158,11,0.14);
+    }
+
+    .map-label {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.34);
+      color: #dbe8fa;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      max-width: calc(100% - 24px);
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .feed {
+      display: grid;
+      gap: 10px;
+    }
+
+    .feed-item {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 12px;
+      color: #dbe5f4;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 0 14px;
+    }
+
+    .search-wrap input {
+      border: 0;
+      background: transparent;
+      min-height: 48px;
+      color: var(--text);
+      width: 100%;
+      outline: none;
+    }
+
+    .notes-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .note {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius: 22px;
+      padding: 14px;
+    }
+
+    .note-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .note h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .note p {
+      margin: 0;
+      color: #d5dfef;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .delete-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: #f8d7d7;
+      border-radius: 14px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday, .day {
+      text-align: center;
+    }
+
+    .weekday {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    .day {
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: #dde7f5;
+      font-size: 13px;
+    }
+
+    .day.active {
+      background: rgba(34,211,238,0.16);
+      border-color: rgba(34,211,238,0.4);
+      color: #dcfbff;
+      font-weight: 700;
+    }
+
+    .device, .zone, .setting-row, .idea {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    .device-top, .zone-top, .setting-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .device-left, .zone-left {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .device-icon, .zone-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      font-size: 18px;
+    }
+
+    .device h4, .zone h4, .setting-row h4 {
+      margin: 0 0 4px;
+      font-size: 14px;
+    }
+
+    .progress-bar {
+      margin-top: 10px;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #06b6d4, #22c55e);
+      width: 50%;
+    }
+
+    .toggle {
+      position: relative;
+      width: 52px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      flex: 0 0 auto;
+      transition: background .2s ease;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      transition: left .22s ease;
+    }
+
+    .toggle.active {
+      background: rgba(34,197,94,0.26);
+    }
+
+    .toggle.active::after {
+      left: 23px;
+    }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: grid; gap: 16px; }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      padding: 10px 16px calc(10px + var(--safe-bottom));
+      background: rgba(7,17,31,0.88);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+      z-index: 40;
+    }
+
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .nav-btn {
+      min-height: 62px;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .nav-btn .icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .nav-btn.active {
+      color: #081221;
+      background: white;
+      font-weight: 700;
+    }
+
+    .subtle {
+      color: var(--muted);
+    }
+
+    .section-spacer { height: 2px; }
+
+    .small-btn {
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    @media (max-width: 380px) {
+      .input-row { grid-template-columns: 1fr; }
+      .button-row { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats .stat:last-child { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="status-row">
+        <span id="timeNow">09:41</span>
+        <span>🔋 84% · 📶 Online</span>
+      </div>
+      <div class="brand-row">
+        <div class="brand">
+          <div class="brand-logo">🧠</div>
+          <div>
+            <h1>RemindMe</h1>
+            <p>Mobile HTML Demo für vergessliche Menschen</p>
+          </div>
+        </div>
+        <button class="icon-button" id="themeToggle" aria-label="Design umschalten">🌙</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <section id="home" class="tab-view active">
+        <div class="hero">
+          <div class="eyebrow">Interaktive App</div>
+          <h2>Dein Gedächtnis. Kreativer. Ruhiger. Smarter.</h2>
+          <p>Kalender, Erinnerungen, Notizen, Geräte und ortsbasierte Alarme in einer mobilen Oberfläche für GitHub Pages.</p>
+          <div class="stats">
+            <div class="stat">
+              <div class="label">Heute erledigt</div>
+              <div class="value" id="donePercent">25%</div>
+            </div>
+            <div class="stat">
+              <div class="label">Aktive Zonen</div>
+              <div class="value" id="activeZonesCount">2</div>
+            </div>
+            <div class="stat">
+              <div class="label">Geräte</div>
+              <div class="value" id="deviceCount">3</div>
+            </div>
+          </div>
+        </div>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">✨</span> Schnell hinzufügen</div>
+            <div class="chip">KI-Vorschläge</div>
+          </div>
+          <div class="input-row">
+            <input id="quickInput" type="text" placeholder="z. B. Regenschirm mitnehmen" />
+            <button class="btn" id="addReminderBtn">Reminder</button>
+            <button class="btn secondary" id="addNoteBtn">Notiz</button>
+          </div>
+          <div class="suggestions">
+            <button class="suggestion">Ladegerät einpacken</button>
+            <button class="suggestion">Pflanzen gießen</button>
+            <button class="suggestion">Mama anrufen</button>
+            <button class="suggestion">Pass mitnehmen</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">🔔</span> Nächste Erinnerungen</div>
+            <div class="tiny-tag">Heute</div>
+          </div>
+          <div class="list" id="reminderList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">👣</span> Routinen & Gewohnheiten</div>
+          </div>
+          <div class="list" id="habitList"></div>
+        </section>
+
+        <section class="card map-card">
+          <div class="map-header">
+            <div class="card-title"><span class="title-icon">📍</span> Standort-Alarm</div>
+            <div class="chip">Live Demo</div>
+          </div>
+          <div class="map-body">
+            <div class="map" id="mapVisual">
+              <div class="fence-ring"></div>
+              <div class="user-dot" id="userDot"></div>
+              <div class="map-label" id="mapLabel">Alarmaktion: Schlüssel, Geldbeutel, Handy prüfen</div>
+            </div>
+            <div class="button-row">
+              <button class="btn" id="insideBtn">Im Bereich simulieren</button>
+              <button class="btn secondary" id="outsideBtn">Bereich verlassen</button>
+            </div>
+            <div class="feed" id="alarmFeed"></div>
+          </div>
+        </section>
+      </section>
+
+      <section id="calendar" class="tab-view">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">📆</span> Kalender</div>
+            <div class="chip">Monat</div>
+          </div>
+          <div class="calendar-grid" id="weekdayRow"></div>
+          <div class="section-spacer"></div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">🗓️</span> Termine heute</div>
+          </div>
+          <div class="list" id="calendarEventList"></div>
+        </div>
+      </section>
+
+      <section id="notes" class="tab-view">
+        <div class="card">
+          <div class="search-wrap">
+            <span>🔎</span>
+            <input id="noteSearch" type="text" placeholder="Notizen durchsuchen" />
+          </div>
+        </div>
+        <div class="notes-grid" id="notesList"></div>
+      </section>
+
+      <section id="devices" class="tab-view">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">📱</span> Verbundene Geräte</div>
+          </div>
+          <div class="list" id="deviceList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">🗺️</span> Geofencing-Zonen</div>
+            <div class="chip" id="zonesChip">2 aktiv</div>
+          </div>
+          <div class="list" id="zoneList"></div>
+        </div>
+      </section>
+
+      <section id="settings" class="tab-view">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">⚙️</span> Einstellungen</div>
+          </div>
+          <div class="list">
+            <div class="setting-row">
+              <div>
+                <h4>KI-Vorschläge aktiv</h4>
+                <div class="muted">Erkennt Muster und erstellt Erinnerungen automatisch.</div>
+              </div>
+              <button class="toggle active" id="aiToggle" aria-label="KI-Vorschläge"></button>
+            </div>
+            <div class="setting-row">
+              <div>
+                <h4>Alarmton</h4>
+                <div class="muted">Sprachausgabe und Sound für wichtige Hinweise.</div>
+              </div>
+              <button class="toggle active" id="soundToggle" aria-label="Alarmton"></button>
+            </div>
+            <div class="setting-row">
+              <div>
+                <h4>Dunkelmodus</h4>
+                <div class="muted">Optimiert für mobile Nutzung und OLED-Displays.</div>
+              </div>
+              <button class="toggle active" id="darkToggle" aria-label="Dunkelmodus"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><span class="title-icon">💡</span> Kreative Ideen</div>
+          </div>
+          <div class="list" id="ideaList"></div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <div class="nav-grid">
+        <button class="nav-btn active" data-tab="home"><span class="icon">🏠</span><span>Start</span></button>
+        <button class="nav-btn" data-tab="calendar"><span class="icon">📆</span><span>Kalender</span></button>
+        <button class="nav-btn" data-tab="notes"><span class="icon">📝</span><span>Notizen</span></button>
+        <button class="nav-btn" data-tab="devices"><span class="icon">📱</span><span>Geräte</span></button>
+        <button class="nav-btn" data-tab="settings"><span class="icon">⚙️</span><span>Mehr</span></button>
+      </div>
+    </nav>
+  </div>
+
+  <script>
+    const state = {
+      darkMode: true,
+      ai: true,
+      sound: true,
+      userInside: true,
+      selectedZoneId: 1,
+      reminders: [
+        { id: 1, time: '08:30', title: 'Medikamente nehmen', type: 'Gesundheit', done: true },
+        { id: 2, time: '10:00', title: 'Schlüssel einpacken', type: 'Routine', done: false },
+        { id: 3, time: '14:00', title: 'Meeting mit Anna', type: 'Kalender', done: false },
+        { id: 4, time: '18:30', title: 'Einkauf nicht vergessen', type: 'Einkauf', done: false }
+      ],
+      notes: [
+        { id: 1, title: 'Packliste Büro', text: 'Laptop, Ladegerät, Kopfhörer, Zugangskarte' },
+        { id: 2, title: 'Idee', text: 'Sprachmemo in To-do umwandeln' },
+        { id: 3, title: 'Wichtig', text: 'Müll Mittwochabend rausstellen' }
+      ],
+      devices: [
+        { id: 1, icon: '⌚', name: 'Smartwatch', status: 'Verbunden', battery: 74 },
+        { id: 2, icon: '📱', name: 'Smartphone', status: 'Aktiv', battery: 58 },
+        { id: 3, icon: '📡', name: 'Bluetooth Tracker', status: 'In Reichweite', battery: 91 }
+      ],
+      zones: [
+        { id: 1, icon: '🏠', name: 'Zuhause', radius: 200, active: true, trigger: 'Beim Verlassen', action: 'Schlüssel, Geldbeutel, Handy prüfen' },
+        { id: 2, icon: '🛒', name: 'Supermarkt', radius: 120, active: true, trigger: 'Beim Ankommen', action: 'Einkaufsliste öffnen' }
+      ],
+      habits: [
+        { id: 1, name: 'Wasser trinken', streak: 4, progress: 60 },
+        { id: 2, name: 'Tasche kontrollieren', streak: 9, progress: 100 },
+        { id: 3, name: 'Abendplanung', streak: 2, progress: 35 }
+      ],
+      ideas: [
+        'Sprachmemos automatisch in Erinnerungen umwandeln',
+        'Vergesslichkeits-Score mit Tagesanalyse',
+        'Notfallmodus: wichtige Dinge beim Verlassen abfragen',
+        'Familienfreigabe für gemeinsame Erinnerungen',
+        'Tracker für Schlüssel, Tasche und Medikamente'
+      ],
+      alarmFeed: [
+        '08:14 • Zuhause verlassen erkannt',
+        '08:14 • Alarm: Schlüssel, Geldbeutel, Handy prüfen'
+      ]
+    };
+
+    const el = {
+      reminderList: document.getElementById('reminderList'),
+      calendarEventList: document.getElementById('calendarEventList'),
+      notesList: document.getElementById('notesList'),
+      deviceList: document.getElementById('deviceList'),
+      zoneList: document.getElementById('zoneList'),
+      habitList: document.getElementById('habitList'),
+      ideaList: document.getElementById('ideaList'),
+      alarmFeed: document.getElementById('alarmFeed'),
+      quickInput: document.getElementById('quickInput'),
+      noteSearch: document.getElementById('noteSearch'),
+      addReminderBtn: document.getElementById('addReminderBtn'),
+      addNoteBtn: document.getElementById('addNoteBtn'),
+      insideBtn: document.getElementById('insideBtn'),
+      outsideBtn: document.getElementById('outsideBtn'),
+      userDot: document.getElementById('userDot'),
+      mapLabel: document.getElementById('mapLabel'),
+      donePercent: document.getElementById('donePercent'),
+      activeZonesCount: document.getElementById('activeZonesCount'),
+      deviceCount: document.getElementById('deviceCount'),
+      zonesChip: document.getElementById('zonesChip'),
+      calendarGrid: document.getElementById('calendarGrid'),
+      weekdayRow: document.getElementById('weekdayRow'),
+      timeNow: document.getElementById('timeNow'),
+      themeToggle: document.getElementById('themeToggle'),
+      aiToggle: document.getElementById('aiToggle'),
+      soundToggle: document.getElementById('soundToggle'),
+      darkToggle: document.getElementById('darkToggle')
+    };
+
+    function formatNow() {
+      const d = new Date();
+      return d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function getSelectedZone() {
+      return state.zones.find(z => z.id === state.selectedZoneId) || state.zones[0];
+    }
+
+    function renderStats() {
+      const done = state.reminders.filter(r => r.done).length;
+      const percent = Math.round((done / Math.max(state.reminders.length, 1)) * 100);
+      const activeZones = state.zones.filter(z => z.active).length;
+      el.donePercent.textContent = percent + '%';
+      el.activeZonesCount.textContent = String(activeZones);
+      el.deviceCount.textContent = String(state.devices.length);
+      el.zonesChip.textContent = activeZones + ' aktiv';
+    }
+
+    function renderReminders() {
+      const html = state.reminders.map(item => `
+        <div class="list-item">
+          <button class="check ${item.done ? 'done' : ''}" onclick="toggleReminder(${item.id})">${item.done ? '✓' : ''}</button>
+          <div class="item-main">
+            <div class="item-title ${item.done ? 'done' : ''}">${escapeHtml(item.title)}</div>
+            <div class="item-meta">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+          </div>
+          <div class="tiny-tag">Heute</div>
+        </div>
+      `).join('');
+      el.reminderList.innerHTML = html;
+      el.calendarEventList.innerHTML = html;
+    }
+
+    function renderHabits() {
+      el.habitList.innerHTML = state.habits.map(h => `
+        <div class="habit">
+          <div class="habit-top">
+            <div>
+              <div class="habit-name">${escapeHtml(h.name)}</div>
+              <div class="muted">Serie: ${h.streak} Tage</div>
+            </div>
+            <button class="small-btn" onclick="boostHabit(${h.id})">Fortschritt</button>
+          </div>
+          <div class="progress"><span style="width:${h.progress}%"></span></div>
+        </div>
+      `).join('');
+    }
+
+    function renderNotes() {
+      const q = el.noteSearch.value.trim().toLowerCase();
+      const filtered = !q ? state.notes : state.notes.filter(n => (`${n.title} ${n.text}`).toLowerCase().includes(q));
+      el.notesList.innerHTML = filtered.map(note => `
+        <div class="note">
+          <div class="note-top">
+            <div>
+              <h4>${escapeHtml(note.title)}</h4>
+            </div>
+            <button class="delete-btn" onclick="deleteNote(${note.id})">🗑️</button>
+          </div>
+          <p>${escapeHtml(note.text)}</p>
+        </div>
+      `).join('') || `<div class="card"><div class="subtle">Keine Notizen gefunden.</div></div>`;
+    }
+
+    function renderDevices() {
+      el.deviceList.innerHTML = state.devices.map(d => `
+        <div class="device">
+          <div class="device-top">
+            <div class="device-left">
+              <div class="device-icon">${d.icon}</div>
+              <div>
+                <h4>${escapeHtml(d.name)}</h4>
+                <div class="muted">${escapeHtml(d.status)}</div>
+              </div>
+            </div>
+            <div class="tiny-tag">${d.battery}%</div>
+          </div>
+          <div class="progress-bar"><span style="width:${d.battery}%"></span></div>
+        </div>
+      `).join('');
+    }
+
+    function renderZones() {
+      el.zoneList.innerHTML = state.zones.map(z => `
+        <div class="zone" style="${z.id === state.selectedZoneId ? 'border-color: rgba(34,211,238,0.45); background: rgba(34,211,238,0.10);' : ''}">
+          <div class="zone-top">
+            <div class="zone-left" onclick="selectZone(${z.id})" style="cursor:pointer; flex:1;">
+              <div class="zone-icon">${z.icon}</div>
+              <div>
+                <h4>${escapeHtml(z.name)}</h4>
+                <div class="muted">${escapeHtml(z.trigger)} • ${z.radius} m</div>
+                <div class="muted" style="margin-top:4px; color:#d7e4f4;">${escapeHtml(z.action)}</div>
+              </div>
+            </div>
+            <button class="toggle ${z.active ? 'active' : ''}" onclick="toggleZone(${z.id})"></button>
+          </div>
+        </div>
+      `).join('');
+      updateMapLabel();
+      renderStats();
+    }
+
+    function renderIdeas() {
+      el.ideaList.innerHTML = state.ideas.map(idea => `
+        <div class="idea">${escapeHtml(idea)}</div>
+      `).join('');
+    }
+
+    function renderAlarmFeed() {
+      el.alarmFeed.innerHTML = state.alarmFeed.map(line => `
+        <div class="feed-item">${escapeHtml(line)}</div>
+      `).join('');
+    }
+
+    function renderCalendar() {
+      const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+      el.weekdayRow.innerHTML = weekdays.map(day => `<div class="weekday">${day}</div>`).join('');
+      const highlightDays = new Set([4, 8, 12, 17, 23, 29]);
+      const days = [];
+      for (let i = 1; i <= 35; i++) {
+        days.push(`<div class="day ${highlightDays.has(i) ? 'active' : ''}">${i <= 30 ? i : ''}</div>`);
+      }
+      el.calendarGrid.innerHTML = days.join('');
+    }
+
+    function updateMapLabel() {
+      const zone = getSelectedZone();
+      el.mapLabel.textContent = `Alarmaktion: ${zone.action}`;
+    }
+
+    function updateMapState() {
+      el.userDot.classList.toggle('outside', !state.userInside);
+    }
+
+    function addReminder() {
+      const value = el.quickInput.value.trim();
+      if (!value) return;
+      state.reminders.unshift({
+        id: Date.now(),
+        time: 'Heute',
+        title: value,
+        type: 'Schnell hinzugefügt',
+        done: false
+      });
+      el.quickInput.value = '';
+      renderReminders();
+      renderStats();
+    }
+
+    function addNote() {
+      const value = el.quickInput.value.trim();
+      if (!value) return;
+      state.notes.unshift({ id: Date.now(), title: 'Neue Notiz', text: value });
+      el.quickInput.value = '';
+      renderNotes();
+      switchTab('notes');
+    }
+
+    function toggleReminder(id) {
+      const item = state.reminders.find(r => r.id === id);
+      if (!item) return;
+      item.done = !item.done;
+      renderReminders();
+      renderStats();
+    }
+
+    function deleteNote(id) {
+      state.notes = state.notes.filter(n => n.id !== id);
+      renderNotes();
+    }
+
+    function boostHabit(id) {
+      const item = state.habits.find(h => h.id === id);
+      if (!item) return;
+      item.progress = Math.min(100, item.progress + 20);
+      if (item.progress === 100) item.streak += 1;
+      renderHabits();
+    }
+
+    function selectZone(id) {
+      state.selectedZoneId = id;
+      renderZones();
+    }
+
+    function toggleZone(id) {
+      const zone = state.zones.find(z => z.id === id);
+      if (!zone) return;
+      zone.active = !zone.active;
+      renderZones();
+    }
+
+    function simulateGeo(inside) {
+      state.userInside = inside;
+      const zone = getSelectedZone();
+      const t = formatNow();
+      const line1 = `${t} • ${zone.name} ${inside ? 'betreten' : 'verlassen'}`;
+      const line2 = `${t} • ${inside ? 'Hinweis' : 'Alarm'}: ${zone.action}`;
+      state.alarmFeed.unshift(line2, line1);
+      state.alarmFeed = state.alarmFeed.slice(0, 6);
+      updateMapState();
+      renderAlarmFeed();
+    }
+
+    function switchTab(id) {
+      document.querySelectorAll('.tab-view').forEach(tab => tab.classList.toggle('active', tab.id === id));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === id));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setDarkMode(active) {
+      state.darkMode = active;
+      document.body.style.background = active
+        ? 'radial-gradient(circle at 10% 10%, rgba(34,211,238,0.18), transparent 25%), radial-gradient(circle at 90% 20%, rgba(139,92,246,0.22), transparent 25%), linear-gradient(180deg, #07111f, #0c1220 45%, #101a2a 100%)'
+        : 'radial-gradient(circle at 10% 10%, rgba(34,211,238,0.10), transparent 25%), radial-gradient(circle at 90% 20%, rgba(139,92,246,0.12), transparent 25%), linear-gradient(180deg, #eef4fb, #e6edf8 45%, #dce7f5 100%)';
+
+      const root = document.documentElement;
+      if (active) {
+        root.style.setProperty('--text', '#f2f7ff');
+        root.style.setProperty('--muted', '#aeb9cc');
+        root.style.setProperty('--panel', 'rgba(255,255,255,0.08)');
+        root.style.setProperty('--panel-2', 'rgba(255,255,255,0.05)');
+        root.style.setProperty('--border', 'rgba(255,255,255,0.12)');
+        document.querySelector('.topbar').style.background = 'rgba(7,17,31,0.72)';
+        el.themeToggle.textContent = '🌙';
+      } else {
+        root.style.setProperty('--text', '#112036');
+        root.style.setProperty('--muted', '#4c5f79');
+        root.style.setProperty('--panel', 'rgba(255,255,255,0.72)');
+        root.style.setProperty('--panel-2', 'rgba(255,255,255,0.54)');
+        root.style.setProperty('--border', 'rgba(17,32,54,0.10)');
+        document.querySelector('.topbar').style.background = 'rgba(240,246,255,0.78)';
+        el.themeToggle.textContent = '☀️';
+      }
+    }
+
+    function syncToggles() {
+      el.aiToggle.classList.toggle('active', state.ai);
+      el.soundToggle.classList.toggle('active', state.sound);
+      el.darkToggle.classList.toggle('active', state.darkMode);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    document.querySelectorAll('.suggestion').forEach(btn => {
+      btn.addEventListener('click', () => {
+        el.quickInput.value = btn.textContent.trim();
+      });
+    });
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    el.addReminderBtn.addEventListener('click', addReminder);
+    el.addNoteBtn.addEventListener('click', addNote);
+    el.insideBtn.addEventListener('click', () => simulateGeo(true));
+    el.outsideBtn.addEventListener('click', () => simulateGeo(false));
+    el.noteSearch.addEventListener('input', renderNotes);
+    el.quickInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addReminder();
+    });
+
+    el.themeToggle.addEventListener('click', () => {
+      setDarkMode(!state.darkMode);
+      syncToggles();
+    });
+
+    el.aiToggle.addEventListener('click', () => {
+      state.ai = !state.ai;
+      syncToggles();
+    });
+
+    el.soundToggle.addEventListener('click', () => {
+      state.sound = !state.sound;
+      syncToggles();
+    });
+
+    el.darkToggle.addEventListener('click', () => {
+      setDarkMode(!state.darkMode);
+      syncToggles();
+    });
+
+    function tickClock() {
+      el.timeNow.textContent = formatNow();
+    }
+
+    window.toggleReminder = toggleReminder;
+    window.deleteNote = deleteNote;
+    window.boostHabit = boostHabit;
+    window.toggleZone = toggleZone;
+    window.selectZone = selectZone;
+
+    function init() {
+      tickClock();
+      setInterval(tickClock, 30000);
+      renderStats();
+      renderReminders();
+      renderHabits();
+      renderNotes();
+      renderDevices();
+      renderZones();
+      renderIdeas();
+      renderAlarmFeed();
+      renderCalendar();
+      updateMapState();
+      syncToggles();
+      setDarkMode(true);
+    }
+
+    init();
+  </script>
+</body>
+</html>
