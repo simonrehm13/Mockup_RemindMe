@@ -3,1010 +3,867 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#f7f8ff" />
+  <meta name="theme-color" content="#0b1020" />
   <title>RemindMe – Mobile App</title>
   <style>
-    :root{
-      --bg:#f6f8ff;
-      --bg-soft:#ffffff;
-      --surface:#ffffffcc;
-      --surface-strong:#ffffff;
-      --text:#1d2742;
-      --muted:#70809f;
-      --border:#dfe6f5;
-      --shadow:0 12px 30px rgba(62, 86, 138, 0.10);
-
-      --accent:#6d5efc;
-      --accent-2:#3fc9ff;
-      --accent-soft:#eef0ff;
-
-      --success:#2bb673;
-      --warning:#ffb74d;
-      --danger:#ff6b6b;
-
-      --radius-xl:28px;
-      --radius-lg:22px;
-      --radius-md:16px;
-      --radius-sm:12px;
-
+    :root {
+      --bg: #0a1020;
+      --bg-2: #0f1730;
+      --bg-3: #121c38;
+      --surface: rgba(255,255,255,0.06);
+      --surface-2: rgba(255,255,255,0.04);
+      --surface-3: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.10);
+      --text: #eef4ff;
+      --muted: #97a8c7;
+      --accent: #7c5cff;
+      --accent-2: #22d3ee;
+      --accent-3: #34d399;
+      --danger: #fb7185;
+      --warning: #f59e0b;
+      --success: #22c55e;
+      --shadow: 0 18px 40px rgba(0,0,0,0.28);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
 
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(109,94,252,.15), transparent 28%),
-        radial-gradient(circle at top right, rgba(63,201,255,.14), transparent 30%),
-        linear-gradient(180deg, #f7f8ff 0%, #f3f7ff 100%);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
+        radial-gradient(circle at 8% 8%, rgba(124,92,255,0.22), transparent 24%),
+        radial-gradient(circle at 92% 8%, rgba(34,211,238,0.18), transparent 24%),
+        linear-gradient(180deg, #08101e 0%, #0d1427 35%, #101931 100%);
+      display: flex;
+      justify-content: center;
     }
 
-    body.dark{
-      --bg:#0e1528;
-      --bg-soft:#111a31;
-      --surface:rgba(255,255,255,.07);
-      --surface-strong:#16213b;
-      --text:#eef4ff;
-      --muted:#9aabca;
-      --border:rgba(255,255,255,.10);
-      --shadow:0 18px 40px rgba(0,0,0,.24);
+    .app-shell {
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: calc(90px + var(--safe-bottom));
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      backdrop-filter: blur(8px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 12px 18px 16px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      background: rgba(10,16,32,0.74);
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      box-shadow: 0 14px 32px rgba(124,92,255,0.28);
+      flex: 0 0 auto;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+
+    .content {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .tab-view { display: none; }
+    .tab-view.active { display: grid; gap: 16px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border-radius: 30px;
+      border: 1px solid var(--border);
       background:
-        radial-gradient(circle at top left, rgba(109,94,252,.22), transparent 28%),
-        radial-gradient(circle at top right, rgba(63,201,255,.16), transparent 30%),
-        linear-gradient(180deg, #0b1120 0%, #11182c 100%);
+        linear-gradient(145deg, rgba(124,92,255,0.24), rgba(34,211,238,0.08) 56%, rgba(255,255,255,0.04));
+      box-shadow: var(--shadow);
     }
 
-    .app{
-      width:100%;
-      max-width:430px;
-      min-height:100vh;
-      position:relative;
-      padding-bottom:calc(88px + var(--safe-bottom));
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
-      backdrop-filter: blur(10px);
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -20px;
+      bottom: -30px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(34,211,238,0.2), transparent 62%);
+      pointer-events: none;
     }
 
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:30;
-      padding:12px 18px 14px;
-      background:rgba(255,255,255,.62);
-      backdrop-filter:blur(18px);
-      border-bottom:1px solid var(--border);
+    .eyebrow {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #d1dbf7;
+      opacity: 0.8;
     }
 
-    body.dark .topbar{
-      background:rgba(14,21,40,.72);
+    .hero h2 {
+      margin: 10px 0 8px;
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
     }
 
-    .statusbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:12px;
-      color:var(--muted);
-      margin-bottom:10px;
+    .hero p {
+      margin: 0;
+      color: #d0dcf2;
+      font-size: 14px;
+      line-height: 1.5;
+      max-width: 94%;
     }
 
-    .brand-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    .stat {
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.08);
     }
 
-    .brand-logo{
-      width:48px;
-      height:48px;
-      border-radius:18px;
-      display:grid;
-      place-items:center;
-      font-size:22px;
-      color:white;
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      box-shadow:0 14px 30px rgba(109,94,252,.22);
+    .stat .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
     }
 
-    .brand h1{
-      margin:0;
-      font-size:20px;
-      line-height:1.1;
+    .stat .value {
+      font-size: 20px;
+      font-weight: 700;
     }
 
-    .brand p{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:12px;
+    .card {
+      padding: 16px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow);
     }
 
-    .icon-btn{
-      width:42px;
-      height:42px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      background:var(--surface);
-      color:var(--text);
-      display:grid;
-      place-items:center;
-      font-size:18px;
-      cursor:pointer;
+    .card-flat {
+      padding: 0;
+      overflow: hidden;
     }
 
-    .content{
-      padding:18px;
-      display:grid;
-      gap:16px;
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
     }
 
-    .page{display:none}
-    .page.active{display:grid;gap:16px}
-
-    .hero{
-      border-radius:30px;
-      padding:18px;
-      background:
-        linear-gradient(145deg, rgba(109,94,252,.18), rgba(63,201,255,.12) 48%, rgba(255,255,255,.45));
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
+    .card-title-wrap {
+      min-width: 0;
     }
 
-    body.dark .hero{
-      background:
-        linear-gradient(145deg, rgba(109,94,252,.24), rgba(63,201,255,.12) 48%, rgba(255,255,255,.05));
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
-    .hero::after{
-      content:"";
-      position:absolute;
-      width:140px;
-      height:140px;
-      border-radius:50%;
-      right:-20px;
-      bottom:-30px;
-      background:radial-gradient(circle, rgba(63,201,255,.20), transparent 70%);
-      pointer-events:none;
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
     }
 
-    .eyebrow{
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:8px;
+    .title-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      font-size: 16px;
+      flex: 0 0 auto;
     }
 
-    .hero h2{
-      margin:0 0 8px;
-      font-size:27px;
-      line-height:1.15;
+    .chip,
+    .filter-chip,
+    .suggestion,
+    .zone-pill {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
     }
 
-    .hero p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
+    .filter-chip.active,
+    .zone-pill.active {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
     }
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
-      margin-top:16px;
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 8px;
     }
 
-    .stat{
-      padding:12px;
-      border-radius:18px;
-      background:rgba(255,255,255,.55);
-      border:1px solid rgba(255,255,255,.45);
+    .input,
+    .search-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
     }
 
-    body.dark .stat{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.08);
+    .input::placeholder,
+    .search-input::placeholder { color: var(--muted); }
+
+    button { font: inherit; }
+
+    .btn {
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .12s ease, opacity .12s ease;
     }
 
-    .stat-label{
-      font-size:11px;
-      color:var(--muted);
-      margin-bottom:6px;
+    .btn:active,
+    .small-btn:active,
+    .pin-btn:active,
+    .icon-button:active { transform: scale(0.98); }
+
+    .btn.primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), #6f58ff 45%, var(--accent-2));
+      box-shadow: 0 12px 26px rgba(124,92,255,0.24);
     }
 
-    .stat-value{
-      font-size:20px;
-      font-weight:700;
+    .btn.secondary,
+    .small-btn,
+    .pin-btn {
+      color: var(--text);
+      border-color: var(--border);
+      background: rgba(255,255,255,0.06);
     }
 
-    .card{
-      border-radius:var(--radius-xl);
-      background:var(--surface);
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      padding:16px;
+    .suggestions,
+    .filters-row,
+    .zone-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .card-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:10px;
-      margin-bottom:14px;
-    }
-
-    .card-title{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-size:15px;
-      font-weight:700;
-    }
-
-    .card-icon{
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      display:grid;
-      place-items:center;
-      background:var(--accent-soft);
-      border:1px solid var(--border);
-      font-size:16px;
-    }
-
-    body.dark .card-icon{
-      background:rgba(255,255,255,.06);
-    }
-
-    .subtext{
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.45;
-    }
-
-    .chip-row{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .chip{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.65);
-      color:var(--text);
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:12px;
-      cursor:pointer;
-    }
-
-    body.dark .chip{
-      background:rgba(255,255,255,.06);
-    }
-
-    .chip.active{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-      border-color:transparent;
-    }
-
-    .quick-add{
-      display:grid;
-      grid-template-columns:1fr auto auto;
-      gap:8px;
-    }
-
-    .input{
-      width:100%;
-      min-height:48px;
-      border:1px solid var(--border);
-      border-radius:18px;
-      background:rgba(255,255,255,.65);
-      color:var(--text);
-      outline:none;
-      padding:0 14px;
-      font-size:14px;
-    }
-
-    body.dark .input{
-      background:rgba(255,255,255,.06);
-    }
-
-    .input::placeholder{color:var(--muted)}
-
-    .btn{
-      min-height:48px;
-      border:1px solid transparent;
-      border-radius:18px;
-      padding:0 14px;
-      cursor:pointer;
-      font:inherit;
-    }
-
-    .btn.primary{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-      box-shadow:0 12px 22px rgba(109,94,252,.20);
-    }
-
-    .btn.secondary{
-      background:rgba(255,255,255,.65);
-      color:var(--text);
-      border-color:var(--border);
-    }
-
-    body.dark .btn.secondary{
-      background:rgba(255,255,255,.06);
-    }
-
-    .focus-list,
     .list,
-    .notes-grid{
-      display:grid;
-      gap:10px;
+    .notes-grid,
+    .feed,
+    .settings-list {
+      display: grid;
+      gap: 10px;
     }
 
-    .focus-item{
-      padding:14px;
-      border-radius:20px;
-      background:linear-gradient(135deg, rgba(109,94,252,.10), rgba(63,201,255,.10));
-      border:1px solid var(--border);
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:center;
-    }
-
-    .focus-item strong{
-      display:block;
-      font-size:14px;
-      margin-bottom:4px;
-    }
-
-    .mini-badge{
-      padding:6px 10px;
-      font-size:11px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      white-space:nowrap;
-      background:rgba(255,255,255,.6);
-    }
-
-    body.dark .mini-badge{
-      background:rgba(255,255,255,.06);
-    }
-
-    .list-item{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      padding:14px;
-      border-radius:20px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.45);
-    }
-
-    body.dark .list-item{
-      background:rgba(255,255,255,.04);
-    }
-
-    .check{
-      width:24px;
-      height:24px;
-      border-radius:50%;
-      border:2px solid #c7d3ec;
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      cursor:pointer;
-      margin-top:2px;
-      font-size:12px;
-      color:white;
-      background:transparent;
-    }
-
-    .check.done{
-      background:var(--success);
-      border-color:var(--success);
-    }
-
-    .item-main{
-      flex:1;
-      min-width:0;
-    }
-
-    .item-title{
-      margin:0 0 4px;
-      font-size:14px;
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-
-    .item-title.done{
-      text-decoration:line-through;
-      color:var(--muted);
-    }
-
-    .item-meta{
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .priority{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      display:inline-block;
-    }
-
-    .priority.high{background:var(--danger)}
-    .priority.medium{background:var(--warning)}
-    .priority.low{background:var(--success)}
-
-    .small-action{
-      border:none;
-      background:transparent;
-      color:var(--muted);
-      cursor:pointer;
-      font-size:18px;
-      padding:0;
-    }
-
-    .habit{
-      padding:14px;
-      border-radius:20px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.45);
-    }
-
-    body.dark .habit{
-      background:rgba(255,255,255,.04);
-    }
-
-    .habit-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px;
-    }
-
-    .habit-name{
-      font-size:14px;
-      font-weight:700;
-      margin-bottom:4px;
-    }
-
-    .small-btn{
-      min-height:36px;
-      padding:0 12px;
-      border-radius:14px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.65);
-      color:var(--text);
-      cursor:pointer;
-      font:inherit;
-    }
-
-    body.dark .small-btn{
-      background:rgba(255,255,255,.06);
-    }
-
-    .progress{
-      height:8px;
-      border-radius:999px;
-      background:#e7ecf8;
-      overflow:hidden;
-    }
-
-    body.dark .progress{
-      background:rgba(255,255,255,.08);
-    }
-
-    .progress > span{
-      display:block;
-      height:100%;
-      background:linear-gradient(90deg, var(--accent), var(--accent-2));
-      border-radius:inherit;
-    }
-
-    .checklist-item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:18px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.45);
-    }
-
-    body.dark .checklist-item{
-      background:rgba(255,255,255,.04);
-    }
-
-    .toggle-inline{
-      width:24px;
-      height:24px;
-      border-radius:50%;
-      border:2px solid #c8d4ee;
-      background:transparent;
-      cursor:pointer;
-      display:grid;
-      place-items:center;
-      font-size:12px;
-      color:white;
-    }
-
-    .toggle-inline.active{
-      background:var(--success);
-      border-color:var(--success);
-    }
-
-    .map-card{
-      padding:0;
-      overflow:hidden;
-    }
-
-    .map-header{
-      padding:16px;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .map-body{
-      padding:16px;
-      display:grid;
-      gap:12px;
-    }
-
-    .map-zone-pills{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding-bottom:2px;
-    }
-
-    .map-zone-pill{
-      white-space:nowrap;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.65);
-      cursor:pointer;
-      font-size:12px;
-    }
-
-    .map-zone-pill.active{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-      border-color:transparent;
-    }
-
-    body.dark .map-zone-pill{
-      background:rgba(255,255,255,.06);
-    }
-
-    .map{
-      min-height:250px;
-      position:relative;
-      border-radius:24px;
-      overflow:hidden;
-      border:1px solid var(--border);
-      background:
-        linear-gradient(rgba(130,154,197,.15) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(130,154,197,.15) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(109,94,252,.10), rgba(63,201,255,.06)),
-        linear-gradient(180deg, #f5f7ff, #eaf1ff);
-      background-size:28px 28px, 28px 28px, auto, auto;
-    }
-
-    body.dark .map{
-      background:
-        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(109,94,252,.12), rgba(63,201,255,.08)),
-        linear-gradient(180deg, #11182d, #0e1629);
-      background-size:28px 28px, 28px 28px, auto, auto;
-    }
-
-    .ring{
-      position:absolute;
-      width:140px;
-      height:140px;
-      left:50%;
-      top:45%;
-      transform:translate(-50%,-50%);
-      border-radius:50%;
-      border:2px solid rgba(63,201,255,.65);
-      background:rgba(63,201,255,.12);
-      box-shadow:0 0 0 18px rgba(63,201,255,.07);
-    }
-
-    .user-dot{
-      position:absolute;
-      width:20px;
-      height:20px;
-      border-radius:50%;
-      background:var(--success);
-      left:50%;
-      top:45%;
-      transform:translate(-50%,-50%);
-      box-shadow:0 0 0 8px rgba(43,182,115,.15);
-      transition:all .35s ease;
-    }
-
-    .user-dot.outside{
-      left:82%;
-      background:var(--warning);
-      box-shadow:0 0 0 8px rgba(255,183,77,.16);
-    }
-
-    .map-label{
-      position:absolute;
-      left:12px;
-      bottom:12px;
-      right:12px;
-      padding:10px 12px;
-      border-radius:16px;
-      background:rgba(255,255,255,.8);
-      border:1px solid var(--border);
-      font-size:12px;
-      color:var(--text);
-    }
-
-    body.dark .map-label{
-      background:rgba(0,0,0,.28);
-      color:#eef4ff;
-    }
-
-    .button-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-
-    .feed-item,
+    .focus-item,
+    .list-item,
+    .habit,
+    .checklist-item,
     .device,
     .zone,
     .note,
+    .feed-item,
+    .setting-row,
+    .idea {
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .focus-item,
+    .list-item,
+    .device,
+    .zone,
+    .setting-row {
+      padding: 14px;
+    }
+
+    .focus-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, rgba(124,92,255,0.10), rgba(34,211,238,0.06));
+    }
+
+    .focus-item strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .mini-badge,
+    .tiny-tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .check,
+    .toggle-inline {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.28);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 12px;
+      flex: 0 0 auto;
+      cursor: pointer;
+      background: transparent;
+      margin-top: 1px;
+    }
+
+    .check.done,
+    .toggle-inline.active {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .item-main { flex: 1; min-width: 0; }
+
+    .item-title {
+      margin: 0 0 4px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .item-title.done {
+      color: #7f91b2;
+      text-decoration: line-through;
+    }
+
+    .item-meta,
+    .muted {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+
+    .priority-high { background: var(--danger); }
+    .priority-medium { background: var(--warning); }
+    .priority-low { background: var(--success); }
+
+    .remove-btn,
+    .small-icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .habit,
+    .note,
     .idea,
-    .setting-row{
-      padding:14px;
-      border-radius:20px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.45);
+    .feed-item {
+      padding: 14px;
     }
 
-    body.dark .feed-item,
-    body.dark .device,
-    body.dark .zone,
-    body.dark .note,
-    body.dark .idea,
-    body.dark .setting-row{
-      background:rgba(255,255,255,.04);
-    }
-
-    .feed-item{
-      font-size:13px;
-      color:var(--text);
-      line-height:1.45;
-    }
-
-    .calendar-grid{
-      display:grid;
-      grid-template-columns:repeat(7,1fr);
-      gap:8px;
-    }
-
-    .weekday{
-      text-align:center;
-      font-size:12px;
-      color:var(--muted);
-    }
-
-    .day{
-      height:42px;
-      border-radius:16px;
-      border:1px solid var(--border);
-      display:grid;
-      place-items:center;
-      background:rgba(255,255,255,.45);
-      font-size:13px;
-    }
-
-    body.dark .day{
-      background:rgba(255,255,255,.04);
-    }
-
-    .day.active{
-      background:linear-gradient(135deg, rgba(109,94,252,.16), rgba(63,201,255,.16));
-      border-color:rgba(109,94,252,.25);
-      font-weight:700;
-    }
-
-    .search{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:0 14px;
-      border:1px solid var(--border);
-      border-radius:18px;
-      background:rgba(255,255,255,.65);
-    }
-
-    body.dark .search{
-      background:rgba(255,255,255,.06);
-    }
-
-    .search input{
-      min-height:48px;
-      width:100%;
-      border:none;
-      outline:none;
-      background:transparent;
-      color:var(--text);
-      font:inherit;
-    }
-
+    .habit-top,
     .note-top,
     .device-top,
     .zone-top,
-    .setting-row{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      align-items:flex-start;
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
     }
 
+    .habit-name,
     .note h4,
     .device h4,
     .zone h4,
-    .setting-row h4{
-      margin:0 0 4px;
-      font-size:14px;
+    .setting-row h4 {
+      margin: 0 0 4px;
+      font-size: 14px;
     }
 
-    .note p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
+    .progress,
+    .progress-bar {
+      margin-top: 10px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow: hidden;
     }
 
-    .pin{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.65);
-      color:var(--text);
-      width:36px;
-      height:36px;
-      border-radius:14px;
-      cursor:pointer;
+    .progress > span,
+    .progress-bar > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
     }
 
-    body.dark .pin{
-      background:rgba(255,255,255,.06);
+    .checklist-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+    }
+
+    .map-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .map-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .zone-pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .zone-pills::-webkit-scrollbar { display: none; }
+
+    .map {
+      position: relative;
+      min-height: 250px;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background:
+        linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px),
+        radial-gradient(circle at 50% 42%, rgba(34,211,238,0.12), transparent 22%),
+        linear-gradient(180deg, rgba(124,92,255,0.10), rgba(16,25,49,0.84));
+      background-size: 28px 28px, 28px 28px, auto, auto;
+    }
+
+    .fence-ring {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 138px;
+      height: 138px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 2px solid rgba(34,211,238,0.55);
+      background: rgba(34,211,238,0.08);
+      box-shadow: 0 0 0 18px rgba(34,211,238,0.05);
+    }
+
+    .user-dot {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--success);
+      box-shadow: 0 0 0 8px rgba(34,197,94,0.16);
+      transition: left .35s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .user-dot.outside {
+      left: 82%;
+      background: var(--warning);
+      box-shadow: 0 0 0 8px rgba(245,158,11,0.16);
+    }
+
+    .map-label {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(3,8,20,0.42);
+      color: #e4ecff;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .search-wrap input {
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      font: inherit;
+    }
+
+    .note-top { align-items: flex-start; }
+
+    .note p {
+      margin: 0;
+      color: #d3def0;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .pin-actions {
+      display: flex;
+      gap: 8px;
+      flex: 0 0 auto;
+    }
+
+    .pin-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday,
+    .day {
+      text-align: center;
+    }
+
+    .weekday {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .day {
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: #dce8ff;
+      font-size: 13px;
+    }
+
+    .day.active {
+      border-color: rgba(124,92,255,0.28);
+      background: linear-gradient(135deg, rgba(124,92,255,0.20), rgba(34,211,238,0.12));
+      font-weight: 700;
     }
 
     .device-head,
-    .zone-head{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      flex:1;
+    .zone-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
     }
 
-    .avatar{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      background:var(--accent-soft);
-      border:1px solid var(--border);
-      font-size:18px;
-      flex:0 0 auto;
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--border);
+      font-size: 18px;
+      flex: 0 0 auto;
     }
 
-    body.dark .avatar{
-      background:rgba(255,255,255,.06);
+    .toggle {
+      position: relative;
+      width: 52px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      cursor: pointer;
+      flex: 0 0 auto;
     }
 
-    .progress-bar{
-      margin-top:10px;
-      height:8px;
-      border-radius:999px;
-      overflow:hidden;
-      background:#e7ecf8;
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      transition: left .22s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
     }
 
-    body.dark .progress-bar{
-      background:rgba(255,255,255,.08);
+    .toggle.active {
+      background: rgba(34,197,94,0.24);
     }
 
-    .progress-bar > span{
-      display:block;
-      height:100%;
-      background:linear-gradient(90deg, var(--accent-2), var(--success));
-      border-radius:inherit;
+    .toggle.active::after {
+      left: 23px;
     }
 
-    .toggle{
-      position:relative;
-      width:52px;
-      height:32px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:#e9eef9;
-      cursor:pointer;
-      flex:0 0 auto;
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
-    body.dark .toggle{
-      background:rgba(255,255,255,.08);
+    .theme-swatch {
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      cursor: pointer;
+      text-align: center;
+      color: var(--text);
     }
 
-    .toggle::after{
-      content:"";
-      position:absolute;
-      width:24px;
-      height:24px;
-      top:3px;
-      left:3px;
-      border-radius:50%;
-      background:white;
-      transition:left .22s ease;
-      box-shadow:0 2px 5px rgba(0,0,0,.12);
+    .theme-swatch.active {
+      outline: 2px solid var(--accent);
     }
 
-    .toggle.active{
-      background:rgba(43,182,115,.26);
+    .theme-preview {
+      height: 34px;
+      border-radius: 12px;
+      margin-bottom: 8px;
     }
 
-    .toggle.active::after{
-      left:23px;
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: 100%;
+      max-width: 430px;
+      padding: 10px 16px calc(10px + var(--safe-bottom));
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      background: rgba(10,16,32,0.84);
+      z-index: 40;
     }
 
-    .theme-grid{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:10px;
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
     }
 
-    .theme-swatch{
-      padding:12px;
-      border-radius:18px;
-      border:1px solid var(--border);
-      cursor:pointer;
-      background:rgba(255,255,255,.55);
-      text-align:center;
+    .nav-btn {
+      min-height: 62px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      cursor: pointer;
     }
 
-    body.dark .theme-swatch{
-      background:rgba(255,255,255,.04);
+    .nav-btn .icon { font-size: 18px; }
+
+    .nav-btn.active {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-weight: 700;
     }
 
-    .theme-preview{
-      height:34px;
-      border-radius:12px;
-      margin-bottom:8px;
+    .toast {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 104px;
+      width: calc(100% - 40px);
+      max-width: 390px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(4,9,20,0.92);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 60;
     }
 
-    .theme-swatch.active{
-      outline:2px solid var(--accent);
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-4px);
     }
 
-    .bottom-nav{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:0;
-      width:100%;
-      max-width:430px;
-      padding:10px 16px calc(10px + var(--safe-bottom));
-      background:rgba(255,255,255,.72);
-      backdrop-filter:blur(18px);
-      border-top:1px solid var(--border);
-      z-index:40;
+    .empty {
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px dashed var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
     }
 
-    body.dark .bottom-nav{
-      background:rgba(14,21,40,.82);
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
     }
 
-    .nav-grid{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:8px;
-    }
-
-    .nav-btn{
-      min-height:62px;
-      border:none;
-      background:transparent;
-      border-radius:20px;
-      color:var(--muted);
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      gap:5px;
-      font-size:11px;
-      cursor:pointer;
-    }
-
-    .nav-btn .icon{font-size:18px}
-
-    .nav-btn.active{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:white;
-      font-weight:700;
-    }
-
-    .empty{
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.40);
-      border:1px dashed var(--border);
-      color:var(--muted);
-      font-size:13px;
-      text-align:center;
-    }
-
-    .toast{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:110px;
-      width:calc(100% - 40px);
-      max-width:390px;
-      padding:14px 16px;
-      border-radius:18px;
-      color:white;
-      background:rgba(32,40,66,.92);
-      box-shadow:0 12px 28px rgba(0,0,0,.25);
-      z-index:50;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .2s ease, transform .2s ease;
-    }
-
-    .toast.show{
-      opacity:1;
-      transform:translateX(-50%) translateY(-4px);
-    }
-
-    @media (max-width:380px){
-      .quick-add{grid-template-columns:1fr}
-      .button-row{grid-template-columns:1fr}
-      .stats{grid-template-columns:1fr 1fr}
-      .stats .stat:last-child{grid-column:span 2}
+    @media (max-width: 380px) {
+      .input-row { grid-template-columns: 1fr; }
+      .button-row { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats .stat:last-child { grid-column: span 2; }
+      .theme-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div class="app">
+  <div class="app-shell">
     <header class="topbar">
-      <div class="statusbar">
+      <div class="status-row">
         <span id="timeNow">09:41</span>
         <span>🔋 84% · 📶 Online</span>
       </div>
@@ -1015,85 +872,83 @@
           <div class="brand-logo">🧠</div>
           <div>
             <h1>RemindMe</h1>
-            <p>Einfach. Farbfreundlich. Gegen das Vergessen.</p>
+            <p>Professionelle Dark-Mode Demo für vergessliche Menschen</p>
           </div>
         </div>
-        <button class="icon-btn" id="themeToggle" aria-label="Theme wechseln">🌙</button>
+        <button class="icon-button" id="themeToggle" aria-label="Farbstil wechseln">🎨</button>
       </div>
     </header>
 
     <main class="content">
-      <!-- HOME -->
-      <section id="home" class="page active">
-        <section class="hero">
-          <div class="eyebrow">Heute im Blick</div>
-          <h2>Alles Wichtige auf einen Blick.</h2>
-          <p>Erinnerungen, Notizen, Routinen und Ortsalarme – übersichtlich in einer mobilen Oberfläche.</p>
-
+      <section id="home" class="tab-view active">
+        <div class="hero">
+          <div class="eyebrow">Heute im Fokus</div>
+          <h2>Strukturiert erinnern. Ruhiger durch den Tag.</h2>
+          <p>Kalender, Notizen, Gewohnheiten, Geräte und Standort-Alarme in einer simplen, aber professionellen mobilen Oberfläche.</p>
           <div class="stats">
             <div class="stat">
-              <div class="stat-label">Erledigt</div>
-              <div class="stat-value" id="statDone">0%</div>
+              <div class="label">Erledigt</div>
+              <div class="value" id="statDone">0%</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Offen</div>
-              <div class="stat-value" id="statOpen">0</div>
+              <div class="label">Offen</div>
+              <div class="value" id="statOpen">0</div>
             </div>
             <div class="stat">
-              <div class="stat-label">Zonen</div>
-              <div class="stat-value" id="statZones">0</div>
+              <div class="label">Zonen</div>
+              <div class="value" id="statZones">0</div>
             </div>
           </div>
-        </section>
+        </div>
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">✨</span> Schnell hinzufügen</div>
-              <div class="subtext">Neue Erinnerung oder Notiz in Sekunden erfassen.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">✨</span> Schnell hinzufügen</div>
+              <div class="card-subtitle">Lege neue Erinnerungen oder Notizen direkt an.</div>
             </div>
+            <div class="tiny-tag">Smart Input</div>
           </div>
-
-          <div class="quick-add">
+          <div class="input-row">
+            <label class="sr-only" for="quickInput">Schnelle Eingabe</label>
             <input id="quickInput" class="input" type="text" placeholder="z. B. Regenschirm mitnehmen" />
-            <button id="addReminderBtn" class="btn primary">Reminder</button>
-            <button id="addNoteBtn" class="btn secondary">Notiz</button>
+            <button class="btn primary" id="addReminderBtn">Reminder</button>
+            <button class="btn secondary" id="addNoteBtn">Notiz</button>
           </div>
-
-          <div class="chip-row" style="margin-top:12px">
-            <button class="chip quick-suggestion">Schlüssel einpacken</button>
-            <button class="chip quick-suggestion">Ladegerät mitnehmen</button>
-            <button class="chip quick-suggestion">Mama anrufen</button>
-            <button class="chip quick-suggestion">Wasser trinken</button>
+          <div class="suggestions" style="margin-top:12px">
+            <button class="suggestion" type="button">Schlüssel einpacken</button>
+            <button class="suggestion" type="button">Ladegerät mitnehmen</button>
+            <button class="suggestion" type="button">Mama anrufen</button>
+            <button class="suggestion" type="button">Wasser trinken</button>
           </div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">🎯</span> Heute im Fokus</div>
-              <div class="subtext">Deine wichtigsten offenen Aufgaben.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🎯</span> Heute im Fokus</div>
+              <div class="card-subtitle">Die wichtigsten offenen Aufgaben zuerst.</div>
             </div>
           </div>
-          <div class="focus-list" id="focusList"></div>
+          <div class="list" id="focusList"></div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">🔔</span> Erinnerungen</div>
-              <div class="subtext">Filtere deine Aufgaben nach Status.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🔔</span> Erinnerungen</div>
+              <div class="card-subtitle">Mit Prioritäten und Filtern für bessere Übersicht.</div>
             </div>
           </div>
-          <div class="chip-row" id="reminderFilters" style="margin-bottom:12px"></div>
+          <div class="filters-row" id="reminderFilters" style="margin-bottom:12px"></div>
           <div class="list" id="reminderList"></div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">👣</span> Routinen</div>
-              <div class="subtext">Kleine Gewohnheiten, weniger Vergessen.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">👣</span> Routinen</div>
+              <div class="card-subtitle">Gewohnheiten helfen gegen spontanes Vergessen.</div>
             </div>
           </div>
           <div class="list" id="habitList"></div>
@@ -1101,51 +956,46 @@
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">👜</span> Bevor du gehst</div>
-              <div class="subtext">Eine einfache Checkliste für Schlüssel, Handy & Co.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">👜</span> Bevor du gehst</div>
+              <div class="card-subtitle">Checkliste für Schlüssel, Handy, Geldbeutel und mehr.</div>
             </div>
           </div>
           <div class="list" id="checkList"></div>
         </section>
 
-        <section class="card map-card">
+        <section class="card card-flat">
           <div class="map-header">
-            <div>
-              <div class="card-title"><span class="card-icon">📍</span> Standort-Alarm</div>
-              <div class="subtext">Wenn du eine Zone verlässt oder betrittst, erinnert dich RemindMe automatisch.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📍</span> Standort-Alarm</div>
+              <div class="card-subtitle">Geofencing-Zonen simulieren und Alarm-Feed live testen.</div>
             </div>
           </div>
           <div class="map-body">
-            <div class="map-zone-pills" id="zonePills"></div>
-
-            <div class="map">
-              <div class="ring"></div>
+            <div class="zone-pills" id="zonePills"></div>
+            <div class="map" id="mapVisual">
+              <div class="fence-ring"></div>
               <div class="user-dot" id="userDot"></div>
               <div class="map-label" id="mapLabel">Alarmaktion:</div>
             </div>
-
             <div class="button-row">
-              <button id="insideBtn" class="btn primary">Im Bereich</button>
-              <button id="outsideBtn" class="btn secondary">Bereich verlassen</button>
+              <button class="btn primary" id="insideBtn">Im Bereich</button>
+              <button class="btn secondary" id="outsideBtn">Bereich verlassen</button>
             </div>
-
-            <div class="list" id="alarmFeed"></div>
+            <div class="feed" id="alarmFeed"></div>
           </div>
         </section>
       </section>
 
-      <!-- CALENDAR -->
-      <section id="calendar" class="page">
+      <section id="calendar" class="tab-view">
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">📆</span> Kalender</div>
-              <div class="subtext">Vereinfachte Monatsübersicht.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📆</span> Kalender</div>
+              <div class="card-subtitle">Vereinfachte Monatsansicht mit markierten Tagen.</div>
             </div>
-            <div class="chip">Monat</div>
+            <div class="tiny-tag">Monat</div>
           </div>
-
           <div class="calendar-grid" id="weekdayRow"></div>
           <div style="height:8px"></div>
           <div class="calendar-grid" id="calendarGrid"></div>
@@ -1153,41 +1003,38 @@
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">🗓️</span> Tagesagenda</div>
-              <div class="subtext">Alle Erinnerungen im Überblick.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🗓️</span> Tagesagenda</div>
+              <div class="card-subtitle">Alle aktuellen Erinnerungen in einer Liste.</div>
             </div>
           </div>
           <div class="list" id="agendaList"></div>
         </section>
       </section>
 
-      <!-- NOTES -->
-      <section id="notes" class="page">
+      <section id="notes" class="tab-view">
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">📝</span> Notizen</div>
-              <div class="subtext">Durchsuche, pinne und verwalte Gedanken & Listen.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📝</span> Notizen</div>
+              <div class="card-subtitle">Notizen durchsuchen, anpinnen und löschen.</div>
             </div>
           </div>
-
-          <div class="search">
+          <div class="search-wrap">
             <span>🔎</span>
+            <label class="sr-only" for="noteSearch">Notizen durchsuchen</label>
             <input id="noteSearch" type="text" placeholder="Notizen durchsuchen" />
           </div>
         </section>
-
         <div class="notes-grid" id="notesList"></div>
       </section>
 
-      <!-- DEVICES -->
-      <section id="devices" class="page">
+      <section id="devices" class="tab-view">
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">📱</span> Geräte</div>
-              <div class="subtext">Verbundene Geräte und Tracker.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📱</span> Geräte</div>
+              <div class="card-subtitle">Verbundene Hardware und Tracker mit Ladezustand.</div>
             </div>
           </div>
           <div class="list" id="deviceList"></div>
@@ -1195,57 +1042,53 @@
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">🗺️</span> Zonen</div>
-              <div class="subtext">Lege Bereiche für standortbasierte Erinnerungen fest.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🗺️</span> Zonen</div>
+              <div class="card-subtitle">Aktiviere oder deaktiviere einzelne Geofencing-Bereiche.</div>
             </div>
           </div>
           <div class="list" id="zoneList"></div>
         </section>
       </section>
 
-      <!-- SETTINGS -->
-      <section id="settings" class="page">
+      <section id="settings" class="tab-view">
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">⚙️</span> Einstellungen</div>
-              <div class="subtext">Einfach gehalten, aber praktisch.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">⚙️</span> Einstellungen</div>
+              <div class="card-subtitle">Kleine, sinnvolle Schalter für deinen Alltag.</div>
             </div>
           </div>
-
-          <div class="list">
+          <div class="settings-list">
             <div class="setting-row">
               <div>
                 <h4>KI-Vorschläge</h4>
-                <div class="subtext">Hilft dir mit spontanen Erinnerungs-Ideen.</div>
+                <div class="muted">Hilft dir mit spontanen Vorschlägen für Erinnerungen.</div>
               </div>
-              <button class="toggle" id="aiToggle"></button>
+              <button class="toggle" id="aiToggle" aria-label="KI-Vorschläge umschalten"></button>
             </div>
-
             <div class="setting-row">
               <div>
                 <h4>Alarmton</h4>
-                <div class="subtext">Aktiviert Sound-Hinweise für wichtige Alarme.</div>
+                <div class="muted">Aktiviert akustische Hinweise für wichtige Alarme.</div>
               </div>
-              <button class="toggle" id="soundToggle"></button>
+              <button class="toggle" id="soundToggle" aria-label="Alarmton umschalten"></button>
             </div>
-
             <div class="setting-row">
               <div>
-                <h4>Dunkelmodus</h4>
-                <div class="subtext">Wechselt zwischen heller und dunkler Oberfläche.</div>
+                <h4>Stiller Fokusmodus</h4>
+                <div class="muted">Blendet reduzierte Hinweise ein und hält die Ansicht ruhiger.</div>
               </div>
-              <button class="toggle" id="darkToggle"></button>
+              <button class="toggle" id="focusModeToggle" aria-label="Fokusmodus umschalten"></button>
             </div>
           </div>
         </section>
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">🎨</span> Farbstil</div>
-              <div class="subtext">Wähle eine einfache Akzentfarbe.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🎨</span> Farbstil</div>
+              <div class="card-subtitle">Wähle einen dunklen professionellen Akzentstil.</div>
             </div>
           </div>
           <div class="theme-grid" id="themeGrid"></div>
@@ -1253,9 +1096,9 @@
 
         <section class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span class="card-icon">💡</span> Ideen</div>
-              <div class="subtext">Praktische Erweiterungen für vergessliche Menschen.</div>
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">💡</span> Ideen</div>
+              <div class="card-subtitle">Sinnvolle Erweiterungen für die App-Idee.</div>
             </div>
           </div>
           <div class="list" id="ideaList"></div>
@@ -1274,384 +1117,344 @@
     </nav>
   </div>
 
-  <div id="toast" class="toast">Gespeichert</div>
+  <div class="toast" id="toast">Gespeichert</div>
 
   <script>
-    const STORAGE_KEY = "remindme_mobile_v3";
+    const STORAGE_KEY = "remindme_dark_pro_v1";
 
-    const defaultState = {
+    const THEMES = {
+      violet: { accent: "#7c5cff", accent2: "#22d3ee", accent3: "#34d399", label: "Violet Pro" },
+      blue:   { accent: "#4f7cff", accent2: "#22d3ee", accent3: "#60a5fa", label: "Ocean" },
+      rose:   { accent: "#c084fc", accent2: "#fb7185", accent3: "#f59e0b", label: "Rose Night" }
+    };
+
+    const DEFAULT_STATE = {
       currentTab: "home",
       reminderFilter: "open",
-      darkMode: false,
+      theme: "violet",
       ai: true,
       sound: true,
+      focusMode: false,
       userInside: true,
-      theme: "violet",
       selectedZoneId: 1,
-
       reminders: [
         { id: 1, time: "08:30", title: "Medikamente nehmen", type: "Gesundheit", done: true, priority: "high" },
         { id: 2, time: "10:00", title: "Schlüssel einpacken", type: "Routine", done: false, priority: "high" },
         { id: 3, time: "14:00", title: "Meeting mit Anna", type: "Kalender", done: false, priority: "medium" },
         { id: 4, time: "18:30", title: "Einkauf nicht vergessen", type: "Einkauf", done: false, priority: "low" }
       ],
-
       notes: [
         { id: 1, title: "Packliste Büro", text: "Laptop, Ladegerät, Kopfhörer, Zugangskarte", pinned: true },
         { id: 2, title: "Idee", text: "Sprachmemo in To-do umwandeln", pinned: false },
         { id: 3, title: "Wichtig", text: "Müll Mittwochabend rausstellen", pinned: false }
       ],
-
       devices: [
         { id: 1, icon: "⌚", name: "Smartwatch", status: "Verbunden", battery: 74 },
         { id: 2, icon: "📱", name: "Smartphone", status: "Aktiv", battery: 58 },
         { id: 3, icon: "📡", name: "Bluetooth Tracker", status: "In Reichweite", battery: 91 }
       ],
-
       zones: [
         { id: 1, icon: "🏠", name: "Zuhause", radius: 200, active: true, trigger: "Beim Verlassen", action: "Schlüssel, Geldbeutel, Handy prüfen" },
         { id: 2, icon: "🛒", name: "Supermarkt", radius: 120, active: true, trigger: "Beim Ankommen", action: "Einkaufsliste öffnen" },
         { id: 3, icon: "💼", name: "Büro", radius: 180, active: false, trigger: "Beim Ankommen", action: "Meeting-Notizen öffnen" }
       ],
-
       habits: [
         { id: 1, name: "Wasser trinken", streak: 4, progress: 60 },
         { id: 2, name: "Tasche kontrollieren", streak: 9, progress: 100 },
         { id: 3, name: "Abendplanung", streak: 2, progress: 35 }
       ],
-
       checklist: [
         { id: 1, label: "Handy", checked: true },
         { id: 2, label: "Schlüssel", checked: false },
         { id: 3, label: "Geldbeutel", checked: false },
         { id: 4, label: "Ladegerät", checked: false }
       ],
-
       ideas: [
         "Sprachmemos automatisch in Erinnerungen umwandeln",
         "Vergesslichkeits-Score mit Tagesanalyse",
-        "Notfallmodus für wichtige Abfahrts-Checks",
+        "Notfallmodus mit Pflicht-Check vor dem Verlassen",
         "Familienfreigabe für gemeinsame Erinnerungen",
         "Tracker für Schlüssel, Tasche und Medikamente"
       ],
-
       alarmFeed: [
         "08:14 • Zuhause verlassen erkannt",
         "08:14 • Alarm: Schlüssel, Geldbeutel, Handy prüfen"
       ]
     };
 
-    const themes = {
-      violet: { accent: "#6d5efc", accent2: "#3fc9ff", soft: "#eef0ff", label: "Violett" },
-      coral:  { accent: "#ff6b81", accent2: "#ffb86b", soft: "#fff0f3", label: "Coral" },
-      mint:   { accent: "#22c58b", accent2: "#4fd1ff", soft: "#ebfff7", label: "Mint" }
-    };
+    function clone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
 
     function loadState() {
       try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (!saved) return structuredClone(defaultState);
-        return {
-          ...structuredClone(defaultState),
-          ...saved
-        };
-      } catch {
-        return structuredClone(defaultState);
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return clone(DEFAULT_STATE);
+        const saved = JSON.parse(raw);
+        return { ...clone(DEFAULT_STATE), ...saved };
+      } catch (error) {
+        return clone(DEFAULT_STATE);
       }
     }
 
-    let state = loadState();
+    const state = loadState();
 
     const el = {
-      timeNow: document.getElementById("timeNow"),
-      themeToggle: document.getElementById("themeToggle"),
-      quickInput: document.getElementById("quickInput"),
-      addReminderBtn: document.getElementById("addReminderBtn"),
-      addNoteBtn: document.getElementById("addNoteBtn"),
-      reminderFilters: document.getElementById("reminderFilters"),
-      reminderList: document.getElementById("reminderList"),
-      focusList: document.getElementById("focusList"),
-      habitList: document.getElementById("habitList"),
-      checkList: document.getElementById("checkList"),
-      statDone: document.getElementById("statDone"),
-      statOpen: document.getElementById("statOpen"),
-      statZones: document.getElementById("statZones"),
-      zonePills: document.getElementById("zonePills"),
-      userDot: document.getElementById("userDot"),
-      mapLabel: document.getElementById("mapLabel"),
-      insideBtn: document.getElementById("insideBtn"),
-      outsideBtn: document.getElementById("outsideBtn"),
-      alarmFeed: document.getElementById("alarmFeed"),
-      weekdayRow: document.getElementById("weekdayRow"),
-      calendarGrid: document.getElementById("calendarGrid"),
-      agendaList: document.getElementById("agendaList"),
-      noteSearch: document.getElementById("noteSearch"),
-      notesList: document.getElementById("notesList"),
-      deviceList: document.getElementById("deviceList"),
-      zoneList: document.getElementById("zoneList"),
-      aiToggle: document.getElementById("aiToggle"),
-      soundToggle: document.getElementById("soundToggle"),
-      darkToggle: document.getElementById("darkToggle"),
-      themeGrid: document.getElementById("themeGrid"),
-      ideaList: document.getElementById("ideaList"),
-      toast: document.getElementById("toast")
+      timeNow: document.getElementById('timeNow'),
+      themeToggle: document.getElementById('themeToggle'),
+      quickInput: document.getElementById('quickInput'),
+      addReminderBtn: document.getElementById('addReminderBtn'),
+      addNoteBtn: document.getElementById('addNoteBtn'),
+      reminderFilters: document.getElementById('reminderFilters'),
+      reminderList: document.getElementById('reminderList'),
+      focusList: document.getElementById('focusList'),
+      habitList: document.getElementById('habitList'),
+      checkList: document.getElementById('checkList'),
+      zonePills: document.getElementById('zonePills'),
+      userDot: document.getElementById('userDot'),
+      mapLabel: document.getElementById('mapLabel'),
+      insideBtn: document.getElementById('insideBtn'),
+      outsideBtn: document.getElementById('outsideBtn'),
+      alarmFeed: document.getElementById('alarmFeed'),
+      weekdayRow: document.getElementById('weekdayRow'),
+      calendarGrid: document.getElementById('calendarGrid'),
+      agendaList: document.getElementById('agendaList'),
+      noteSearch: document.getElementById('noteSearch'),
+      notesList: document.getElementById('notesList'),
+      deviceList: document.getElementById('deviceList'),
+      zoneList: document.getElementById('zoneList'),
+      aiToggle: document.getElementById('aiToggle'),
+      soundToggle: document.getElementById('soundToggle'),
+      focusModeToggle: document.getElementById('focusModeToggle'),
+      themeGrid: document.getElementById('themeGrid'),
+      ideaList: document.getElementById('ideaList'),
+      statDone: document.getElementById('statDone'),
+      statOpen: document.getElementById('statOpen'),
+      statZones: document.getElementById('statZones'),
+      toast: document.getElementById('toast')
     };
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    function toast(message) {
+    function showToast(message) {
       el.toast.textContent = message;
-      el.toast.classList.add("show");
-      clearTimeout(window.__toastTimer);
-      window.__toastTimer = setTimeout(() => {
-        el.toast.classList.remove("show");
-      }, 1600);
+      el.toast.classList.add('show');
+      clearTimeout(window.__remindMeToast);
+      window.__remindMeToast = setTimeout(() => {
+        el.toast.classList.remove('show');
+      }, 1500);
     }
 
     function escapeHtml(str) {
       return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     function formatNow() {
-      return new Date().toLocaleTimeString("de-DE", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
+      return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     }
 
-    function priorityLabel(priority) {
-      if (priority === "high") return "Hoch";
-      if (priority === "medium") return "Mittel";
-      return "Niedrig";
+    function priorityMeta(priority) {
+      if (priority === 'high') return { label: 'Hoch', className: 'priority-high' };
+      if (priority === 'medium') return { label: 'Mittel', className: 'priority-medium' };
+      return { label: 'Niedrig', className: 'priority-low' };
     }
 
-    function priorityOrder(priority) {
-      if (priority === "high") return 0;
-      if (priority === "medium") return 1;
-      return 2;
+    function reminderSort(a, b) {
+      const rank = { high: 0, medium: 1, low: 2 };
+      return (rank[a.priority] ?? 9) - (rank[b.priority] ?? 9);
     }
 
     function applyTheme() {
-      const t = themes[state.theme] || themes.violet;
+      const theme = THEMES[state.theme] || THEMES.violet;
       const root = document.documentElement;
-      root.style.setProperty("--accent", t.accent);
-      root.style.setProperty("--accent-2", t.accent2);
-      root.style.setProperty("--accent-soft", t.soft);
+      root.style.setProperty('--accent', theme.accent);
+      root.style.setProperty('--accent-2', theme.accent2);
+      root.style.setProperty('--accent-3', theme.accent3);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0b1020');
 
-      document.body.classList.toggle("dark", state.darkMode);
-      el.themeToggle.textContent = state.darkMode ? "☀️" : "🌙";
-
-      document.querySelectorAll(".theme-swatch").forEach(node => {
-        node.classList.toggle("active", node.dataset.theme === state.theme);
-      });
-
-      el.aiToggle.classList.toggle("active", state.ai);
-      el.soundToggle.classList.toggle("active", state.sound);
-      el.darkToggle.classList.toggle("active", state.darkMode);
+      el.aiToggle.classList.toggle('active', state.ai);
+      el.soundToggle.classList.toggle('active', state.sound);
+      el.focusModeToggle.classList.toggle('active', state.focusMode);
     }
 
-    function switchTab(tabId) {
-      state.currentTab = tabId;
-      document.querySelectorAll(".page").forEach(page => {
-        page.classList.toggle("active", page.id === tabId);
+    function switchTab(id) {
+      state.currentTab = id;
+      document.querySelectorAll('.tab-view').forEach(tab => {
+        tab.classList.toggle('active', tab.id === id);
       });
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.tab === tabId);
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === id);
       });
       saveState();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderStats() {
-      const openCount = state.reminders.filter(r => !r.done).length;
       const doneCount = state.reminders.filter(r => r.done).length;
-      const donePercent = Math.round((doneCount / Math.max(state.reminders.length, 1)) * 100);
+      const openCount = state.reminders.filter(r => !r.done).length;
       const activeZones = state.zones.filter(z => z.active).length;
-
-      el.statDone.textContent = donePercent + "%";
+      const donePercent = Math.round((doneCount / Math.max(state.reminders.length, 1)) * 100);
+      el.statDone.textContent = donePercent + '%';
       el.statOpen.textContent = String(openCount);
       el.statZones.textContent = String(activeZones);
     }
 
     function renderReminderFilters() {
       const filters = [
-        { key: "all", label: "Alle" },
-        { key: "open", label: "Offen" },
-        { key: "done", label: "Erledigt" }
+        { key: 'all', label: 'Alle' },
+        { key: 'open', label: 'Offen' },
+        { key: 'done', label: 'Erledigt' }
       ];
-
-      el.reminderFilters.innerHTML = filters.map(f => `
-        <button class="chip ${state.reminderFilter === f.key ? "active" : ""}" onclick="setReminderFilter('${f.key}')">
-          ${f.label}
+      el.reminderFilters.innerHTML = filters.map(filter => `
+        <button class="filter-chip ${state.reminderFilter === filter.key ? 'active' : ''}" type="button" data-filter="${filter.key}">
+          ${filter.label}
         </button>
-      `).join("");
+      `).join('');
     }
 
     function getFilteredReminders() {
-      if (state.reminderFilter === "done") return state.reminders.filter(r => r.done);
-      if (state.reminderFilter === "open") return state.reminders.filter(r => !r.done);
+      if (state.reminderFilter === 'done') return state.reminders.filter(r => r.done);
+      if (state.reminderFilter === 'open') return state.reminders.filter(r => !r.done);
       return state.reminders;
     }
 
-    function renderReminders() {
-      const items = getFilteredReminders();
-      if (!items.length) {
-        el.reminderList.innerHTML = `<div class="empty">Keine Erinnerungen in diesem Filter.</div>`;
-        return;
-      }
-
-      el.reminderList.innerHTML = items.map(item => `
-        <div class="list-item">
-          <button class="check ${item.done ? "done" : ""}" onclick="toggleReminder(${item.id})">${item.done ? "✓" : ""}</button>
-          <div class="item-main">
-            <div class="item-title ${item.done ? "done" : ""}">
-              <span class="priority ${item.priority}"></span>
-              ${escapeHtml(item.title)}
-            </div>
-            <div class="item-meta">
-              ${escapeHtml(item.time)} • ${escapeHtml(item.type)} • Priorität: ${priorityLabel(item.priority)}
-            </div>
-          </div>
-          <button class="small-action" onclick="removeReminder(${item.id})">✕</button>
-        </div>
-      `).join("");
-    }
-
-    function renderFocus() {
+    function renderFocusList() {
       const topItems = state.reminders
         .filter(r => !r.done)
-        .sort((a, b) => priorityOrder(a.priority) - priorityOrder(b.priority))
-        .slice(0, 3);
+        .sort(reminderSort)
+        .slice(0, state.focusMode ? 2 : 3);
 
       if (!topItems.length) {
-        el.focusList.innerHTML = `<div class="empty">Sehr gut – aktuell ist nichts Dringendes offen.</div>`;
+        el.focusList.innerHTML = '<div class="empty">Heute ist nichts Dringendes offen. Sehr gut.</div>';
         return;
       }
 
-      el.focusList.innerHTML = topItems.map(item => `
-        <div class="focus-item">
-          <div>
-            <strong>${escapeHtml(item.title)}</strong>
-            <div class="subtext">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+      el.focusList.innerHTML = topItems.map(item => {
+        const meta = priorityMeta(item.priority);
+        return `
+          <div class="focus-item">
+            <div>
+              <strong>${escapeHtml(item.title)}</strong>
+              <div class="muted">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
+            </div>
+            <div class="mini-badge">${meta.label}</div>
           </div>
-          <div class="mini-badge">${priorityLabel(item.priority)}</div>
+        `;
+      }).join('');
+    }
+
+    function reminderCard(item, includeRemove = true) {
+      const meta = priorityMeta(item.priority);
+      return `
+        <div class="list-item">
+          <button class="check ${item.done ? 'done' : ''}" type="button" data-action="toggle-reminder" data-id="${item.id}" aria-label="Erinnerung umschalten">${item.done ? '✓' : ''}</button>
+          <div class="item-main">
+            <div class="item-title ${item.done ? 'done' : ''}">
+              <span class="priority-dot ${meta.className}"></span>
+              ${escapeHtml(item.title)}
+            </div>
+            <div class="item-meta">${escapeHtml(item.time)} • ${escapeHtml(item.type)} • Priorität: ${meta.label}</div>
+          </div>
+          ${includeRemove ? `<button class="remove-btn" type="button" data-action="remove-reminder" data-id="${item.id}" aria-label="Erinnerung löschen">✕</button>` : ''}
         </div>
-      `).join("");
+      `;
+    }
+
+    function renderReminders() {
+      const items = getFilteredReminders().slice().sort(reminderSort);
+      el.reminderList.innerHTML = items.length ? items.map(item => reminderCard(item)).join('') : '<div class="empty">Keine Erinnerungen im aktuellen Filter.</div>';
     }
 
     function renderHabits() {
-      el.habitList.innerHTML = state.habits.map(h => `
+      el.habitList.innerHTML = state.habits.map(habit => `
         <div class="habit">
           <div class="habit-top">
             <div>
-              <div class="habit-name">${escapeHtml(h.name)}</div>
-              <div class="subtext">Serie: ${h.streak} Tage</div>
+              <div class="habit-name">${escapeHtml(habit.name)}</div>
+              <div class="muted">Serie: ${habit.streak} Tage</div>
             </div>
-            <button class="small-btn" onclick="boostHabit(${h.id})">+ Fortschritt</button>
+            <button class="small-btn" type="button" data-action="boost-habit" data-id="${habit.id}">+ Fortschritt</button>
           </div>
-          <div class="progress"><span style="width:${h.progress}%"></span></div>
+          <div class="progress"><span style="width:${habit.progress}%"></span></div>
         </div>
-      `).join("");
+      `).join('');
     }
 
     function renderChecklist() {
       el.checkList.innerHTML = state.checklist.map(item => `
         <div class="checklist-item">
           <div>${escapeHtml(item.label)}</div>
-          <button class="toggle-inline ${item.checked ? "active" : ""}" onclick="toggleChecklistItem(${item.id})">
-            ${item.checked ? "✓" : ""}
-          </button>
+          <button class="toggle-inline ${item.checked ? 'active' : ''}" type="button" data-action="toggle-checklist" data-id="${item.id}" aria-label="Checkliste umschalten">${item.checked ? '✓' : ''}</button>
         </div>
-      `).join("");
+      `).join('');
     }
 
     function getSelectedZone() {
-      return state.zones.find(z => z.id === state.selectedZoneId) || state.zones[0];
+      return state.zones.find(zone => zone.id === state.selectedZoneId) || state.zones[0];
     }
 
     function renderZonePills() {
       el.zonePills.innerHTML = state.zones.map(zone => `
-        <button class="map-zone-pill ${zone.id === state.selectedZoneId ? "active" : ""}" onclick="selectZone(${zone.id})">
+        <button class="zone-pill ${zone.id === state.selectedZoneId ? 'active' : ''}" type="button" data-action="select-zone" data-id="${zone.id}">
           ${zone.icon} ${escapeHtml(zone.name)}
         </button>
-      `).join("");
+      `).join('');
     }
 
     function renderMap() {
       const zone = getSelectedZone();
+      el.userDot.classList.toggle('outside', !state.userInside);
       el.mapLabel.textContent = `${zone.name} • ${zone.trigger} • ${zone.action}`;
-      el.userDot.classList.toggle("outside", !state.userInside);
     }
 
     function renderAlarmFeed() {
-      el.alarmFeed.innerHTML = state.alarmFeed.map(line => `
-        <div class="feed-item">${escapeHtml(line)}</div>
-      `).join("");
+      el.alarmFeed.innerHTML = state.alarmFeed.length
+        ? state.alarmFeed.map(line => `<div class="feed-item">${escapeHtml(line)}</div>`).join('')
+        : '<div class="empty">Noch keine Alarm-Ereignisse vorhanden.</div>';
     }
 
     function renderCalendar() {
-      const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-      el.weekdayRow.innerHTML = weekdays.map(d => `<div class="weekday">${d}</div>`).join("");
-
+      const weekdays = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+      el.weekdayRow.innerHTML = weekdays.map(day => `<div class="weekday">${day}</div>`).join('');
       const marked = new Set([4, 8, 12, 17, 23, 29]);
       const days = [];
-      for (let i = 1; i <= 35; i++) {
-        days.push(`<div class="day ${marked.has(i) ? "active" : ""}">${i <= 30 ? i : ""}</div>`);
+      for (let i = 1; i <= 35; i += 1) {
+        days.push(`<div class="day ${marked.has(i) ? 'active' : ''}">${i <= 30 ? i : ''}</div>`);
       }
-      el.calendarGrid.innerHTML = days.join("");
+      el.calendarGrid.innerHTML = days.join('');
 
-      if (!state.reminders.length) {
-        el.agendaList.innerHTML = `<div class="empty">Keine Termine vorhanden.</div>`;
-        return;
-      }
-
-      el.agendaList.innerHTML = state.reminders.map(item => `
-        <div class="list-item">
-          <button class="check ${item.done ? "done" : ""}" onclick="toggleReminder(${item.id})">${item.done ? "✓" : ""}</button>
-          <div class="item-main">
-            <div class="item-title ${item.done ? "done" : ""}">
-              <span class="priority ${item.priority}"></span>
-              ${escapeHtml(item.title)}
-            </div>
-            <div class="item-meta">${escapeHtml(item.time)} • ${escapeHtml(item.type)}</div>
-          </div>
-        </div>
-      `).join("");
+      const agendaItems = state.reminders.slice().sort(reminderSort);
+      el.agendaList.innerHTML = agendaItems.length ? agendaItems.map(item => reminderCard(item, false)).join('') : '<div class="empty">Keine Termine vorhanden.</div>';
     }
 
     function renderNotes() {
-      const q = el.noteSearch.value.trim().toLowerCase();
+      const query = el.noteSearch.value.trim().toLowerCase();
       const filtered = state.notes
-        .filter(note => (`${note.title} ${note.text}`).toLowerCase().includes(q))
+        .filter(note => `${note.title} ${note.text}`.toLowerCase().includes(query))
         .sort((a, b) => Number(b.pinned) - Number(a.pinned));
 
-      if (!filtered.length) {
-        el.notesList.innerHTML = `<div class="empty">Keine passenden Notizen gefunden.</div>`;
-        return;
-      }
-
-      el.notesList.innerHTML = filtered.map(note => `
+      el.notesList.innerHTML = filtered.length ? filtered.map(note => `
         <div class="note">
           <div class="note-top">
             <div>
-              <h4>${note.pinned ? "📌 " : ""}${escapeHtml(note.title)}</h4>
-              <div class="subtext">${note.pinned ? "Angepinnt" : "Notiz"}</div>
+              <h4>${note.pinned ? '📌 ' : ''}${escapeHtml(note.title)}</h4>
+              <div class="muted">${note.pinned ? 'Angepinnt' : 'Notiz'}</div>
             </div>
-            <div style="display:flex; gap:8px;">
-              <button class="pin" onclick="togglePinNote(${note.id})">${note.pinned ? "📌" : "📍"}</button>
-              <button class="pin" onclick="deleteNote(${note.id})">🗑️</button>
+            <div class="pin-actions">
+              <button class="pin-btn" type="button" data-action="toggle-pin" data-id="${note.id}" aria-label="Notiz anpinnen">${note.pinned ? '📌' : '📍'}</button>
+              <button class="pin-btn" type="button" data-action="delete-note" data-id="${note.id}" aria-label="Notiz löschen">🗑️</button>
             </div>
           </div>
           <p>${escapeHtml(note.text)}</p>
         </div>
-      `).join("");
+      `).join('') : '<div class="empty">Keine passenden Notizen gefunden.</div>';
     }
 
     function renderDevices() {
@@ -1662,54 +1465,59 @@
               <div class="avatar">${device.icon}</div>
               <div>
                 <h4>${escapeHtml(device.name)}</h4>
-                <div class="subtext">${escapeHtml(device.status)}</div>
+                <div class="muted">${escapeHtml(device.status)}</div>
               </div>
             </div>
-            <div class="mini-badge">${device.battery}%</div>
+            <div class="tiny-tag">${device.battery}%</div>
           </div>
           <div class="progress-bar"><span style="width:${device.battery}%"></span></div>
         </div>
-      `).join("");
+      `).join('');
     }
 
     function renderZones() {
       el.zoneList.innerHTML = state.zones.map(zone => `
         <div class="zone">
           <div class="zone-top">
-            <div class="zone-head" onclick="selectZone(${zone.id})" style="cursor:pointer;">
+            <div class="zone-head">
               <div class="avatar">${zone.icon}</div>
               <div>
                 <h4>${escapeHtml(zone.name)}</h4>
-                <div class="subtext">${zone.trigger} • ${zone.radius} m</div>
-                <div class="subtext" style="margin-top:4px;">${escapeHtml(zone.action)}</div>
+                <div class="muted">${zone.trigger} • ${zone.radius} m</div>
+                <div class="muted" style="margin-top:4px">${escapeHtml(zone.action)}</div>
               </div>
             </div>
-            <button class="toggle ${zone.active ? "active" : ""}" onclick="toggleZone(${zone.id})"></button>
+            <button class="toggle ${zone.active ? 'active' : ''}" type="button" data-action="toggle-zone" data-id="${zone.id}" aria-label="Zone umschalten"></button>
           </div>
         </div>
-      `).join("");
+      `).join('');
     }
 
-    function renderIdeas() {
-      el.ideaList.innerHTML = state.ideas.map(idea => `
-        <div class="idea">${escapeHtml(idea)}</div>
-      `).join("");
+    function renderSettings() {
+      el.aiToggle.classList.toggle('active', state.ai);
+      el.soundToggle.classList.toggle('active', state.sound);
+      el.focusModeToggle.classList.toggle('active', state.focusMode);
     }
 
     function renderThemes() {
-      el.themeGrid.innerHTML = Object.entries(themes).map(([key, val]) => `
-        <div class="theme-swatch ${state.theme === key ? "active" : ""}" data-theme="${key}" onclick="setAccentTheme('${key}')">
-          <div class="theme-preview" style="background:linear-gradient(135deg, ${val.accent}, ${val.accent2})"></div>
-          <div style="font-size:12px;">${val.label}</div>
-        </div>
-      `).join("");
+      el.themeGrid.innerHTML = Object.entries(THEMES).map(([key, theme]) => `
+        <button class="theme-swatch ${state.theme === key ? 'active' : ''}" type="button" data-action="set-theme" data-theme="${key}">
+          <div class="theme-preview" style="background:linear-gradient(135deg, ${theme.accent}, ${theme.accent2}, ${theme.accent3})"></div>
+          <div>${theme.label}</div>
+        </button>
+      `).join('');
+    }
+
+    function renderIdeas() {
+      el.ideaList.innerHTML = state.ideas.map(idea => `<div class="idea">${escapeHtml(idea)}</div>`).join('');
     }
 
     function renderAll() {
+      applyTheme();
       renderStats();
       renderReminderFilters();
+      renderFocusList();
       renderReminders();
-      renderFocus();
       renderHabits();
       renderChecklist();
       renderZonePills();
@@ -1719,9 +1527,9 @@
       renderNotes();
       renderDevices();
       renderZones();
-      renderIdeas();
+      renderSettings();
       renderThemes();
-      applyTheme();
+      renderIdeas();
       switchTab(state.currentTab);
       saveState();
     }
@@ -1729,68 +1537,54 @@
     function addReminder() {
       const value = el.quickInput.value.trim();
       if (!value) return;
-
       state.reminders.unshift({
         id: Date.now(),
-        time: "Heute",
+        time: 'Heute',
         title: value,
-        type: "Schnell hinzugefügt",
+        type: 'Schnell hinzugefügt',
         done: false,
-        priority: "medium"
+        priority: state.ai ? 'medium' : 'low'
       });
-
-      el.quickInput.value = "";
+      el.quickInput.value = '';
       renderAll();
-      toast("Erinnerung hinzugefügt");
+      showToast('Erinnerung hinzugefügt');
     }
 
     function addNote() {
       const value = el.quickInput.value.trim();
       if (!value) return;
-
-      state.notes.unshift({
-        id: Date.now(),
-        title: "Neue Notiz",
-        text: value,
-        pinned: false
-      });
-
-      el.quickInput.value = "";
+      state.notes.unshift({ id: Date.now(), title: 'Neue Notiz', text: value, pinned: false });
+      el.quickInput.value = '';
       renderAll();
-      switchTab("notes");
-      toast("Notiz hinzugefügt");
+      switchTab('notes');
+      showToast('Notiz hinzugefügt');
     }
 
     function toggleReminder(id) {
-      const item = state.reminders.find(r => r.id === id);
+      const item = state.reminders.find(reminder => reminder.id === id);
       if (!item) return;
       item.done = !item.done;
       renderAll();
-      toast(item.done ? "Erledigt ✅" : "Wieder offen");
+      showToast(item.done ? 'Erledigt ✅' : 'Wieder offen');
     }
 
     function removeReminder(id) {
-      state.reminders = state.reminders.filter(r => r.id !== id);
+      state.reminders = state.reminders.filter(reminder => reminder.id !== id);
       renderAll();
-      toast("Erinnerung gelöscht");
-    }
-
-    function setReminderFilter(filter) {
-      state.reminderFilter = filter;
-      renderAll();
+      showToast('Erinnerung gelöscht');
     }
 
     function boostHabit(id) {
-      const item = state.habits.find(h => h.id === id);
+      const item = state.habits.find(habit => habit.id === id);
       if (!item) return;
       item.progress = Math.min(100, item.progress + 20);
       if (item.progress === 100) item.streak += 1;
       renderAll();
-      toast("Routine aktualisiert");
+      showToast('Routine aktualisiert');
     }
 
-    function toggleChecklistItem(id) {
-      const item = state.checklist.find(c => c.id === id);
+    function toggleChecklist(id) {
+      const item = state.checklist.find(check => check.id === id);
       if (!item) return;
       item.checked = !item.checked;
       renderAll();
@@ -1802,103 +1596,141 @@
     }
 
     function toggleZone(id) {
-      const zone = state.zones.find(z => z.id === id);
+      const zone = state.zones.find(item => item.id === id);
       if (!zone) return;
       zone.active = !zone.active;
       renderAll();
-      toast(zone.active ? "Zone aktiviert" : "Zone deaktiviert");
+      showToast(zone.active ? 'Zone aktiviert' : 'Zone deaktiviert');
     }
 
-    function simulateGeo(inside) {
-      state.userInside = inside;
+    function simulateGeo(isInside) {
+      state.userInside = isInside;
       const zone = getSelectedZone();
-      const t = formatNow();
-      const line1 = `${t} • ${zone.name} ${inside ? "betreten" : "verlassen"}`;
-      const line2 = `${t} • ${inside ? "Hinweis" : "Alarm"}: ${zone.action}`;
-      state.alarmFeed.unshift(line2, line1);
+      const time = formatNow();
+      const entryA = `${time} • ${zone.name} ${isInside ? 'betreten' : 'verlassen'}`;
+      const entryB = `${time} • ${isInside ? 'Hinweis' : 'Alarm'}: ${zone.action}`;
+      state.alarmFeed.unshift(entryB, entryA);
       state.alarmFeed = state.alarmFeed.slice(0, 6);
       renderAll();
-      toast(inside ? "Zone betreten" : "Standort-Alarm ausgelöst");
+      showToast(isInside ? 'Zone betreten' : 'Standort-Alarm ausgelöst');
     }
 
-    function deleteNote(id) {
-      state.notes = state.notes.filter(n => n.id !== id);
-      renderAll();
-      toast("Notiz gelöscht");
-    }
-
-    function togglePinNote(id) {
-      const note = state.notes.find(n => n.id === id);
+    function togglePin(id) {
+      const note = state.notes.find(item => item.id === id);
       if (!note) return;
       note.pinned = !note.pinned;
       renderAll();
-      toast(note.pinned ? "Notiz angepinnt" : "Pin entfernt");
+      showToast(note.pinned ? 'Notiz angepinnt' : 'Pin entfernt');
     }
 
-    function setAccentTheme(themeKey) {
-      state.theme = themeKey;
+    function deleteNote(id) {
+      state.notes = state.notes.filter(note => note.id !== id);
       renderAll();
-      toast("Farbstil geändert");
+      showToast('Notiz gelöscht');
     }
 
-    function toggleDarkMode() {
-      state.darkMode = !state.darkMode;
+    function cycleTheme() {
+      const keys = Object.keys(THEMES);
+      const currentIndex = keys.indexOf(state.theme);
+      state.theme = keys[(currentIndex + 1) % keys.length];
       renderAll();
+      showToast('Farbstil gewechselt');
+    }
+
+    function handleAction(event) {
+      const target = event.target.closest('[data-action], [data-filter]');
+      if (!target) return;
+
+      if (target.dataset.filter) {
+        state.reminderFilter = target.dataset.filter;
+        renderAll();
+        return;
+      }
+
+      const action = target.dataset.action;
+      const id = Number(target.dataset.id);
+
+      switch (action) {
+        case 'toggle-reminder':
+          toggleReminder(id);
+          break;
+        case 'remove-reminder':
+          removeReminder(id);
+          break;
+        case 'boost-habit':
+          boostHabit(id);
+          break;
+        case 'toggle-checklist':
+          toggleChecklist(id);
+          break;
+        case 'select-zone':
+          selectZone(id);
+          break;
+        case 'toggle-zone':
+          toggleZone(id);
+          break;
+        case 'toggle-pin':
+          togglePin(id);
+          break;
+        case 'delete-note':
+          deleteNote(id);
+          break;
+        case 'set-theme':
+          state.theme = target.dataset.theme;
+          renderAll();
+          showToast('Farbstil gewechselt');
+          break;
+        default:
+          break;
+      }
+    }
+
+    function initStaticEvents() {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+      });
+
+      document.querySelectorAll('.suggestion').forEach(btn => {
+        btn.addEventListener('click', () => {
+          el.quickInput.value = btn.textContent.trim();
+          el.quickInput.focus();
+        });
+      });
+
+      el.addReminderBtn.addEventListener('click', addReminder);
+      el.addNoteBtn.addEventListener('click', addNote);
+      el.insideBtn.addEventListener('click', () => simulateGeo(true));
+      el.outsideBtn.addEventListener('click', () => simulateGeo(false));
+      el.noteSearch.addEventListener('input', renderNotes);
+      el.quickInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') addReminder();
+      });
+
+      el.themeToggle.addEventListener('click', cycleTheme);
+      el.aiToggle.addEventListener('click', () => {
+        state.ai = !state.ai;
+        renderAll();
+      });
+      el.soundToggle.addEventListener('click', () => {
+        state.sound = !state.sound;
+        renderAll();
+      });
+      el.focusModeToggle.addEventListener('click', () => {
+        state.focusMode = !state.focusMode;
+        renderAll();
+      });
+
+      document.body.addEventListener('click', handleAction);
     }
 
     function tickClock() {
       el.timeNow.textContent = formatNow();
     }
 
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-    });
-
-    document.querySelectorAll(".quick-suggestion").forEach(btn => {
-      btn.addEventListener("click", () => {
-        el.quickInput.value = btn.textContent.trim();
-      });
-    });
-
-    el.addReminderBtn.addEventListener("click", addReminder);
-    el.addNoteBtn.addEventListener("click", addNote);
-    el.insideBtn.addEventListener("click", () => simulateGeo(true));
-    el.outsideBtn.addEventListener("click", () => simulateGeo(false));
-    el.noteSearch.addEventListener("input", renderNotes);
-
-    el.quickInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") addReminder();
-    });
-
-    el.themeToggle.addEventListener("click", toggleDarkMode);
-
-    el.aiToggle.addEventListener("click", () => {
-      state.ai = !state.ai;
-      renderAll();
-    });
-
-    el.soundToggle.addEventListener("click", () => {
-      state.sound = !state.sound;
-      renderAll();
-    });
-
-    el.darkToggle.addEventListener("click", toggleDarkMode);
-
-    // expose for inline handlers
-    window.toggleReminder = toggleReminder;
-    window.removeReminder = removeReminder;
-    window.setReminderFilter = setReminderFilter;
-    window.boostHabit = boostHabit;
-    window.toggleChecklistItem = toggleChecklistItem;
-    window.selectZone = selectZone;
-    window.toggleZone = toggleZone;
-    window.deleteNote = deleteNote;
-    window.togglePinNote = togglePinNote;
-    window.setAccentTheme = setAccentTheme;
-
     function init() {
       tickClock();
       setInterval(tickClock, 30000);
+      initStaticEvents();
       renderAll();
     }
 
