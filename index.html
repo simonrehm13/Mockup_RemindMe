@@ -49,7 +49,7 @@
       max-width: 430px;
       min-height: 100vh;
       position: relative;
-      padding-bottom: calc(90px + var(--safe-bottom));
+      padding-bottom: calc(92px + var(--safe-bottom));
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       backdrop-filter: blur(8px);
     }
@@ -342,7 +342,8 @@
     .list,
     .notes-grid,
     .feed,
-    .settings-list {
+    .settings-list,
+    .progress-grid {
       display: grid;
       gap: 10px;
     }
@@ -356,7 +357,11 @@
     .note,
     .feed-item,
     .setting-row,
-    .idea {
+    .idea,
+    .metric-card,
+    .goal-card,
+    .compare-row,
+    .donation-box {
       border-radius: 20px;
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.05);
@@ -366,7 +371,11 @@
     .list-item,
     .device,
     .zone,
-    .setting-row {
+    .setting-row,
+    .metric-card,
+    .goal-card,
+    .compare-row,
+    .donation-box {
       padding: 14px;
     }
 
@@ -385,7 +394,8 @@
     }
 
     .mini-badge,
-    .tiny-tag {
+    .tiny-tag,
+    .streak-pill {
       padding: 6px 10px;
       border-radius: 999px;
       background: rgba(255,255,255,0.06);
@@ -441,7 +451,9 @@
     }
 
     .item-meta,
-    .muted {
+    .muted,
+    .metric-caption,
+    .friend-sub {
       font-size: 12px;
       color: var(--muted);
       line-height: 1.45;
@@ -482,7 +494,8 @@
     .note-top,
     .device-top,
     .zone-top,
-    .setting-row {
+    .setting-row,
+    .goal-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -493,9 +506,11 @@
     .note h4,
     .device h4,
     .zone h4,
-    .setting-row h4 {
+    .setting-row h4,
+    .friend-name {
       margin: 0 0 4px;
       font-size: 14px;
+      font-weight: 700;
     }
 
     .progress,
@@ -602,7 +617,8 @@
       line-height: 1.4;
     }
 
-    .button-row {
+    .button-row,
+    .split-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
@@ -762,6 +778,82 @@
       margin-bottom: 8px;
     }
 
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .rank-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      flex: 0 0 auto;
+    }
+
+    .compare-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .friend-meta {
+      min-width: 0;
+    }
+
+    .donation-box {
+      border-color: rgba(52,211,153,0.20);
+      background: linear-gradient(135deg, rgba(52,211,153,0.12), rgba(34,211,238,0.06));
+    }
+
+    .donation-box strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .mini-chart {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      align-items: end;
+      height: 110px;
+      margin-top: 6px;
+    }
+
+    .mini-bar-col {
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    .mini-bar {
+      width: 100%;
+      max-width: 22px;
+      border-radius: 999px 999px 8px 8px;
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      min-height: 10px;
+    }
+
+    .mini-bar-label {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
     .bottom-nav {
       position: fixed;
       left: 50%;
@@ -778,7 +870,7 @@
 
     .nav-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 8px;
     }
 
@@ -795,6 +887,7 @@
       gap: 5px;
       font-size: 11px;
       cursor: pointer;
+      min-width: 0;
     }
 
     .nav-btn .icon { font-size: 18px; }
@@ -853,10 +946,12 @@
 
     @media (max-width: 380px) {
       .input-row { grid-template-columns: 1fr; }
-      .button-row { grid-template-columns: 1fr; }
+      .button-row,
+      .split-grid { grid-template-columns: 1fr; }
       .stats { grid-template-columns: 1fr 1fr; }
       .stats .stat:last-child { grid-column: span 2; }
       .theme-grid { grid-template-columns: 1fr; }
+      .nav-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
@@ -1051,6 +1146,75 @@
         </section>
       </section>
 
+      <section id="progress" class="tab-view">
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📈</span> Fortschritt & Impact</div>
+              <div class="card-subtitle">Verfolge, was du vergessen hast, wie viel dadurch gespendet wurde und wie du im Vergleich mit Freunden dastehst.</div>
+            </div>
+            <div class="tiny-tag">Pay per Vergessen</div>
+          </div>
+          <div class="progress-grid" id="progressMetrics"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">💸</span> Spendenmodell</div>
+              <div class="card-subtitle">Jedes vergessene Ereignis zahlt in deine persönliche Spendenkasse für Alzheimer-Forschung ein.</div>
+            </div>
+          </div>
+          <div class="split-grid">
+            <div class="goal-card">
+              <div class="goal-head">
+                <div>
+                  <div class="friend-name">Aktuelle Spendenrate</div>
+                  <div class="friend-sub">Kosten pro Vergessen</div>
+                </div>
+                <div class="tiny-tag" id="payPerForgetTag">€2</div>
+              </div>
+              <div class="progress"><span id="donationGoalBar" style="width:0%"></span></div>
+              <div class="muted" id="donationGoalText" style="margin-top:10px">0% des Monatsziels erreicht</div>
+            </div>
+            <div class="donation-box">
+              <strong>So funktioniert’s</strong>
+              <div class="muted">Wenn du etwas vergisst, steigt dein Impact-Zähler. Das erzeugt einen Spendenbetrag, der symbolisch an Alzheimer-Forschung geht. Gleichzeitig motiviert dich die App, deine Vergessensquote zu senken.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">📊</span> Vergessens-Trend</div>
+              <div class="card-subtitle">Die letzten 7 Tage auf einen Blick.</div>
+            </div>
+          </div>
+          <div class="mini-chart" id="forgetChart"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🏆</span> Freunde & Vergleich</div>
+              <div class="card-subtitle">Vergleiche vergessensfreie Tage, Streaks und Spenden-Impact mit Freunden.</div>
+            </div>
+          </div>
+          <div class="list" id="friendsList"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div class="card-title-wrap">
+              <div class="card-title"><span class="title-icon">🚀</span> Kreative Motivation</div>
+              <div class="card-subtitle">Zusätzliche Ideen, die den Fortschrittsbereich noch stärker machen.</div>
+            </div>
+          </div>
+          <div class="list" id="impactIdeas"></div>
+        </section>
+      </section>
+
       <section id="settings" class="tab-view">
         <section class="card">
           <div class="card-header">
@@ -1112,6 +1276,7 @@
         <button class="nav-btn" data-tab="calendar"><span class="icon">📆</span><span>Kalender</span></button>
         <button class="nav-btn" data-tab="notes"><span class="icon">📝</span><span>Notizen</span></button>
         <button class="nav-btn" data-tab="devices"><span class="icon">📱</span><span>Geräte</span></button>
+        <button class="nav-btn" data-tab="progress"><span class="icon">📈</span><span>Fortschritt</span></button>
         <button class="nav-btn" data-tab="settings"><span class="icon">⚙️</span><span>Mehr</span></button>
       </div>
     </nav>
@@ -1120,7 +1285,7 @@
   <div class="toast" id="toast">Gespeichert</div>
 
   <script>
-    const STORAGE_KEY = "remindme_dark_pro_v1";
+    const STORAGE_KEY = "remindme_dark_pro_v2";
 
     const THEMES = {
       violet: { accent: "#7c5cff", accent2: "#22d3ee", accent3: "#34d399", label: "Violet Pro" },
@@ -1179,6 +1344,29 @@
       alarmFeed: [
         "08:14 • Zuhause verlassen erkannt",
         "08:14 • Alarm: Schlüssel, Geldbeutel, Handy prüfen"
+      ],
+      impact: {
+        forgottenCount: 7,
+        recoveredInTime: 18,
+        payPerForget: 2,
+        donationGoal: 25,
+        monthSavedStreak: 5,
+        cleanDays: 11,
+        totalDonation: 14,
+        weekTrend: [2, 1, 0, 2, 1, 0, 1]
+      },
+      friends: [
+        { id: 1, name: "Du", cleanDays: 11, streak: 5, forgottenCount: 7, donation: 14 },
+        { id: 2, name: "Mia", cleanDays: 14, streak: 8, forgottenCount: 4, donation: 8 },
+        { id: 3, name: "Jonas", cleanDays: 9, streak: 3, forgottenCount: 11, donation: 22 },
+        { id: 4, name: "Lea", cleanDays: 12, streak: 6, forgottenCount: 6, donation: 12 }
+      ],
+      impactIdeas: [
+        "Vergessensfreie Wochen mit Bonus-Spenden freischalten",
+        "Freundesduelle: 7 Tage ohne vergessen als Challenge",
+        "Monatliche Impact-Badges für Fokus, Streak und weniger Kosten",
+        "Partner-Modus: gemeinsam eine Spenden-Challenge absolvieren",
+        "KI-Tipps basierend auf deinen häufigsten Vergessensmomenten"
       ]
     };
 
@@ -1231,7 +1419,14 @@
       statDone: document.getElementById('statDone'),
       statOpen: document.getElementById('statOpen'),
       statZones: document.getElementById('statZones'),
-      toast: document.getElementById('toast')
+      toast: document.getElementById('toast'),
+      progressMetrics: document.getElementById('progressMetrics'),
+      payPerForgetTag: document.getElementById('payPerForgetTag'),
+      donationGoalBar: document.getElementById('donationGoalBar'),
+      donationGoalText: document.getElementById('donationGoalText'),
+      forgetChart: document.getElementById('forgetChart'),
+      friendsList: document.getElementById('friendsList'),
+      impactIdeas: document.getElementById('impactIdeas')
     };
 
     function saveState() {
@@ -1293,7 +1488,6 @@
         btn.classList.toggle('active', btn.dataset.tab === id);
       });
       saveState();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderStats() {
@@ -1328,6 +1522,7 @@
     function renderFocusList() {
       const topItems = state.reminders
         .filter(r => !r.done)
+        .slice()
         .sort(reminderSort)
         .slice(0, state.focusMode ? 2 : 3);
 
@@ -1438,6 +1633,7 @@
       const query = el.noteSearch.value.trim().toLowerCase();
       const filtered = state.notes
         .filter(note => `${note.title} ${note.text}`.toLowerCase().includes(query))
+        .slice()
         .sort((a, b) => Number(b.pinned) - Number(a.pinned));
 
       el.notesList.innerHTML = filtered.length ? filtered.map(note => `
@@ -1512,6 +1708,79 @@
       el.ideaList.innerHTML = state.ideas.map(idea => `<div class="idea">${escapeHtml(idea)}</div>`).join('');
     }
 
+    function renderProgressMetrics() {
+      const impact = state.impact;
+      const forgetPercent = Math.round((impact.forgottenCount / Math.max(impact.forgottenCount + impact.recoveredInTime, 1)) * 100);
+      const donationGoalPercent = Math.min(100, Math.round((impact.totalDonation / Math.max(impact.donationGoal, 1)) * 100));
+
+      el.progressMetrics.innerHTML = `
+        <div class="split-grid">
+          <div class="metric-card">
+            <div class="metric-label">Vergessen gesamt</div>
+            <div class="metric-value">${impact.forgottenCount}</div>
+            <div class="metric-caption">${forgetPercent}% deiner erfassten kritischen Momente endeten im Vergessen.</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Gespendet</div>
+            <div class="metric-value">€${impact.totalDonation}</div>
+            <div class="metric-caption">Symbolischer Gesamtbetrag für Alzheimer-Forschung.</div>
+          </div>
+        </div>
+        <div class="split-grid">
+          <div class="metric-card">
+            <div class="metric-label">Vergessensfreie Tage</div>
+            <div class="metric-value">${impact.cleanDays}</div>
+            <div class="metric-caption">Tage ohne dokumentierten Vergessensfall.</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Aktuelle Streak</div>
+            <div class="metric-value">${impact.monthSavedStreak}</div>
+            <div class="metric-caption">Tage in Folge mit stabilem Erinnerungsverhalten.</div>
+          </div>
+        </div>
+      `;
+
+      el.payPerForgetTag.textContent = `€${impact.payPerForget}`;
+      el.donationGoalBar.style.width = `${donationGoalPercent}%`;
+      el.donationGoalText.textContent = `${donationGoalPercent}% des Monatsziels erreicht • Ziel: €${impact.donationGoal}`;
+    }
+
+    function renderForgetChart() {
+      const labels = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+      const maxVal = Math.max(...state.impact.weekTrend, 1);
+      el.forgetChart.innerHTML = state.impact.weekTrend.map((value, index) => {
+        const height = Math.max(10, Math.round((value / maxVal) * 80));
+        return `
+          <div class="mini-bar-col">
+            <div class="mini-bar" style="height:${height}px"></div>
+            <div class="mini-bar-label">${labels[index]}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderFriends() {
+      const ranking = state.friends.slice().sort((a, b) => {
+        if (b.cleanDays !== a.cleanDays) return b.cleanDays - a.cleanDays;
+        return b.streak - a.streak;
+      });
+
+      el.friendsList.innerHTML = ranking.map((friend, index) => `
+        <div class="compare-row">
+          <div class="rank-badge">#${index + 1}</div>
+          <div class="friend-meta">
+            <div class="friend-name">${escapeHtml(friend.name)}</div>
+            <div class="friend-sub">${friend.cleanDays} vergessensfreie Tage • ${friend.forgottenCount} vergessen • €${friend.donation} Impact</div>
+          </div>
+          <div class="streak-pill">🔥 ${friend.streak}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderImpactIdeas() {
+      el.impactIdeas.innerHTML = state.impactIdeas.map(idea => `<div class="idea">${escapeHtml(idea)}</div>`).join('');
+    }
+
     function renderAll() {
       applyTheme();
       renderStats();
@@ -1530,6 +1799,10 @@
       renderSettings();
       renderThemes();
       renderIdeas();
+      renderProgressMetrics();
+      renderForgetChart();
+      renderFriends();
+      renderImpactIdeas();
       switchTab(state.currentTab);
       saveState();
     }
@@ -1563,9 +1836,23 @@
     function toggleReminder(id) {
       const item = state.reminders.find(reminder => reminder.id === id);
       if (!item) return;
+      const wasDone = item.done;
       item.done = !item.done;
+
+      if (wasDone && !item.done) {
+        state.impact.forgottenCount += 1;
+        state.impact.totalDonation += state.impact.payPerForget;
+        state.impact.cleanDays = Math.max(0, state.impact.cleanDays - 1);
+        state.impact.monthSavedStreak = 0;
+        state.impact.weekTrend[state.impact.weekTrend.length - 1] += 1;
+      }
+
+      if (!wasDone && item.done) {
+        state.impact.recoveredInTime += 1;
+      }
+
       renderAll();
-      showToast(item.done ? 'Erledigt ✅' : 'Wieder offen');
+      showToast(item.done ? 'Erledigt ✅' : 'Als vergessen markiert');
     }
 
     function removeReminder(id) {
@@ -1611,6 +1898,9 @@
       const entryB = `${time} • ${isInside ? 'Hinweis' : 'Alarm'}: ${zone.action}`;
       state.alarmFeed.unshift(entryB, entryA);
       state.alarmFeed = state.alarmFeed.slice(0, 6);
+      if (!isInside) {
+        state.impact.weekTrend[state.impact.weekTrend.length - 1] += 1;
+      }
       renderAll();
       showToast(isInside ? 'Zone betreten' : 'Standort-Alarm ausgelöst');
     }
