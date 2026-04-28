@@ -1,0 +1,1757 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10131d">
+  <meta http-equiv="Cache-Control" content="no-store">
+  <meta name="remindme-version" content="2026-04-28-impact-icons-logo">
+  <title>RemindMe</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0c0f16;
+      --surface: #141925;
+      --surface-2: #1a2130;
+      --surface-3: #20293a;
+      --line: rgba(255, 255, 255, .09);
+      --text: #f3f6fb;
+      --muted: #9ea9bc;
+      --soft: #cbd5e1;
+      --accent: #52d3b8;
+      --accent-2: #76a8ff;
+      --warn: #ffcf6e;
+      --danger: #ff7b8a;
+      --ok: #72e39f;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .28);
+      --radius: 22px;
+      --nav-h: 82px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--bg); min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% -8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 34%),
+        radial-gradient(circle at 92% 5%, rgba(118, 168, 255, .16), transparent 28%),
+        linear-gradient(180deg, #10131d 0%, var(--bg) 42%, #080a10 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .055);
+      color: var(--text);
+      outline: 0;
+      padding: 13px 14px;
+      min-height: 48px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 92px;
+      line-height: 1.45;
+    }
+
+    input::placeholder, textarea::placeholder { color: #7c879a; }
+    select option { background: #151b27; color: var(--text); }
+
+    .app-shell {
+      width: min(100%, 480px);
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      padding-bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 18px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: calc(env(safe-area-inset-top) + 16px) 18px 12px;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(180deg, rgba(12, 15, 22, .92), rgba(12, 15, 22, .68));
+      border-bottom: 1px solid rgba(255, 255, 255, .055);
+    }
+
+    .brand-row, .row, .between {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .between { justify-content: space-between; }
+    .brand {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--accent) 28%, transparent);
+      color: #06100e;
+      font-weight: 900;
+      letter-spacing: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, rgba(255,255,255,.42), transparent 38%, rgba(0,0,0,.16));
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .brand svg {
+      width: 29px;
+      height: 29px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 23px; letter-spacing: 0; line-height: 1.08; }
+    h2 { font-size: 20px; letter-spacing: 0; line-height: 1.18; }
+    h3 { font-size: 15px; letter-spacing: 0; line-height: 1.22; }
+    p { color: var(--muted); line-height: 1.45; }
+
+    .screen {
+      display: none;
+      padding: 14px 16px 0;
+      animation: settle .22s ease both;
+    }
+    .screen.active { display: block; }
+    @keyframes settle {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stack { display: grid; gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+
+    .panel, .card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .044));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel { padding: 16px; }
+    .card { padding: 14px; }
+
+    .hero {
+      min-height: 174px;
+      display: grid;
+      align-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -42px -74px 36%;
+      height: 148px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 35%, transparent), rgba(118, 168, 255, .18));
+      filter: blur(10px);
+      opacity: .76;
+      pointer-events: none;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+    .hero-title { font-size: 28px; line-height: 1.05; max-width: 310px; }
+    .hero-copy { max-width: 270px; margin-top: 8px; }
+
+    .stat {
+      min-height: 96px;
+      display: grid;
+      align-content: space-between;
+      gap: 8px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .stat span, .meta, .tiny {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .pill, .chip, .nav-btn, .icon-btn, .primary, .ghost, .seg-btn {
+      min-height: 44px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .16s ease, background .16s ease, border-color .16s ease, opacity .16s ease;
+    }
+
+    .primary {
+      padding: 0 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #06100e;
+      font-weight: 800;
+      box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 22%, transparent);
+    }
+
+    .ghost, .pill, .chip, .seg-btn {
+      background: rgba(255, 255, 255, .065);
+      border: 1px solid var(--line);
+      color: var(--soft);
+      padding: 0 13px;
+    }
+
+    .icon-btn {
+      width: 44px;
+      background: rgba(255, 255, 255, .07);
+      border: 1px solid var(--line);
+      color: var(--soft);
+      flex: 0 0 auto;
+    }
+
+    .primary:active, .ghost:active, .icon-btn:active, .nav-btn:active, .seg-btn:active {
+      transform: scale(.98);
+    }
+
+    .quick-form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 118px;
+      gap: 9px;
+    }
+
+    .section-head {
+      margin: 4px 0 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .list { display: grid; gap: 10px; }
+    .empty {
+      padding: 18px;
+      border: 1px dashed rgba(255, 255, 255, .14);
+      border-radius: 18px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 255, 255, .025);
+    }
+
+    .reminder, .note, .device, .zone, .routine, .leader-row, .agenda-item {
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .048);
+      border-radius: 18px;
+      padding: 13px;
+    }
+
+    .reminder-main, .note-main, .routine-top, .device-top, .zone-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .check {
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      background: rgba(255, 255, 255, .07);
+      display: grid;
+      place-items: center;
+      color: transparent;
+      flex: 0 0 auto;
+    }
+
+    .done .check {
+      background: linear-gradient(135deg, var(--accent), var(--ok));
+      color: #07110c;
+      font-weight: 900;
+    }
+
+    .done h3, .done .note-text {
+      text-decoration: line-through;
+      color: #8792a5;
+    }
+
+    .priority {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .priority.high { background: rgba(255, 123, 138, .16); color: #ff9fa9; }
+    .priority.medium { background: rgba(255, 207, 110, .16); color: #ffdc92; }
+    .priority.low { background: rgba(114, 227, 159, .15); color: #9cf0ba; }
+
+    .segmented {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .segmented::-webkit-scrollbar { display: none; }
+    .seg-btn {
+      min-height: 38px;
+      white-space: nowrap;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 750;
+    }
+    .seg-btn.active {
+      background: color-mix(in srgb, var(--accent) 20%, rgba(255, 255, 255, .07));
+      border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+      color: var(--text);
+    }
+
+    .progress {
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+    }
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transition: width .28s ease;
+    }
+
+    .map-demo {
+      height: 184px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(255,255,255,.045) 1px, transparent 1px),
+        radial-gradient(circle at 55% 48%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 31%),
+        rgba(255, 255, 255, .035);
+      background-size: 38px 38px, 38px 38px, auto, auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .zone-radius {
+      position: absolute;
+      width: 116px;
+      height: 116px;
+      border-radius: 999px;
+      left: calc(var(--zone-x, 48) * 1%);
+      top: calc(var(--zone-y, 48) * 1%);
+      transform: translate(-50%, -50%);
+      background: color-mix(in srgb, var(--accent) 18%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 48%, transparent);
+      box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent) 7%, transparent);
+    }
+
+    .pin {
+      position: absolute;
+      left: calc(var(--zone-x, 48) * 1%);
+      top: calc(var(--zone-y, 48) * 1%);
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 10px 10px 10px 3px;
+      rotate: -45deg;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 26px rgba(0,0,0,.32);
+    }
+    .pin::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #081014;
+      left: 10px;
+      top: 10px;
+    }
+
+    .person-dot {
+      position: absolute;
+      left: calc(var(--person-x, 42) * 1%);
+      top: calc(var(--person-y, 42) * 1%);
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border: 4px solid var(--accent-2);
+      box-shadow: 0 0 0 8px rgba(118, 168, 255, .16);
+      transition: left .24s ease, top .24s ease;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+    }
+    .weekday, .day-cell {
+      min-height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      position: relative;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .weekday {
+      color: var(--muted);
+      min-height: 28px;
+      font-size: 11px;
+      font-weight: 850;
+    }
+    .day-cell {
+      background: rgba(255, 255, 255, .045);
+      border: 1px solid transparent;
+      color: var(--soft);
+    }
+    .day-cell.muted { opacity: .35; }
+    .day-cell.today {
+      border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+      color: var(--text);
+    }
+    .day-cell.has-items::after {
+      content: "";
+      position: absolute;
+      bottom: 7px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .day-cell.selected {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 38%, transparent), rgba(118, 168, 255, .16));
+    }
+
+    .chart {
+      height: 128px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 8px;
+      padding-top: 10px;
+    }
+    .bar-wrap {
+      display: grid;
+      gap: 7px;
+      justify-items: center;
+      align-items: end;
+      color: var(--muted);
+      font-size: 10px;
+      min-width: 0;
+    }
+    .bar {
+      width: 100%;
+      max-width: 30px;
+      min-height: 6px;
+      border-radius: 999px 999px 7px 7px;
+      background: linear-gradient(180deg, var(--danger), var(--warn));
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .badge {
+      padding: 13px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, .052);
+      border: 1px solid var(--line);
+      min-height: 86px;
+      display: grid;
+      align-content: space-between;
+    }
+    .badge.locked { opacity: .52; }
+
+    .switch {
+      width: 54px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .12);
+      border: 1px solid var(--line);
+      padding: 3px;
+      flex: 0 0 auto;
+    }
+    .switch span {
+      display: block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #dbe5f2;
+      transition: transform .2s ease, background .2s ease;
+    }
+    .switch.on {
+      background: color-mix(in srgb, var(--accent) 28%, rgba(255,255,255,.09));
+      border-color: color-mix(in srgb, var(--accent) 46%, transparent);
+    }
+    .switch.on span {
+      transform: translateX(21px);
+      background: var(--accent);
+    }
+
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .settings-row:last-child { border-bottom: 0; }
+
+    .swatches { display: flex; gap: 10px; }
+    .swatch {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.2);
+      background: var(--swatch);
+    }
+    .swatch.active {
+      outline: 3px solid color-mix(in srgb, var(--swatch) 38%, transparent);
+      border-color: #fff;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      z-index: 30;
+      width: min(100%, 480px);
+      padding: 9px 10px calc(env(safe-area-inset-bottom) + 9px);
+      background: rgba(10, 13, 19, .88);
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      backdrop-filter: blur(18px);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+    }
+
+    .nav-btn {
+      min-width: 0;
+      min-height: 58px;
+      border-radius: 17px;
+      background: transparent;
+      color: var(--muted);
+      display: grid;
+      gap: 3px;
+      align-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+    .nav-icon {
+      width: 21px;
+      height: 21px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .nav-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .nav-btn.active {
+      background: color-mix(in srgb, var(--accent) 16%, rgba(255,255,255,.07));
+      color: var(--text);
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 60;
+      left: 50%;
+      bottom: calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
+      transform: translate(-50%, 18px);
+      width: min(calc(100% - 32px), 448px);
+      background: rgba(23, 29, 42, .96);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px 15px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .focus-on .optional-noise { display: none; }
+    .focus-on .hero { min-height: 148px; }
+
+    @media (min-width: 760px) {
+      body { padding: 22px 0; }
+      .app-shell {
+        border: 1px solid rgba(255,255,255,.08);
+        border-radius: 34px;
+        min-height: calc(100vh - 44px);
+        overflow: hidden;
+        box-shadow: 0 30px 90px rgba(0,0,0,.34);
+      }
+      .bottom-nav {
+        bottom: 22px;
+        border-radius: 0 0 34px 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell" id="app">
+    <header class="topbar">
+      <div class="brand-row between">
+        <div class="brand-row">
+          <div class="brand" aria-label="RemindMe Logo">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M16 3.8a10.2 10.2 0 0 0-10.2 10.2c0 7.5 10.2 14.2 10.2 14.2S26.2 21.5 26.2 14A10.2 10.2 0 0 0 16 3.8Z" fill="rgba(6,16,14,.9)"/>
+              <path d="M16 8.1v6.1l4 2.4" stroke="#f6fffb" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10.6 14.2a5.4 5.4 0 1 0 10.8 0 5.4 5.4 0 0 0-10.8 0Z" stroke="#f6fffb" stroke-width="2.1" opacity=".92"/>
+            </svg>
+          </div>
+          <div>
+            <div class="eyebrow">RemindMe</div>
+            <h1 id="screenTitle">Start</h1>
+          </div>
+        </div>
+        <button class="icon-btn" type="button" data-action="cycle-accent" aria-label="Akzentfarbe wechseln">◐</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="screen active" data-screen="dashboard" aria-labelledby="screenTitle">
+        <div class="stack">
+          <article class="panel hero">
+            <div>
+              <p class="eyebrow" id="greeting">Guten Tag</p>
+              <h2 class="hero-title">Ruhiger durch deinen Tag.</h2>
+              <p class="hero-copy" id="dailySummary">Deine wichtigsten Erinnerungen sind bereit.</p>
+            </div>
+            <div class="grid-3">
+              <div class="stat card"><span>Erledigt</span><strong id="statDone">0</strong></div>
+              <div class="stat card"><span>Offen</span><strong id="statOpen">0</strong></div>
+              <div class="stat card"><span>Zonen</span><strong id="statZones">0</strong></div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Schnell erfassen</p>
+                <h2>Neue Erinnerung</h2>
+              </div>
+            </div>
+            <form class="quick-form" id="reminderForm">
+              <input id="reminderText" autocomplete="off" placeholder="Was darf nicht verloren gehen?">
+              <div class="form-row">
+                <select id="reminderPriority" aria-label="Priorität">
+                  <option value="high">Hoch</option>
+                  <option value="medium" selected>Mittel</option>
+                  <option value="low">Niedrig</option>
+                </select>
+                <button class="primary" type="submit">Hinzufügen</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Schnellnotiz</p>
+                <h2>Gedanken sichern</h2>
+              </div>
+            </div>
+            <form class="quick-form" id="quickNoteForm">
+              <textarea id="quickNoteText" placeholder="Kurze Notiz, Idee oder Packliste"></textarea>
+              <button class="primary" type="submit">Notiz speichern</button>
+            </form>
+          </article>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Fokus</p>
+                <h2>Wichtigste offene Aufgaben</h2>
+              </div>
+              <button class="ghost" type="button" data-action="set-tab" data-tab="calendar">Agenda</button>
+            </div>
+            <div class="list" id="focusList"></div>
+          </section>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Heute</p>
+                <h2>Erinnerungen</h2>
+              </div>
+              <div class="segmented" id="reminderFilters">
+                <button class="seg-btn active" type="button" data-action="filter-reminders" data-filter="all">Alle</button>
+                <button class="seg-btn" type="button" data-action="filter-reminders" data-filter="open">Offen</button>
+                <button class="seg-btn" type="button" data-action="filter-reminders" data-filter="done">Erledigt</button>
+              </div>
+            </div>
+            <div class="list" id="reminderList"></div>
+          </section>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Routinen</p>
+                <h2>Gewohnheiten</h2>
+              </div>
+            </div>
+            <div class="list" id="routineList"></div>
+          </section>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Bevor du gehst</p>
+                <h2>Checkliste</h2>
+              </div>
+              <button class="ghost" type="button" data-action="reset-checklist">Zurücksetzen</button>
+            </div>
+            <div class="list" id="checklist"></div>
+          </section>
+
+          <section class="optional-noise">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Standort</p>
+                <h2>Alarm-Vorschau</h2>
+              </div>
+              <button class="ghost" type="button" data-action="set-tab" data-tab="devices">Zonen</button>
+            </div>
+            <div class="list" id="alarmPreview"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="calendar">
+        <div class="stack">
+          <article class="panel">
+            <div class="between">
+              <button class="icon-btn" type="button" data-action="month-prev" aria-label="Vorheriger Monat">‹</button>
+              <div style="text-align:center">
+                <p class="eyebrow">Kalender</p>
+                <h2 id="monthLabel">Monat</h2>
+              </div>
+              <button class="icon-btn" type="button" data-action="month-next" aria-label="Nächster Monat">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid" style="margin-top:14px"></div>
+          </article>
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow" id="agendaDate">Agenda</p>
+                <h2>Geplante Dinge</h2>
+              </div>
+            </div>
+            <div class="list" id="agendaList"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="notes">
+        <div class="stack">
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Notizen</p>
+                <h2>Schnell wiederfinden</h2>
+              </div>
+            </div>
+            <form class="quick-form" id="noteForm">
+              <input id="noteTitle" placeholder="Titel">
+              <textarea id="noteText" placeholder="Notizinhalt"></textarea>
+              <button class="primary" type="submit">Notiz erstellen</button>
+            </form>
+          </article>
+          <input id="noteSearch" placeholder="Notizen durchsuchen">
+          <div class="list" id="noteList"></div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="devices">
+        <div class="stack">
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Geräte</p>
+                <h2>Verbunden</h2>
+              </div>
+            </div>
+            <div class="list" id="deviceList"></div>
+          </section>
+
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Standort</p>
+                <h2>Geofencing Demo</h2>
+              </div>
+            </div>
+            <div class="map-demo" id="mapDemo">
+              <div class="zone-radius"></div>
+              <div class="pin"></div>
+              <div class="person-dot"></div>
+            </div>
+            <div class="grid-2" style="margin-top:12px">
+              <button class="ghost" type="button" data-action="simulate-location" data-mode="inside">Im Bereich</button>
+              <button class="primary" type="button" data-action="simulate-location" data-mode="outside">Bereich verlassen</button>
+            </div>
+          </article>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Zonen</p>
+                <h2>Aktive Orte</h2>
+              </div>
+            </div>
+            <div class="list" id="zoneList"></div>
+          </section>
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Alarm-Feed</p>
+                <h2>Letzte Ereignisse</h2>
+              </div>
+            </div>
+            <div class="list" id="alarmFeed"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="impact">
+        <div class="stack">
+          <article class="panel hero">
+            <div>
+              <p class="eyebrow">Impact</p>
+              <h2 class="hero-title" id="impactHeadline">Heute achtsam unterwegs.</h2>
+              <p class="hero-copy" id="impactCopy">Jede gerettete Erinnerung zählt.</p>
+            </div>
+            <div class="grid-2">
+              <button class="ghost" type="button" data-action="log-forgot">Vergessen loggen</button>
+              <button class="primary" type="button" data-action="log-save">Gerettet</button>
+            </div>
+          </article>
+
+          <div class="grid-2">
+            <div class="stat card"><span>Vergessen</span><strong id="impactForgot">0</strong></div>
+            <div class="stat card"><span>Gerettet</span><strong id="impactSaved">0</strong></div>
+            <div class="stat card"><span>Freie Tage</span><strong id="impactCleanDays">0</strong></div>
+            <div class="stat card"><span>Streak</span><strong id="impactStreak">0</strong></div>
+          </div>
+
+          <article class="panel">
+            <div class="between">
+              <div>
+                <p class="eyebrow">Pay per Vergessen</p>
+                <h2 id="donationAmount">0,00 €</h2>
+              </div>
+              <span class="pill" id="donationLabel">Gespendet</span>
+            </div>
+            <p class="tiny" style="margin-top:10px" id="impactMoment">Heute 0,00 € für Alzheimer-Forschung gespendet.</p>
+          </article>
+
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">7 Tage</p>
+                <h2>Vergessensverlauf</h2>
+              </div>
+            </div>
+            <div class="chart" id="impactChart"></div>
+          </article>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Freunde</p>
+                <h2>Leaderboard</h2>
+              </div>
+            </div>
+            <div class="list" id="leaderboard"></div>
+          </section>
+
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Challenges</p>
+                <h2>Wochenziel</h2>
+              </div>
+              <span class="pill" id="challengeState">0 / 3</span>
+            </div>
+            <p>3 Tage nichts vergessen und ein gemeinsames Spendenziel freischalten.</p>
+            <div class="progress" style="margin-top:14px"><span id="challengeProgress"></span></div>
+          </article>
+
+          <section>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Badges</p>
+                <h2>Motivation</h2>
+              </div>
+            </div>
+            <div class="badge-grid" id="badges"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="settings">
+        <div class="stack">
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Einstellungen</p>
+                <h2>App-Verhalten</h2>
+              </div>
+            </div>
+            <div id="settingsList"></div>
+          </article>
+          <article class="panel">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Design</p>
+                <h2>Akzentfarbe</h2>
+              </div>
+            </div>
+            <div class="swatches" id="swatches"></div>
+          </article>
+          <article class="panel">
+            <p class="eyebrow">Speicher</p>
+            <h2 style="margin:5px 0 12px">Lokale Daten</h2>
+            <div class="grid-2">
+              <button class="ghost" type="button" data-action="export-data">Export</button>
+              <button class="ghost" type="button" data-action="reset-demo">Demo zurücksetzen</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Hauptnavigation">
+      <button class="nav-btn active" type="button" data-action="set-tab" data-tab="dashboard"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8"/><path d="M5.6 9.2V21h12.8V9.2"/><path d="M9.5 21v-6h5v6"/></svg></span><span>Start</span></button>
+      <button class="nav-btn" type="button" data-action="set-tab" data-tab="calendar"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v3M17 3v3"/><path d="M4.5 8.5h15"/><rect x="4.5" y="5.5" width="15" height="15" rx="3"/><path d="M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01"/></svg></span><span>Kalender</span></button>
+      <button class="nav-btn" type="button" data-action="set-tab" data-tab="notes"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7.5L19 8v12.5H7a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2Z"/><path d="M14 3.5V8h5"/><path d="M8.5 12.5h7M8.5 16h5"/></svg></span><span>Notizen</span></button>
+      <button class="nav-btn" type="button" data-action="set-tab" data-tab="devices"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="3"/><path d="M10.5 18h3"/><path d="M18.8 8.5a5 5 0 0 1 0 7M5.2 8.5a5 5 0 0 0 0 7"/></svg></span><span>Geräte</span></button>
+      <button class="nav-btn" type="button" data-action="set-tab" data-tab="impact"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5h16"/><path d="M6 16l4-4 3 3 5-7"/><path d="M16 8h2v2"/><path d="M8 19.5v-4M13 19.5v-3M18 19.5v-7"/></svg></span><span>Impact</span></button>
+      <button class="nav-btn" type="button" data-action="set-tab" data-tab="settings"><span class="nav-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .26V20a2 2 0 0 1-4 0v-.34a1.7 1.7 0 0 0-1-.26 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.26-1H4a2 2 0 0 1 0-4h.34a1.7 1.7 0 0 0 .26-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.26V4a2 2 0 0 1 4 0v.34a1.7 1.7 0 0 0 1 .26 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c0 .36.09.7.26 1H20a2 2 0 0 1 0 4h-.34c-.17.3-.26.64-.26 1Z"/></svg></span><span>Setup</span></button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "remindme.mobile.v1";
+      const donationPerForgot = 2;
+      const accentPalette = [
+        { name: "Mint", accent: "#52d3b8", accent2: "#76a8ff" },
+        { name: "Coral", accent: "#ff8d7a", accent2: "#ffd166" },
+        { name: "Blue", accent: "#67d4ff", accent2: "#9a8cff" },
+        { name: "Green", accent: "#7ee787", accent2: "#4dd4ac" }
+      ];
+      const screenNames = {
+        dashboard: "Start",
+        calendar: "Kalender",
+        notes: "Notizen",
+        devices: "Geräte",
+        impact: "Fortschritt",
+        settings: "Einstellungen"
+      };
+      const zonePositions = {
+        home: { x: 40, y: 44 },
+        office: { x: 63, y: 38 },
+        market: { x: 52, y: 65 }
+      };
+      const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+      const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+      const uid = (prefix) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      const today = () => new Date();
+      const isoDate = (date = today()) => {
+        const d = new Date(date);
+        d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+        return d.toISOString().slice(0, 10);
+      };
+      const addDays = (n) => {
+        const d = today();
+        d.setDate(d.getDate() + n);
+        return isoDate(d);
+      };
+      const currency = (value) => new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(value);
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+      const escapeHtml = (value) => String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      const defaultState = () => ({
+        activeTab: "dashboard",
+        reminderFilter: "all",
+        selectedDate: isoDate(),
+        calendarMonth: today().getMonth(),
+        calendarYear: today().getFullYear(),
+        selectedZone: "home",
+        locationMode: "inside",
+        accentIndex: 0,
+        settings: {
+          aiSuggestions: true,
+          alarmSound: true,
+          focusMode: false
+        },
+        reminders: [
+          { id: uid("r"), text: "Medikamente nach dem Frühstück nehmen", priority: "high", done: false, date: isoDate(), createdAt: Date.now() - 900000 },
+          { id: uid("r"), text: "Laptop-Ladegerät einpacken", priority: "medium", done: false, date: isoDate(), createdAt: Date.now() - 700000 },
+          { id: uid("r"), text: "Geburtstagskarte für Mama abschicken", priority: "medium", done: true, date: isoDate(), createdAt: Date.now() - 500000 },
+          { id: uid("r"), text: "Paket aus der Packstation holen", priority: "low", done: false, date: addDays(1), createdAt: Date.now() - 300000 }
+        ],
+        notes: [
+          { id: uid("n"), title: "Einkauf", text: "Hafermilch, Blaubeeren, Batterien, Zahnpasta", pinned: true, createdAt: Date.now() - 400000 },
+          { id: uid("n"), title: "Reise", text: "Ausweis, Kopfhörer, Ladekabel und Kopie der Buchung einpacken.", pinned: false, createdAt: Date.now() - 240000 }
+        ],
+        devices: [
+          { id: "watch", name: "Smartwatch", detail: "Handgelenk", battery: 84, status: "Verbunden" },
+          { id: "phone", name: "Smartphone", detail: "Hauptgerät", battery: 62, status: "Aktiv" },
+          { id: "tracker", name: "Bluetooth Tracker", detail: "Schlüsselbund", battery: 31, status: "In Reichweite" }
+        ],
+        zones: [
+          { id: "home", name: "Zuhause", cue: "Schlüssel, Geldbeutel, Handy", active: true },
+          { id: "office", name: "Büro", cue: "Laptop, Badge, Ladegerät", active: true },
+          { id: "market", name: "Supermarkt", cue: "Einkaufsliste, Taschen", active: false }
+        ],
+        routines: [
+          { id: "water", name: "Wasser trinken", progress: 2, target: 4, streak: 5 },
+          { id: "keys", name: "Abendlicher Ablage-Check", progress: 1, target: 1, streak: 8 },
+          { id: "plan", name: "Morgen kurz planen", progress: 0, target: 1, streak: 2 }
+        ],
+        checklist: [
+          { id: "phone", text: "Handy", done: false },
+          { id: "keys", text: "Schlüssel", done: false },
+          { id: "wallet", text: "Geldbeutel", done: false },
+          { id: "charger", text: "Ladegerät", done: false }
+        ],
+        alarms: [
+          { id: uid("a"), text: "Zuhause aktiv: Schlüsselbund-Check bereit", zoneId: "home", type: "info", at: Date.now() - 500000 }
+        ],
+        impact: {
+          forgotten: 3,
+          saved: 11,
+          cleanDays: 4,
+          streak: 3,
+          donationGoal: 25,
+          trend: [0, 1, 0, 2, 0, 0, 1],
+          todayForgotten: 0
+        },
+        friends: [
+          { name: "Mara", cleanDays: 6, streak: 5 },
+          { name: "Jonas", cleanDays: 4, streak: 7 },
+          { name: "Du", cleanDays: 4, streak: 3 },
+          { name: "Lea", cleanDays: 2, streak: 2 }
+        ]
+      });
+
+      let state = loadState();
+      let toastTimer = null;
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return defaultState();
+          return normalizeState(JSON.parse(raw));
+        } catch {
+          return defaultState();
+        }
+      }
+
+      function normalizeState(saved) {
+        const base = defaultState();
+        const merged = { ...base, ...saved };
+        merged.settings = { ...base.settings, ...(saved.settings || {}) };
+        const keys = ["reminders", "notes", "devices", "zones", "routines", "checklist", "alarms", "friends"];
+        keys.forEach((key) => {
+          if (!Array.isArray(merged[key])) merged[key] = base[key];
+        });
+        merged.impact = { ...base.impact, ...(saved.impact || {}) };
+        if (!Array.isArray(merged.impact.trend) || merged.impact.trend.length !== 7) merged.impact.trend = base.impact.trend;
+        return merged;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch {
+          showToast("Speicher ist voll oder nicht verfügbar.");
+        }
+      }
+
+      function showToast(message) {
+        const toast = $("#toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+      }
+
+      function render() {
+        applyTheme();
+        document.body.classList.toggle("focus-on", Boolean(state.settings.focusMode));
+        renderChrome();
+        renderDashboard();
+        renderCalendar();
+        renderNotes();
+        renderDevices();
+        renderImpact();
+        renderSettings();
+      }
+
+      function renderChrome() {
+        $("#screenTitle").textContent = screenNames[state.activeTab] || "Start";
+        $$(".screen").forEach((screen) => screen.classList.toggle("active", screen.dataset.screen === state.activeTab));
+        $$(".nav-btn").forEach((button) => button.classList.toggle("active", button.dataset.tab === state.activeTab));
+      }
+
+      function applyTheme() {
+        const color = accentPalette[state.accentIndex] || accentPalette[0];
+        document.documentElement.style.setProperty("--accent", color.accent);
+        document.documentElement.style.setProperty("--accent-2", color.accent2);
+      }
+
+      function renderDashboard() {
+        const done = state.reminders.filter((item) => item.done).length;
+        const open = state.reminders.filter((item) => !item.done).length;
+        const activeZones = state.zones.filter((zone) => zone.active).length;
+        $("#greeting").textContent = greeting();
+        $("#statDone").textContent = done;
+        $("#statOpen").textContent = open;
+        $("#statZones").textContent = activeZones;
+        $("#dailySummary").textContent = open
+          ? `${open} offene Dinge, ${state.impact.saved} rechtzeitig gerettet.`
+          : "Alles Wichtige ist erledigt. Das darf leicht bleiben.";
+
+        const filtered = state.reminders
+          .filter((item) => state.reminderFilter === "all" || (state.reminderFilter === "open" ? !item.done : item.done))
+          .sort(sortReminders);
+        $("#reminderList").innerHTML = filtered.length ? filtered.map(reminderTemplate).join("") : emptyTemplate("Keine passenden Erinnerungen.");
+        $("#focusList").innerHTML = state.reminders
+          .filter((item) => !item.done)
+          .sort(sortReminders)
+          .slice(0, 3)
+          .map(reminderTemplate)
+          .join("") || emptyTemplate("Gerade ist kein Fokus offen.");
+        $("#routineList").innerHTML = state.routines.map(routineTemplate).join("");
+        $("#checklist").innerHTML = state.checklist.map(checklistTemplate).join("");
+        $("#alarmPreview").innerHTML = state.alarms.slice(0, 2).map(alarmTemplate).join("") || emptyTemplate("Keine Standort-Alarme.");
+        $$("#reminderFilters .seg-btn").forEach((button) => button.classList.toggle("active", button.dataset.filter === state.reminderFilter));
+      }
+
+      function greeting() {
+        const hour = new Date().getHours();
+        if (hour < 11) return "Guten Morgen";
+        if (hour < 17) return "Guten Tag";
+        return "Guten Abend";
+      }
+
+      function sortReminders(a, b) {
+        const p = { high: 0, medium: 1, low: 2 };
+        return Number(a.done) - Number(b.done) || p[a.priority] - p[b.priority] || String(a.date).localeCompare(String(b.date));
+      }
+
+      function reminderTemplate(item) {
+        const label = { high: "hoch", medium: "mittel", low: "niedrig" }[item.priority] || "mittel";
+        return `
+          <article class="reminder ${item.done ? "done" : ""}" data-id="${escapeHtml(item.id)}">
+            <div class="reminder-main">
+              <button class="check" type="button" data-action="toggle-reminder" data-id="${escapeHtml(item.id)}" aria-label="Erinnerung umschalten">✓</button>
+              <div style="min-width:0; flex:1">
+                <h3>${escapeHtml(item.text)}</h3>
+                <p class="tiny">${formatDate(item.date)} · ${item.done ? "erledigt" : "offen"}</p>
+              </div>
+              <span class="priority ${escapeHtml(item.priority)}">${label}</span>
+            </div>
+            <div class="between">
+              <button class="ghost" type="button" data-action="move-reminder-today" data-id="${escapeHtml(item.id)}">Heute</button>
+              <button class="icon-btn" type="button" data-action="delete-reminder" data-id="${escapeHtml(item.id)}" aria-label="Erinnerung löschen">×</button>
+            </div>
+          </article>
+        `;
+      }
+
+      function routineTemplate(item) {
+        const pct = Math.round(clamp(item.progress / item.target, 0, 1) * 100);
+        return `
+          <article class="routine">
+            <div class="routine-top">
+              <div>
+                <h3>${escapeHtml(item.name)}</h3>
+                <p class="tiny">${item.progress} / ${item.target} heute · ${item.streak} Tage Streak</p>
+              </div>
+              <button class="primary" type="button" data-action="increment-routine" data-id="${escapeHtml(item.id)}">+1</button>
+            </div>
+            <div class="progress"><span style="width:${pct}%"></span></div>
+          </article>
+        `;
+      }
+
+      function checklistTemplate(item) {
+        return `
+          <article class="reminder ${item.done ? "done" : ""}">
+            <div class="reminder-main">
+              <button class="check" type="button" data-action="toggle-check" data-id="${escapeHtml(item.id)}" aria-label="Checkpunkt umschalten">✓</button>
+              <div style="min-width:0; flex:1">
+                <h3>${escapeHtml(item.text)}</h3>
+                <p class="tiny">${item.done ? "eingepackt" : "noch prüfen"}</p>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      function renderCalendar() {
+        $("#monthLabel").textContent = `${monthNames[state.calendarMonth]} ${state.calendarYear}`;
+        $("#calendarGrid").innerHTML = weekdays.map((day) => `<div class="weekday">${day}</div>`).join("") + monthCells().join("");
+        $("#agendaDate").textContent = formatDate(state.selectedDate);
+        const agenda = state.reminders.filter((item) => item.date === state.selectedDate).sort(sortReminders);
+        $("#agendaList").innerHTML = agenda.length ? agenda.map((item) => `
+          <article class="agenda-item">
+            <div class="between">
+              <div>
+                <h3>${escapeHtml(item.text)}</h3>
+                <p class="tiny">${item.done ? "Erledigt" : "Offen"} · Priorität ${escapeHtml(item.priority)}</p>
+              </div>
+              <span class="priority ${escapeHtml(item.priority)}">${priorityLabel(item.priority)}</span>
+            </div>
+          </article>
+        `).join("") : emptyTemplate("Keine Termine an diesem Tag.");
+      }
+
+      function monthCells() {
+        const first = new Date(state.calendarYear, state.calendarMonth, 1);
+        const startOffset = (first.getDay() + 6) % 7;
+        const start = new Date(state.calendarYear, state.calendarMonth, 1 - startOffset);
+        const cells = [];
+        const markedDates = new Set(state.reminders.map((item) => item.date));
+        for (let i = 0; i < 42; i += 1) {
+          const date = new Date(start);
+          date.setDate(start.getDate() + i);
+          const iso = isoDate(date);
+          const isMuted = date.getMonth() !== state.calendarMonth;
+          const classes = ["day-cell"];
+          if (isMuted) classes.push("muted");
+          if (iso === isoDate()) classes.push("today");
+          if (iso === state.selectedDate) classes.push("selected");
+          if (markedDates.has(iso)) classes.push("has-items");
+          cells.push(`<button class="${classes.join(" ")}" type="button" data-action="select-date" data-date="${iso}">${date.getDate()}</button>`);
+        }
+        return cells;
+      }
+
+      function renderNotes() {
+        const query = ($("#noteSearch")?.value || "").trim().toLowerCase();
+        const notes = state.notes
+          .filter((note) => !query || `${note.title} ${note.text}`.toLowerCase().includes(query))
+          .sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.createdAt - a.createdAt);
+        $("#noteList").innerHTML = notes.length ? notes.map(noteTemplate).join("") : emptyTemplate("Keine Notizen gefunden.");
+      }
+
+      function noteTemplate(note) {
+        return `
+          <article class="note">
+            <div class="note-main">
+              <div style="min-width:0">
+                <h3>${escapeHtml(note.title || "Notiz")}</h3>
+                <p class="note-text">${escapeHtml(note.text)}</p>
+                <p class="tiny">${note.pinned ? "Angepinnt" : "Gespeichert"} · ${new Date(note.createdAt).toLocaleDateString("de-DE")}</p>
+              </div>
+              <button class="icon-btn" type="button" data-action="pin-note" data-id="${escapeHtml(note.id)}" aria-label="Notiz anpinnen">${note.pinned ? "★" : "☆"}</button>
+            </div>
+            <button class="ghost" type="button" data-action="delete-note" data-id="${escapeHtml(note.id)}">Löschen</button>
+          </article>
+        `;
+      }
+
+      function renderDevices() {
+        $("#deviceList").innerHTML = state.devices.map(deviceTemplate).join("");
+        const selected = state.zones.find((zone) => zone.id === state.selectedZone) || state.zones[0];
+        const pos = zonePositions[selected?.id] || zonePositions.home;
+        const person = state.locationMode === "inside" ? { x: pos.x - 7, y: pos.y - 2 } : { x: 82, y: 72 };
+        const map = $("#mapDemo");
+        map.style.setProperty("--zone-x", pos.x);
+        map.style.setProperty("--zone-y", pos.y);
+        map.style.setProperty("--person-x", person.x);
+        map.style.setProperty("--person-y", person.y);
+        $("#zoneList").innerHTML = state.zones.map(zoneTemplate).join("");
+        $("#alarmFeed").innerHTML = state.alarms.map(alarmTemplate).join("") || emptyTemplate("Noch keine Alarm-Ereignisse.");
+      }
+
+      function deviceTemplate(device) {
+        const batteryColor = device.battery < 35 ? "var(--warn)" : "var(--accent)";
+        return `
+          <article class="device">
+            <div class="device-top">
+              <div>
+                <h3>${escapeHtml(device.name)}</h3>
+                <p class="tiny">${escapeHtml(device.detail)} · ${escapeHtml(device.status)}</p>
+              </div>
+              <span class="pill">${device.battery}%</span>
+            </div>
+            <div class="progress"><span style="width:${device.battery}%; background:${batteryColor}"></span></div>
+          </article>
+        `;
+      }
+
+      function zoneTemplate(zone) {
+        return `
+          <article class="zone">
+            <div class="zone-top">
+              <button class="ghost" type="button" data-action="select-zone" data-id="${escapeHtml(zone.id)}">${zone.id === state.selectedZone ? "Ausgewählt" : "Wählen"}</button>
+              <div style="min-width:0; flex:1">
+                <h3>${escapeHtml(zone.name)}</h3>
+                <p class="tiny">${escapeHtml(zone.cue)}</p>
+              </div>
+              <button class="switch ${zone.active ? "on" : ""}" type="button" data-action="toggle-zone" data-id="${escapeHtml(zone.id)}" aria-label="Zone aktivieren"><span></span></button>
+            </div>
+          </article>
+        `;
+      }
+
+      function alarmTemplate(alarm) {
+        return `
+          <article class="agenda-item">
+            <h3>${escapeHtml(alarm.text)}</h3>
+            <p class="tiny">${timeAgo(alarm.at)}</p>
+          </article>
+        `;
+      }
+
+      function renderImpact() {
+        const donation = state.impact.forgotten * donationPerForgot;
+        $("#impactForgot").textContent = state.impact.forgotten;
+        $("#impactSaved").textContent = state.impact.saved;
+        $("#impactCleanDays").textContent = state.impact.cleanDays;
+        $("#impactStreak").textContent = state.impact.streak;
+        $("#donationAmount").textContent = currency(donation);
+        $("#donationLabel").textContent = "Gespendet";
+        $("#impactMoment").textContent = `Heute ${currency(state.impact.todayForgotten * donationPerForgot)} für Alzheimer-Forschung gespendet.`;
+        $("#impactHeadline").textContent = state.impact.streak >= 3 ? `${state.impact.streak} Tage klar geblieben.` : "Heute achtsam unterwegs.";
+        $("#impactCopy").textContent = `${state.impact.saved} Dinge wurden rechtzeitig erinnert oder gerettet.`;
+        renderChart();
+        renderLeaderboard();
+        renderBadges();
+        const challengePct = clamp(state.impact.streak / 3, 0, 1) * 100;
+        $("#challengeProgress").style.width = `${challengePct}%`;
+        $("#challengeState").textContent = `${Math.min(state.impact.streak, 3)} / 3`;
+      }
+
+      function renderChart() {
+        const max = Math.max(3, ...state.impact.trend);
+        const labels = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+        $("#impactChart").innerHTML = state.impact.trend.map((value, index) => {
+          const height = Math.max(6, Math.round((value / max) * 96));
+          return `
+            <div class="bar-wrap">
+              <div class="bar" style="height:${height}px" title="${value} Ereignisse"></div>
+              <span>${labels[index]}</span>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function renderLeaderboard() {
+        const updated = state.friends.map((friend) => friend.name === "Du"
+          ? { ...friend, cleanDays: state.impact.cleanDays, streak: state.impact.streak }
+          : friend
+        ).sort((a, b) => b.cleanDays - a.cleanDays || b.streak - a.streak);
+        $("#leaderboard").innerHTML = updated.map((friend, index) => `
+          <article class="leader-row">
+            <div class="between">
+              <div>
+                <h3>${index + 1}. ${escapeHtml(friend.name)}</h3>
+                <p class="tiny">${friend.cleanDays} vergessensfreie Tage · beste Streak ${friend.streak}</p>
+              </div>
+              <span class="pill">${friend.name === "Du" ? "Du" : "Team"}</span>
+            </div>
+          </article>
+        `).join("");
+      }
+
+      function renderBadges() {
+        const badges = [
+          { name: "Klarer Morgen", text: "Alle Fokusaufgaben erledigt", active: state.reminders.every((item) => item.done) },
+          { name: "3-Tage-Serie", text: "Wochenziel erreicht", active: state.impact.streak >= 3 },
+          { name: "Retter-Modus", text: "10 Dinge gerettet", active: state.impact.saved >= 10 },
+          { name: "Zonen-Profi", text: "3 aktive Orte verwaltet", active: state.zones.filter((zone) => zone.active).length >= 3 }
+        ];
+        $("#badges").innerHTML = badges.map((badge) => `
+          <article class="badge ${badge.active ? "" : "locked"}">
+            <h3>${escapeHtml(badge.name)}</h3>
+            <p class="tiny">${escapeHtml(badge.text)}</p>
+          </article>
+        `).join("");
+      }
+
+      function renderSettings() {
+        const rows = [
+          { key: "aiSuggestions", title: "KI-Vorschläge", text: "Smarte Priorisierung und Tageshinweise" },
+          { key: "alarmSound", title: "Alarmton", text: "Akustisches Feedback bei wichtigen Erinnerungen" },
+          { key: "focusMode", title: "Fokusmodus", text: "Reduziert weniger wichtige Bereiche" }
+        ];
+        $("#settingsList").innerHTML = rows.map((row) => `
+          <div class="settings-row">
+            <div>
+              <h3>${escapeHtml(row.title)}</h3>
+              <p class="tiny">${escapeHtml(row.text)}</p>
+            </div>
+            <button class="switch ${state.settings[row.key] ? "on" : ""}" type="button" data-action="toggle-setting" data-key="${row.key}" aria-label="${escapeHtml(row.title)} umschalten"><span></span></button>
+          </div>
+        `).join("");
+        $("#swatches").innerHTML = accentPalette.map((color, index) => `
+          <button class="swatch ${index === state.accentIndex ? "active" : ""}" type="button" data-action="set-accent" data-index="${index}" style="--swatch:${color.accent}" aria-label="${color.name}"></button>
+        `).join("");
+      }
+
+      function priorityLabel(priority) {
+        return ({ high: "hoch", medium: "mittel", low: "niedrig" })[priority] || "mittel";
+      }
+
+      function emptyTemplate(text) {
+        return `<div class="empty">${escapeHtml(text)}</div>`;
+      }
+
+      function formatDate(dateString) {
+        return new Date(`${dateString}T12:00:00`).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit" });
+      }
+
+      function timeAgo(timestamp) {
+        const minutes = Math.max(1, Math.round((Date.now() - timestamp) / 60000));
+        if (minutes < 60) return `vor ${minutes} Min.`;
+        const hours = Math.round(minutes / 60);
+        return `vor ${hours} Std.`;
+      }
+
+      function updateTrend(delta) {
+        const lastIndex = state.impact.trend.length - 1;
+        state.impact.trend[lastIndex] = Math.max(0, state.impact.trend[lastIndex] + delta);
+      }
+
+      function addForgotten(reason) {
+        state.impact.forgotten += 1;
+        state.impact.todayForgotten += 1;
+        state.impact.streak = 0;
+        updateTrend(1);
+        state.alarms.unshift({ id: uid("a"), text: reason, zoneId: state.selectedZone, type: "forgot", at: Date.now() });
+        state.alarms = state.alarms.slice(0, 8);
+      }
+
+      function addSaved(message) {
+        state.impact.saved += 1;
+        state.impact.cleanDays = Math.max(state.impact.cleanDays, state.impact.streak + 1);
+        state.impact.streak += 1;
+        showToast(message);
+      }
+
+      function setTab(tab) {
+        if (!screenNames[tab]) return;
+        state.activeTab = tab;
+        saveState();
+        render();
+      }
+
+      function handleAction(event) {
+        const button = event.target.closest("[data-action]");
+        if (!button) return;
+        const action = button.dataset.action;
+        const id = button.dataset.id;
+
+        if (action === "set-tab") setTab(button.dataset.tab);
+        if (action === "filter-reminders") {
+          state.reminderFilter = button.dataset.filter;
+          saveState();
+          render();
+        }
+        if (action === "toggle-reminder") toggleReminder(id);
+        if (action === "delete-reminder") {
+          state.reminders = state.reminders.filter((item) => item.id !== id);
+          saveState();
+          render();
+          showToast("Erinnerung gelöscht.");
+        }
+        if (action === "move-reminder-today") {
+          const item = state.reminders.find((reminder) => reminder.id === id);
+          if (item) item.date = isoDate();
+          saveState();
+          render();
+          showToast("Auf heute gesetzt.");
+        }
+        if (action === "increment-routine") incrementRoutine(id);
+        if (action === "toggle-check") {
+          const item = state.checklist.find((entry) => entry.id === id);
+          if (item) item.done = !item.done;
+          saveState();
+          render();
+        }
+        if (action === "reset-checklist") {
+          state.checklist.forEach((item) => { item.done = false; });
+          saveState();
+          render();
+          showToast("Checkliste zurückgesetzt.");
+        }
+        if (action === "month-prev" || action === "month-next") changeMonth(action === "month-next" ? 1 : -1);
+        if (action === "select-date") {
+          state.selectedDate = button.dataset.date;
+          saveState();
+          render();
+        }
+        if (action === "pin-note") {
+          const note = state.notes.find((entry) => entry.id === id);
+          if (note) note.pinned = !note.pinned;
+          saveState();
+          render();
+        }
+        if (action === "delete-note") {
+          state.notes = state.notes.filter((note) => note.id !== id);
+          saveState();
+          render();
+          showToast("Notiz gelöscht.");
+        }
+        if (action === "select-zone") {
+          state.selectedZone = id;
+          state.locationMode = "inside";
+          saveState();
+          render();
+          showToast("Zone ausgewählt.");
+        }
+        if (action === "toggle-zone") {
+          const zone = state.zones.find((entry) => entry.id === id);
+          if (zone) zone.active = !zone.active;
+          saveState();
+          render();
+        }
+        if (action === "simulate-location") simulateLocation(button.dataset.mode);
+        if (action === "log-forgot") {
+          addForgotten("Vergessen dokumentiert: Pay-per-Vergessen aktualisiert");
+          saveState();
+          render();
+          showToast("Vergessen dokumentiert.");
+        }
+        if (action === "log-save") {
+          addSaved("Gerettet. Streak erhöht.");
+          saveState();
+          render();
+        }
+        if (action === "toggle-setting") {
+          const key = button.dataset.key;
+          state.settings[key] = !state.settings[key];
+          saveState();
+          render();
+          showToast(`${button.closest(".settings-row").querySelector("h3").textContent} aktualisiert.`);
+        }
+        if (action === "set-accent") {
+          state.accentIndex = Number(button.dataset.index) || 0;
+          saveState();
+          render();
+        }
+        if (action === "cycle-accent") {
+          state.accentIndex = (state.accentIndex + 1) % accentPalette.length;
+          saveState();
+          render();
+        }
+        if (action === "export-data") exportData();
+        if (action === "reset-demo") {
+          localStorage.removeItem(STORAGE_KEY);
+          state = defaultState();
+          render();
+          showToast("Demo-Daten zurückgesetzt.");
+        }
+      }
+
+      function toggleReminder(id) {
+        const item = state.reminders.find((reminder) => reminder.id === id);
+        if (!item) return;
+        const wasDone = item.done;
+        item.done = !item.done;
+        if (wasDone && !item.done) {
+          addForgotten(`Zurück auf offen: ${item.text}`);
+          showToast("Als vergessen gewertet und wieder geöffnet.");
+        } else if (item.done) {
+          addSaved("Erinnerung erledigt. Gut gerettet.");
+        }
+        saveState();
+        render();
+      }
+
+      function incrementRoutine(id) {
+        const routine = state.routines.find((item) => item.id === id);
+        if (!routine) return;
+        if (routine.progress < routine.target) {
+          routine.progress += 1;
+          if (routine.progress >= routine.target) {
+            routine.streak += 1;
+            addSaved("Routine abgeschlossen. Streak wächst.");
+          } else {
+            showToast("Routine aktualisiert.");
+          }
+        } else {
+          routine.progress = 0;
+          showToast("Routine für einen neuen Durchlauf zurückgesetzt.");
+        }
+        saveState();
+        render();
+      }
+
+      function changeMonth(delta) {
+        const date = new Date(state.calendarYear, state.calendarMonth + delta, 1);
+        state.calendarMonth = date.getMonth();
+        state.calendarYear = date.getFullYear();
+        saveState();
+        render();
+      }
+
+      function simulateLocation(mode) {
+        state.locationMode = mode;
+        const zone = state.zones.find((entry) => entry.id === state.selectedZone);
+        if (!zone) return;
+        if (mode === "outside" && zone.active) {
+          addForgotten(`${zone.name} verlassen: ${zone.cue} prüfen`);
+          showToast("Standort-Alarm ausgelöst.");
+        } else {
+          state.alarms.unshift({ id: uid("a"), text: `${zone.name}: im Bereich`, zoneId: zone.id, type: "info", at: Date.now() });
+          state.alarms = state.alarms.slice(0, 8);
+          showToast("Standort auf im Bereich gesetzt.");
+        }
+        saveState();
+        render();
+      }
+
+      function exportData() {
+        const summary = {
+          reminders: state.reminders.length,
+          notes: state.notes.length,
+          impact: state.impact,
+          exportedAt: new Date().toISOString()
+        };
+        navigator.clipboard?.writeText(JSON.stringify(state, null, 2)).then(
+          () => showToast("Export in die Zwischenablage kopiert."),
+          () => showToast(`Export bereit: ${JSON.stringify(summary)}`)
+        );
+      }
+
+      function bindForms() {
+        $("#reminderForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const input = $("#reminderText");
+          const text = input.value.trim();
+          if (!text) return showToast("Bitte eine Erinnerung eingeben.");
+          state.reminders.unshift({
+            id: uid("r"),
+            text,
+            priority: $("#reminderPriority").value,
+            done: false,
+            date: isoDate(),
+            createdAt: Date.now()
+          });
+          input.value = "";
+          saveState();
+          render();
+          showToast("Erinnerung hinzugefügt.");
+        });
+
+        $("#quickNoteForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const input = $("#quickNoteText");
+          const text = input.value.trim();
+          if (!text) return showToast("Bitte eine Notiz eingeben.");
+          state.notes.unshift({ id: uid("n"), title: "Schnellnotiz", text, pinned: false, createdAt: Date.now() });
+          input.value = "";
+          saveState();
+          render();
+          showToast("Notiz gespeichert.");
+        });
+
+        $("#noteForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const title = $("#noteTitle").value.trim();
+          const text = $("#noteText").value.trim();
+          if (!title && !text) return showToast("Bitte Titel oder Inhalt eingeben.");
+          state.notes.unshift({ id: uid("n"), title: title || "Notiz", text, pinned: false, createdAt: Date.now() });
+          $("#noteTitle").value = "";
+          $("#noteText").value = "";
+          saveState();
+          render();
+          showToast("Notiz erstellt.");
+        });
+
+        $("#noteSearch").addEventListener("input", renderNotes);
+      }
+
+      document.addEventListener("click", handleAction);
+      bindForms();
+      render();
+    })();
+  </script>
+</body>
+</html>
